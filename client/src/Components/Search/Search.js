@@ -24,6 +24,9 @@ export default class Search extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault(); // prevents page refresh
+        for(let x of e.target){
+            console.log(x.value);
+        }
 
         axios.post('/search', JSON.stringify(this.state))
             .then(res => {
@@ -40,7 +43,7 @@ export default class Search extends React.Component {
                             <Form.Control type="text" placeholder="Instructor Name" />
                         </Col>
                         <Col className="col-sm-3">
-                            <Form.Control type="text" placeholder="Normal text" />
+                            <Form.Control type="text" placeholder="Instructor Name" />
                         </Col>
                         <Col className="col-sm-3">
                             <Form.Control type="text" placeholder="Normal text" />
