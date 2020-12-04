@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {Container, Form, Row, Col, Button} from 'react-bootstrap';
 import Home from '../Home/Home'
 import Data from '../Data/Data'
@@ -24,14 +23,21 @@ export default class Search extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault(); // prevents page refresh
+        let newState = {};
+
         for(let x of e.target){
-            console.log(x.value);
+            newState[x.name] = x.value;
         }
 
-        axios.post('/search', JSON.stringify(this.state))
-            .then(res => {
-                this.setState({page: DATA})
-            })
+        this.setState(() => (newState));
+
+        fetch('/search', {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newState)
+        }).then(res => {this.setState({page: DATA})})
     }
 
     render() {
@@ -40,13 +46,13 @@ export default class Search extends React.Component {
                 <Form onSubmit={this.handleSubmit}>
                     <Row className="justify-content-center">
                         <Col className="col-sm-5">
-                            <Form.Control type="text" placeholder="Instructor Name" />
+                            <Form.Control type="text" name="instructor" placeholder="Instructor Name" />
                         </Col>
                         <Col className="col-sm-3">
-                            <Form.Control type="text" placeholder="Instructor Name" />
+                            <Form.Control type="text" name="quarters" placeholder="Quarters" />
                         </Col>
                         <Col className="col-sm-3">
-                            <Form.Control type="text" placeholder="Normal text" />
+                            <Form.Control type="text" name="years" placeholder="School Year" />
                         </Col>
                     </Row>
 
@@ -56,7 +62,7 @@ export default class Search extends React.Component {
                             <Row className="justify-content-center">
                                 <Col>
                                     <Form.Group className="text-center">
-                                        <Button as="input" type="submit" value="Submit" />
+                                        <Button as="input" type="submit" name="submit" value="Submit" />
                                     </Form.Group>
                                 </Col>
                             </Row>

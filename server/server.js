@@ -1,5 +1,6 @@
 const express = require('express')
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+const fetch = require('node-fetch');
 const app = express()
 const port = 5000
 
@@ -18,6 +19,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/search', (req, res) => {
+    let params = req.body;
+
+    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?instructor=${params.instructor}`)
+        .then(res => res.json())
+        .then(data => console.log(data['gradeDistribution']['COUNT()']));
     res.send('Hello World!');
 })
 
