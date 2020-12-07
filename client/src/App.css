@@ -55,3 +55,45 @@ body{
     transform: rotate(360deg);
   }
 }
+
+.slideInRight {
+  animation-name: slideInRight;
+}
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translate( -200%, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translate( 0, 200%);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+
+@keyframes slideInBottom {
+  from {
+    transform: translate( 0, -200%);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
