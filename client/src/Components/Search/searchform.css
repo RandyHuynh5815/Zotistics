@@ -1,3 +1,20 @@
+#submit-button{
+    background-color: var(--main-blue);
+    transition: transform 0.2s ease-in-out;
+}
+
+
+#submit-button:hover{
+    background-color: var(--main-blue);
+    transform:scale(1.05, 1.05);
+}
+
+.search-form-row{
+    margin-top:1em;
+}
+
+
+
 /**
  * Main wrapper
  */
@@ -79,6 +96,7 @@
 .select-search__options {
     list-style: none;
     padding:0;
+    border-radius: 1em;
 }
 
 /**
@@ -87,7 +105,6 @@
 .select-search__row:not(:first-child) {
     padding: 0;
     margin:0;
-    /*nothin here lmao*/
 }
 
 /**

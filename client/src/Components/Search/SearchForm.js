@@ -32,7 +32,7 @@ class SearchForm extends React.Component{
     render(){
         return (
             <Form onSubmit={this.props.handleSubmit}>
-                <Row className="justify-content-center">
+                <Row className="justify-content-center search-form-row">
                     <Col className="col-sm-5">
                         <SelectSearch 
                             options={instructors}
@@ -61,17 +61,13 @@ class SearchForm extends React.Component{
                     </Col>
                 </Row>
 
-                <Row className="justify-content-center">
-                    
+                <Row className="justify-content-center search-form-row">
                     <Col>
-                        <Row className="justify-content-center">
-                            <Col>
-                                <Form.Group className="text-center">
-                                    <Button as="input" type="submit" name="submit" value="Submit" />
-                                </Form.Group>
-                            </Col>
-                        </Row>
+                        <Form.Group className="text-center">
+                            <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
+                        </Form.Group>
                     </Col>
+
                 </Row>
             </Form>
         );
