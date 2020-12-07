@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form, Row, Col, Button} from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
-import './selectsearch.css';
+import './searchform.css';
 
 //temp
 const instructors = [

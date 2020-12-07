@@ -1,9 +1,11 @@
 :root {
-  --main-bg-color: #dddedf;
+  --main-bg-color: #f1f1f1;
   --main-text-color: #111111;
   --main-blue: #0064a4;
   --main-yellow: #ffd200;
   --transparent-blue:rgb(0, 100, 164, 0.1);
+  --secondary-text-color: #222222;
+  --secondary-bg-color: #cecece;
 }
 
 body{
@@ -42,7 +44,7 @@ body{
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--main-blue);
 }
 
 @keyframes App-logo-spin {
