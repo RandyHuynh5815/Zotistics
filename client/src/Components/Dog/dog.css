@@ -1,0 +1,10 @@
+#dog{
+    position: absolute;
+    left:1em;
+    bottom:0;
+}
+
+img{
+    max-width:33%;
+    height: auto;   
+}

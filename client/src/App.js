@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.css';
+import Dog from './Components/Dog/Dog'
 import NavBar from './Components/NavBar/NavBar'
 import Search from "./Components/Search/Search";
 
@@ -8,6 +9,7 @@ function App() {
         <div>
             <NavBar />
             <Search />
+            <Dog />
         </div>
     );
 }
