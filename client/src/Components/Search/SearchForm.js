@@ -28,6 +28,15 @@ const years = [
 ];
 
 
+const departments = [
+    {name: 'All Departments', value: 'all'},
+    {name: 'STATS', value: 'stats'},
+    {name: 'COMPSCI', value: 'compsci'},
+    {name: 'ICS', value: 'ics'},    
+    {name: 'IN4MATX', value: 'ics'},
+];
+
+
 class SearchForm extends React.Component{
     render(){
         return (
@@ -35,6 +44,7 @@ class SearchForm extends React.Component{
                 <Row className="justify-content-center search-form-row">
                     <Col className="col-sm-5">
                         <SelectSearch 
+                            
                             options={instructors}
                             search fuzzy
                             name="instructor"
@@ -62,12 +72,29 @@ class SearchForm extends React.Component{
                 </Row>
 
                 <Row className="justify-content-center search-form-row">
+                    <Col className="col-sm-5">
+                        <SelectSearch 
+                            options={departments}
+                            search fuzzy
+                            name="department"
+                            placeholder="All Departments"
+                        />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <Form.Control className = "search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <Form.Control className = "search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
+                    </Col>
+                </Row>
+
+
+                <Row className="justify-content-center search-form-row">
                     <Col>
                         <Form.Group className="text-center">
                             <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
                         </Form.Group>
                     </Col>
-
                 </Row>
             </Form>
         );
