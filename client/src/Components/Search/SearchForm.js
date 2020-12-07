@@ -44,7 +44,6 @@ class SearchForm extends React.Component{
                 <Row className="justify-content-center search-form-row">
                     <Col className="col-sm-5">
                         <SelectSearch 
-                            
                             options={instructors}
                             search fuzzy
                             name="instructor"

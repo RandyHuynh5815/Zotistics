@@ -22,6 +22,4 @@
 
     #navbar {
         background-color: var(--main-blue);
-        width:110%;
-        transform:translateX(-5%);
     }

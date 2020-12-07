@@ -11,7 +11,7 @@ class Dog extends React.Component{
     render(){
         return (
         <div id = "dog">
-            <img className = "slideInRight animated" onClick={this.dark} src={DogglesImg} alt="Logo" />
+            <img className = "" onClick={this.dark} src={DogglesImg} alt="Logo" />
         </div>
         );
     }
