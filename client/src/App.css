@@ -1,3 +1,22 @@
+:root {
+  --main-bg-color:#f8f9fa;
+  --main-text-color: #111111;
+  --main-blue: #0064a4;
+  --main-yellow: #ffd200;
+  --transparent-blue:rgb(0, 100, 164, 0.1);
+  --secondary-text-color: #424242;
+  --secondary-bg-color: #eeeaea;
+}
+
+body{
+  background: var(--main-bg-color);
+  /*takes care of smooth fades for color changes*/
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+}
+
 .App {
   text-align: center;
 }
@@ -21,11 +40,11 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--main-bg-color);
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--main-blue);
 }
 
 @keyframes App-logo-spin {

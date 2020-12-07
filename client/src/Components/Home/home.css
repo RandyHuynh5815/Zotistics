@@ -1,0 +1,9 @@
+p{
+    color:var(--main-text-color);
+}
+
+.card-body{
+    background-color: var(--main-bg-color);
+    border: none;
+    color:var(--main-text-color);
+}
