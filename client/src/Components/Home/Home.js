@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Form, Row, Col, Card, Collapse } from 'react-bootstrap';
-
+import './home.css';
 export default function Home() {
     const [open, setOpen] = useState(false);
 

@@ -1,5 +1,5 @@
 #dog{
-    position: absolute;
+    position: fixed;
     left:1em;
     bottom:0;
 }
@@ -7,4 +7,10 @@
 img{
     max-width:33%;
     height: auto;   
+    transition: transform 0.2s ease-in-out;
+}
+
+img:hover{
+    transform:scale(1.1, 1.1);
+    cursor:pointer;
 }

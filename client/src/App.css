@@ -1,9 +1,13 @@
 :root {
-  --main-bg-color: #EFF1F3;
+  --main-bg-color: #dddedf;
   --main-text-color: #111111;
-  --accent-color-1:#0064A4;
-  --accent-color-2:#F7D200;
-  --transparent-accent:rgb(0, 100, 164, 0.1);
+  --main-blue: #0064a4;
+  --main-yellow: #ffd200;
+  --transparent-blue:rgb(0, 100, 164, 0.1);
+}
+
+body{
+  background: var(--main-bg-color);
 }
 
 .App {
@@ -29,7 +33,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--main-bg-color);
 }
 
 .App-link {

@@ -3,11 +3,6 @@
         font-family: Courgette; src: url('Courgette-Regular.ttf');
     }
 
-    :root {
-        --main-blue: #0064a4;
-        --main-yellow: #ffd200;
-    }
-
     .tabLinks {
         font-size: 1rem;
         font-family: 'Courgette', cursive;
@@ -15,7 +10,7 @@
     }
 
     .tabLinks:hover {
-        color: white !important;
+        color: var(--main-bg-color) !important;
     }
 
     #logo {
