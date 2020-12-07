@@ -1,3 +1,11 @@
+:root {
+  --main-bg-color: #EFF1F3;
+  --main-text-color: #111111;
+  --accent-color-1:#0064A4;
+  --accent-color-2:#F7D200;
+  --transparent-accent:rgb(0, 100, 164, 0.1);
+}
+
 .App {
   text-align: center;
 }
