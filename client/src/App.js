@@ -6,8 +6,8 @@ import Search from "./Components/Search/Search";
 function App() {
     return (
         <div>
-                <NavBar/>
-                <Search />
+            <NavBar/>
+            <Search />
             <Dog />
         </div>
     );
