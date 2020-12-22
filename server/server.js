@@ -20,11 +20,16 @@ app.use((req, res, next) => {
 
 app.use('/search', (req, res) => {
     let params = req.body;
+    let count = 0;
 
     fetch(`http://api.peterportal.org/rest/v0/grades/calculated?instructor=${params.instructor}`)
         .then(res => res.json())
-        .then(data => console.log(data['gradeDistribution']['COUNT()']));
-    res.send('Hello World!');
+        .then(data => {
+            count = data['gradeDistribution']['COUNT()']
+            console.log(count);
+            //sends json as response
+            res.json({count: count});
+        });
 })
 
 app.listen(port, () => {

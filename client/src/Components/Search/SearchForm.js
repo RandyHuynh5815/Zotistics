@@ -3,11 +3,14 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
 import './searchform.css';
 
-//temp
+//TODO: load options from db?
+
+
+//http://api.peterportal.org/docs/REST-API/endpoints/#parameters_4
 const instructors = [
-    { name: 'Alex Thornton', value: 'ics-at' },
-    { name: 'Richard Pattis', value: 'ics-rp' },
-    { name: 'Michael Shindler', value: 'ics-ms' },
+    { name: 'Alex Thornton', value: 'THORNTON, A.' },
+    { name: 'Richard Pattis', value: 'PATTIS, R.' },
+    { name: 'Michael Shindler', value: 'SHINDLER, M.' },
 ];
 
 const quarters = [
@@ -38,7 +41,6 @@ const departments = [
 
 
 export const SearchForm = ({handleValueChange, handleFormSubmit}) => {
-
     return (
         <Form onSubmit = {handleFormSubmit}>
             <Row className="justify-content-center search-form-row">
