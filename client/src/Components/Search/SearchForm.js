@@ -39,20 +39,20 @@ const departments = [
 
 export const SearchForm = ({handleSubmit}) => {
 
-    const setInstructor = (val) => handleSubmit({name: "instructor", value:val});
-    const setDepartment = (val) => handleSubmit({name: "department", value:val});
-    const setQuarters = (val) => handleSubmit({name: "quarters", value:val});
-    const setYears = (val) => handleSubmit({name: "years", value:val});
-    
+
+    const handleFormSubmit = (e) =>{
+        e.preventDefault();
+    }
+
     return (
-        <Form>
+        <Form onSubmit = {handleFormSubmit}>
             <Row className="justify-content-center search-form-row">
                 <Col className="col-sm-5">
                     <SelectSearch
                         options={instructors}
                         search fuzzy
                         name="instructors"
-                        onChange={setInstructor}
+                        onChange={(val) => handleSubmit({name: "instructor", value:val})}
                         placeholder="Instructor Name"
                     />
                 </Col>
@@ -62,7 +62,7 @@ export const SearchForm = ({handleSubmit}) => {
                         printOptions="on-focus"
                         multiple
                         name="quarters"
-                        onChange={setQuarters}
+                        onChange={(val) => handleSubmit({name: "quarters", value:val})}
                         placeholder="Quarters"
                         options={quarters}
                     />
@@ -72,7 +72,7 @@ export const SearchForm = ({handleSubmit}) => {
                         closeOnSelect={false}
                         printOptions="on-focus"
                         name="years"
-                        onChange={setYears}
+                        onChange={(val) => handleSubmit({name: "years", value:val})}
                         multiple
                         placeholder="Years"
                         options={years}
@@ -86,7 +86,7 @@ export const SearchForm = ({handleSubmit}) => {
                         options={departments}
                         search fuzzy
                         name="department"
-                        onChange={setDepartment}
+                        onChange={(val) => handleSubmit({name: "department", value:val})}
                         placeholder="All Departments"
                     />
                 </Col>
