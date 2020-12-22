@@ -40,71 +40,80 @@ const departments = [
 ];
 
 
-export const SearchForm = ({handleValueChange, handleFormSubmit}) => {
-    return (
-        <Form onSubmit = {handleFormSubmit}>
-            <Row className="justify-content-center search-form-row">
-                <Col className="col-sm-5">
-                    <SelectSearch
-                        options={instructors}
-                        search fuzzy
-                        name="instructors"
-                        onChange={(val) => handleValueChange({name: "instructor", value:val})}
-                        placeholder="Instructor Name"
-                    />
-                </Col>
-                <Col className="col-sm-3">
-                    <SelectSearch
-                        closeOnSelect={false}
-                        printOptions="on-focus"
-                        multiple
-                        name="quarters"
-                        onChange={(val) => handleValueChange({name: "quarters", value:val})}
-                        placeholder="Quarters"
-                        options={quarters}
-                    />
-                </Col>
-                <Col className="col-sm-3">
-                    <SelectSearch
-                        closeOnSelect={false}
-                        printOptions="on-focus"
-                        name="years"
-                        onChange={(val) => handleValueChange({name: "years", value:val})}
-                        multiple
-                        placeholder="Years"
-                        options={years}
-                    />
-                </Col>
-            </Row>
+class SearchForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleValueChange = props.handleValueChange;
+        this.handleFormSubmit = props.handleFormSubmit;
+    }
 
-            <Row className="justify-content-center search-form-row">
-                <Col className="col-sm-5">
-                    <SelectSearch
-                        options={departments}
-                        search fuzzy
-                        name="department"
-                        onChange={(val) => handleValueChange({name: "department", value:val})}
-                        placeholder="All Departments"
-                    />
-                </Col>
-                <Col className="col-sm-3">
-                    <Form.Control className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
-                </Col>
-                <Col className="col-sm-3">
-                    <Form.Control className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
-                </Col>
-            </Row>
+    render() {
+
+        return (
+            <Form onSubmit={this.handleFormSubmit}>
+                <Row className="justify-content-center search-form-row">
+                    <Col className="col-sm-5">
+                        <SelectSearch
+                            options={instructors}
+                            search fuzzy
+                            name="instructors"
+                            onChange={(val) => this.handleValueChange({ name: "instructor", value: val })}
+                            placeholder="Instructor Name"
+                        />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <SelectSearch
+                            closeOnSelect={false}
+                            printOptions="on-focus"
+                            multiple
+                            name="quarters"
+                            onChange={(val) => this.handleValueChange({ name: "quarters", value: val })}
+                            placeholder="Quarters"
+                            options={quarters}
+                        />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <SelectSearch
+                            closeOnSelect={false}
+                            printOptions="on-focus"
+                            name="years"
+                            onChange={(val) => this.handleValueChange({ name: "years", value: val })}
+                            multiple
+                            placeholder="Years"
+                            options={years}
+                        />
+                    </Col>
+                </Row>
+
+                <Row className="justify-content-center search-form-row">
+                    <Col className="col-sm-5">
+                        <SelectSearch
+                            options={departments}
+                            search fuzzy
+                            name="department"
+                            onChange={(val) => this.handleValueChange({ name: "department", value: val })}
+                            placeholder="All Departments"
+                        />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <Form.Control className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
+                    </Col>
+                    <Col className="col-sm-3">
+                        <Form.Control className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
+                    </Col>
+                </Row>
 
 
-            <Row className="justify-content-center search-form-row">
-                <Col>
-                    <Form.Group className="text-center">
-                        <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
-                    </Form.Group>
-                </Col>
-            </Row>
-        </Form>
-    );
+                <Row className="justify-content-center search-form-row">
+                    <Col>
+                        <Form.Group className="text-center">
+                            <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
+                        </Form.Group>
+                    </Col>
+                </Row>
+            </Form>
+        );
+    }
 
 }
 
