@@ -22,16 +22,11 @@ class Search extends React.Component {
     }
 
     handleSubmit = (e) => {
-        
         console.log(e);
-        
-        
-        
-        //e.preventDefault(); // prevents page refresh
-        let newState = {};
-
+        let newState = this.state;
+        newState[e.name] = e.value;
         this.setState(() => (newState));
-
+        console.log(this.state);
         fetch('/search', {
             method: 'post',
             headers: {
