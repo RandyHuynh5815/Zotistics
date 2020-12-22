@@ -38,8 +38,11 @@ const departments = [
 
 
 export const SearchForm = ({handleSubmit}) => {
+
     const setInstructor = (val) => handleSubmit({name: "instructor", value:val});
     const setDepartment = (val) => handleSubmit({name: "department", value:val});
+    const setQuarters = (val) => handleSubmit({name: "quarters", value:val});
+    const setYears = (val) => handleSubmit({name: "years", value:val});
     
     return (
         <Form>
@@ -48,7 +51,6 @@ export const SearchForm = ({handleSubmit}) => {
                     <SelectSearch
                         options={instructors}
                         search fuzzy
-                        autoComplete
                         name="instructors"
                         onChange={setInstructor}
                         placeholder="Instructor Name"
@@ -60,6 +62,7 @@ export const SearchForm = ({handleSubmit}) => {
                         printOptions="on-focus"
                         multiple
                         name="quarters"
+                        onChange={setQuarters}
                         placeholder="Quarters"
                         options={quarters}
                     />
@@ -69,6 +72,7 @@ export const SearchForm = ({handleSubmit}) => {
                         closeOnSelect={false}
                         printOptions="on-focus"
                         name="years"
+                        onChange={setYears}
                         multiple
                         placeholder="Years"
                         options={years}
@@ -81,8 +85,8 @@ export const SearchForm = ({handleSubmit}) => {
                     <SelectSearch
                         options={departments}
                         search fuzzy
-                        autoComplete
                         name="department"
+                        onChange={setDepartment}
                         placeholder="All Departments"
                     />
                 </Col>
