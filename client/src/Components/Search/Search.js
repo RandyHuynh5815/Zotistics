@@ -22,12 +22,13 @@ class Search extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault(); // prevents page refresh
+        
+        console.log(e);
+        
+        
+        
+        //e.preventDefault(); // prevents page refresh
         let newState = {};
-
-        for(let x of e.target){
-            newState[x.name] = x.value;
-        }
 
         this.setState(() => (newState));
 
