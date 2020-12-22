@@ -21,25 +21,29 @@ class Search extends React.Component {
         page: HOME // what the page will display below the search forms (HOME or DATA)
     }
 
-    handleSubmit = (e) => {
+    handleValueChange = (e) => {
         console.log(e);
         let newState = this.state;
         newState[e.name] = e.value;
         this.setState(() => (newState));
         console.log(this.state);
+    }
+
+    handleFormSubmit = (e) =>{
+        console.log("form submit called");
+        e.preventDefault();
         fetch('/search', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(newState)
+            body: JSON.stringify(this.state)
         }).then(res => {this.setState({page: DATA})})
     }
-
     render() {
         return (
             <Container>
-                <SearchForm handleSubmit={this.handleSubmit} />
+                <SearchForm handleValueChange={this.handleValueChange}  handleFormSubmit={this.handleFormSubmit} />
                 {this.state.page}
             </Container>
         );

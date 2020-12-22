@@ -37,12 +37,7 @@ const departments = [
 ];
 
 
-export const SearchForm = ({handleSubmit}) => {
-
-
-    const handleFormSubmit = (e) =>{
-        e.preventDefault();
-    }
+export const SearchForm = ({handleValueChange, handleFormSubmit}) => {
 
     return (
         <Form onSubmit = {handleFormSubmit}>
@@ -52,7 +47,7 @@ export const SearchForm = ({handleSubmit}) => {
                         options={instructors}
                         search fuzzy
                         name="instructors"
-                        onChange={(val) => handleSubmit({name: "instructor", value:val})}
+                        onChange={(val) => handleValueChange({name: "instructor", value:val})}
                         placeholder="Instructor Name"
                     />
                 </Col>
@@ -62,7 +57,7 @@ export const SearchForm = ({handleSubmit}) => {
                         printOptions="on-focus"
                         multiple
                         name="quarters"
-                        onChange={(val) => handleSubmit({name: "quarters", value:val})}
+                        onChange={(val) => handleValueChange({name: "quarters", value:val})}
                         placeholder="Quarters"
                         options={quarters}
                     />
@@ -72,7 +67,7 @@ export const SearchForm = ({handleSubmit}) => {
                         closeOnSelect={false}
                         printOptions="on-focus"
                         name="years"
-                        onChange={(val) => handleSubmit({name: "years", value:val})}
+                        onChange={(val) => handleValueChange({name: "years", value:val})}
                         multiple
                         placeholder="Years"
                         options={years}
@@ -86,7 +81,7 @@ export const SearchForm = ({handleSubmit}) => {
                         options={departments}
                         search fuzzy
                         name="department"
-                        onChange={(val) => handleSubmit({name: "department", value:val})}
+                        onChange={(val) => handleValueChange({name: "department", value:val})}
                         placeholder="All Departments"
                     />
                 </Col>
