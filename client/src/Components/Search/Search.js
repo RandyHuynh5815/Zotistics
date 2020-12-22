@@ -40,10 +40,14 @@ class Search extends React.Component {
             body: JSON.stringify(this.state)
         }).then(res => {this.setState({page: DATA})})
     }
+
     render() {
         return (
             <Container>
-                <SearchForm handleValueChange={this.handleValueChange}  handleFormSubmit={this.handleFormSubmit} />
+                <SearchForm 
+                    handleValueChange={this.handleValueChange} 
+                    handleFormSubmit={this.handleFormSubmit}
+                />
                 {this.state.page}
             </Container>
         );
