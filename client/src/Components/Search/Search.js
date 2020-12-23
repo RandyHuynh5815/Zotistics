@@ -4,7 +4,7 @@ import Home from '../Home/Home'
 import Data from '../Data/Data'
 import SearchForm from './SearchForm'
 const HOME = <Home />;
-const DATA = <Data />;
+let DATA = <Data />;
 
 class Search extends React.Component {
 
@@ -14,7 +14,7 @@ class Search extends React.Component {
             instructor: '',
             quarters: [],
             years: [],
-            department: [],
+            department: '',
             classNumber: '',
             classCode: '',
             passNoPass: false,
@@ -46,8 +46,9 @@ class Search extends React.Component {
         })
         .then(res => res.json())
         .then(data => {
+            DATA = <Data data={data} />
             this.setState({page: DATA});
-            console.log("Got count: "+data.count)
+            console.log("Got count: " + data.count)
         })
     }
 

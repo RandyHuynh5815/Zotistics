@@ -14,29 +14,29 @@ const instructors = [
 ];
 
 const quarters = [
-    { name: 'Fall', value: 'fa' },
-    { name: 'Winter', value: 'wi' },
-    { name: 'Spring', value: 'sp' },
-    { name: 'Summer', value: 'su' },
+    { name: 'Fall', value: 'Fall' },
+    { name: 'Winter', value: 'Winter' },
+    { name: 'Spring', value: 'Spring' },
+    { name: 'Summer', value: 'Summer' },
 ];
 
 const years = [
-    { name: '2020-2021', value: '21' },
-    { name: '2019-2020', value: '20' },
-    { name: '2018-2019', value: '19' },
-    { name: '2017-2018', value: '18' },
-    { name: '2016-2017', value: '17' },
-    { name: '2015-2016', value: '16' },
-    { name: '2014-2015', value: '15' },
+    { name: '2020-2021', value: '2020-21' },
+    { name: '2019-2020', value: '2019-20' },
+    { name: '2018-2019', value: '2018-19' },
+    { name: '2017-2018', value: '2017-18' },
+    { name: '2016-2017', value: '2016-17' },
+    { name: '2015-2016', value: '2015-16' },
+    { name: '2014-2015', value: '2014-15' },
 ];
 
 
 const departments = [
-    { name: 'All Departments', value: 'all' },
-    { name: 'STATS', value: 'stats' },
-    { name: 'COMPSCI', value: 'compsci' },
-    { name: 'ICS', value: 'ics' },
-    { name: 'IN4MATX', value: 'ics' },
+    { name: 'All Departments', value: 'ALL' },
+    { name: 'STATS', value: 'STATS' },
+    { name: 'COMPSCI', value: 'COMPSCI' },
+    { name: 'ICS', value: 'I&C SCI' },
+    { name: 'IN4MATX', value: 'I&C SCI' },
 ];
 
 

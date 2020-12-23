@@ -20,15 +20,27 @@ app.use((req, res, next) => {
 
 app.use('/search', (req, res) => {
     let params = req.body;
-    let count = 0;
+    let quarters = params.quarters.join(';');
+    let years = params.years.join(';');
+    let department = params.department.replace('&', '%26').replace('/', '%2');
+    let query = `instructor=${params.instructor}&quarter=${quarters}&year=${years}&department=${department}` +
+        `&number=${params.classNumber}&code=${params.classCode}`
 
-    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?instructor=${params.instructor}`)
+
+    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?${query}`)
         .then(res => res.json())
         .then(data => {
-            count = data['gradeDistribution']['COUNT()']
-            console.log(count);
+            let count = data['gradeDistribution']['COUNT()']
+            let a = data['gradeDistribution']['SUM(gradeACount)']
+            let b = data['gradeDistribution']['SUM(gradeBCount)']
+            let c = data['gradeDistribution']['SUM(gradeCCount)']
+            let d = data['gradeDistribution']['SUM(gradeDCount)']
+            let f = data['gradeDistribution']['SUM(gradeFCount)']
+            let p = data['gradeDistribution']['SUM(gradePCount)']
+            let np = data['gradeDistribution']['SUM(gradeNPCount)']
+
             //sends json as response
-            res.json({count: count});
+            res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np});
         });
 })
 
