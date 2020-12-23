@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
 import './searchform.css';
@@ -96,10 +96,14 @@ class SearchForm extends React.Component {
                         />
                     </Col>
                     <Col className="col-sm-3">
-                        <Form.Control className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
+                        <Form.Control
+                            onChange={(val) => this.handleValueChange({ name: "classNumber", value: val.target.value })}
+                            className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
                     </Col>
                     <Col className="col-sm-3">
-                        <Form.Control className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
+                        <Form.Control
+                            onChange={(val) => this.handleValueChange({ name: "classCode", value: val.target.value })}
+                            className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
                     </Col>
                 </Row>
 

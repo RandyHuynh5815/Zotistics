@@ -27,11 +27,9 @@ class Search extends React.Component {
     
 
     handleValueChange = (e) => {
-        console.log(e);
-        let newState = this.state;
-        newState[e.name] = e.value;
-        this.setState(() => (newState));
-        console.log(this.state);
+        // console.log(e);
+        this.setState({[e.name]: e.value});
+        // console.log(this.state);
     }
 
     handleFormSubmit = (e) =>{
@@ -48,7 +46,6 @@ class Search extends React.Component {
         .then(data => {
             DATA = <Data data={data} />
             this.setState({page: DATA});
-            console.log("Got count: " + data.count)
         })
     }
 
