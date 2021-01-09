@@ -7,11 +7,6 @@ import './searchform.css';
 
 
 //http://api.peterportal.org/docs/REST-API/endpoints/#parameters_4
-const instructors = [
-    { name: 'Alex Thornton', value: 'THORNTON, A.' },
-    { name: 'Richard Pattis', value: 'PATTIS, R.' },
-    { name: 'Michael Shindler', value: 'SHINDLER, M.' },
-];
 
 const quarters = [
     { name: 'Fall', value: 'Fall' },
@@ -52,9 +47,53 @@ class SearchForm extends React.Component {
             excludePNP : false,
             covid19 : false,
             lowerDiv: false,
-            upperDiv: false
+            upperDiv: false,
+            instructors : [
+                { name: 'Alex Thornton', value: 'THORNTON, A.' },
+                { name: 'Richard Pattis', value: 'PATTIS, R.' },
+                { name: 'Michael Shindler', value: 'SHINDLER, M.' },
+            ]
+
         }; 
     }
+
+
+/*
+    componentDidMount(){
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        fetch(proxyurl+`http://api.peterportal.org/rest/v0/instructors/all`)
+        .then(res => res.json())
+        .then(data =>{
+            this.setState({
+                instructors: data
+            });
+            console.log(this.state.instructors);
+        });
+        
+    }
+    */
+    getInstructors(){
+
+        const getNameValue = (fullName) =>{
+            var firstName = fullName.split(' ').slice(0, -1).join(' ');
+            var lastName = fullName.split(' ').slice(-1).join(' ');
+            return (lastName+", "+firstName.charAt(0)+".").toUpperCase();
+            
+        }
+
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+        return new Promise((resolve, reject) => {
+            fetch(proxyurl+`http://api.peterportal.org/rest/v0/instructors/all`)
+                .then(response => response.json())
+                .then( data  => {
+                    resolve(data.map(x => ({ value: getNameValue(x.name), name: x.name })));
+
+                })
+                .catch(reject);
+        });
+    }
+
+    
 
     render() {
         return (
@@ -63,8 +102,8 @@ class SearchForm extends React.Component {
                     <Row className="justify-content-center search-form-row">
                         <Col className="col-12 col-sm-12 col-md-5">
                             <SelectSearch
-                                options={instructors}
-                                search fuzzy
+                                getOptions = {this.getInstructors}
+                                search
                                 name="instructors"
                                 onChange={(val) => this.handleValueChange({ name: "instructor", value: val })}
                                 placeholder="Instructor Name"
@@ -97,7 +136,7 @@ class SearchForm extends React.Component {
                         <Col className="col-12 col-sm-12 col-md-5">
                             <SelectSearch
                                 options={departments}
-                                search fuzzy
+                                search
                                 name="department"
                                 onChange={(val) => this.handleValueChange({ name: "department", value: val })}
                                 placeholder="All Departments"
