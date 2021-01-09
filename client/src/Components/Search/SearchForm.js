@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Button, Container} from 'react-bootstrap';
+import { Form, Row, Col, Button, Container, Collapse } from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
 import './searchform.css';
 
@@ -40,82 +40,100 @@ const departments = [
 ];
 
 
+
+
 class SearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleValueChange = props.handleValueChange;
         this.handleFormSubmit = props.handleFormSubmit;
+        this.state = {open: false}; //whether or not advanced options are open
     }
 
     render() {
-
         return (
             <Form onSubmit={this.handleFormSubmit}>
                 <Container>
-                <Row className="justify-content-center search-form-row">
-                    <Col className="col-12 col-sm-12 col-md-5">
-                        <SelectSearch
-                            options={instructors}
-                            search fuzzy
-                            name="instructors"
-                            onChange={(val) => this.handleValueChange({ name: "instructor", value: val })}
-                            placeholder="Instructor Name"
-                        />
-                    </Col>
-                    <Col className="col-12 col-sm-12 col-md-3">
-                        <SelectSearch
-                            closeOnSelect={false}
-                            printOptions="on-focus"
-                            multiple
-                            name="quarters"
-                            onChange={(val) => this.handleValueChange({ name: "quarters", value: val })}
-                            placeholder="Quarters"
-                            options={quarters}
-                        />
-                    </Col>
-                    <Col className="col-12 col-sm-12 col-md-3">
-                        <SelectSearch
-                            closeOnSelect={false}
-                            printOptions="on-focus"
-                            name="years"
-                            onChange={(val) => this.handleValueChange({ name: "years", value: val })}
-                            multiple
-                            placeholder="Years"
-                            options={years}
-                        />
-                    </Col>
-                </Row>
+                    <Row className="justify-content-center search-form-row">
+                        <Col className="col-12 col-sm-12 col-md-5">
+                            <SelectSearch
+                                options={instructors}
+                                search fuzzy
+                                name="instructors"
+                                onChange={(val) => this.handleValueChange({ name: "instructor", value: val })}
+                                placeholder="Instructor Name"
+                            />
+                        </Col>
+                        <Col className="col-12 col-sm-12 col-md-3">
+                            <SelectSearch
+                                closeOnSelect={false}
+                                printOptions="on-focus"
+                                multiple
+                                name="quarters"
+                                onChange={(val) => this.handleValueChange({ name: "quarters", value: val })}
+                                placeholder="Quarters"
+                                options={quarters}
+                            />
+                        </Col>
+                        <Col className="col-12 col-sm-12 col-md-3">
+                            <SelectSearch
+                                closeOnSelect={false}
+                                printOptions="on-focus"
+                                name="years"
+                                onChange={(val) => this.handleValueChange({ name: "years", value: val })}
+                                multiple
+                                placeholder="Years"
+                                options={years}
+                            />
+                        </Col>
+                    </Row>
 
-                <Row className="justify-content-center search-form-row">
-                    <Col className="col-12 col-sm-12 col-md-5">
-                        <SelectSearch
-                            options={departments}
-                            search fuzzy
-                            name="department"
-                            onChange={(val) => this.handleValueChange({ name: "department", value: val })}
-                            placeholder="All Departments"
-                        />
-                    </Col>
-                    <Col className="col-12 col-sm-12 col-md-3">
-                        <Form.Control
-                            onChange={(val) => this.handleValueChange({ name: "classNumber", value: val.target.value })}
-                            className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
-                    </Col>
-                    <Col className="col-12 col-sm-12 col-md-3">
-                        <Form.Control
-                            onChange={(val) => this.handleValueChange({ name: "classCode", value: val.target.value })}
-                            className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
-                    </Col>
-                </Row>
+                    <Row className="justify-content-center search-form-row">
+                        <Col className="col-12 col-sm-12 col-md-5">
+                            <SelectSearch
+                                options={departments}
+                                search fuzzy
+                                name="department"
+                                onChange={(val) => this.handleValueChange({ name: "department", value: val })}
+                                placeholder="All Departments"
+                            />
+                        </Col>
+                        <Col className="col-12 col-sm-12 col-md-3">
+                            <Form.Control
+                                onChange={(val) => this.handleValueChange({ name: "classNumber", value: val.target.value })}
+                                className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
+                        </Col>
+                        <Col className="col-12 col-sm-12 col-md-3">
+                            <Form.Control
+                                onChange={(val) => this.handleValueChange({ name: "classCode", value: val.target.value })}
+                                className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
+                        </Col>
+                    </Row>
+                    <Row className="justify-content-center search-form-row">
+                        <Col>
+                            <a  id = "advanced-options-link"
+                                onClick={() => this.setState({open:!this.state.open}) }
+                                aria-controls="example-collapse-text"
+                                aria-expanded={this.state.open}>
+                                Advanced Options ▼
+                            </a>
+                            <Collapse in={this.state.open}>
+                                <div id="example-collapse-text">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
+                                terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
+                                labore wes anderson cred nesciunt sapiente ea proident.
+                                </div>
+                            </Collapse>
+                        </Col>
+                    </Row>
 
-
-                <Row className="justify-content-center search-form-row">
-                    <Col>
-                        <Form.Group className="text-center">
-                            <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
-                        </Form.Group>
-                    </Col>
-                </Row>
+                    <Row className="justify-content-center search-form-row">
+                        <Col>
+                            <Form.Group className="text-center">
+                                <Button id="submit-button" as="input" type="submit" name="submit" value="Submit" />
+                            </Form.Group>
+                        </Col>
+                    </Row>
                 </Container>
             </Form>
         );
