@@ -47,7 +47,13 @@ class SearchForm extends React.Component {
         super(props);
         this.handleValueChange = props.handleValueChange;
         this.handleFormSubmit = props.handleFormSubmit;
-        this.state = {open: false}; //whether or not advanced options are open
+        this.state = {
+            advancedVisible: false,
+            excludePNP : false,
+            covid19 : false,
+            lowerDiv: false,
+            upperDiv: false
+        }; 
     }
 
     render() {
@@ -87,7 +93,6 @@ class SearchForm extends React.Component {
                             />
                         </Col>
                     </Row>
-
                     <Row className="justify-content-center search-form-row">
                         <Col className="col-12 col-sm-12 col-md-5">
                             <SelectSearch
@@ -110,20 +115,71 @@ class SearchForm extends React.Component {
                         </Col>
                     </Row>
                     <Row className="justify-content-center search-form-row">
-                        <Col>
-                            <a  id = "advanced-options-link"
-                                onClick={() => this.setState({open:!this.state.open}) }
-                                aria-controls="example-collapse-text"
-                                aria-expanded={this.state.open}>
-                                Advanced Options ▼
-                            </a>
-                            <Collapse in={this.state.open}>
-                                <div id="example-collapse-text">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-                                terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer
-                                labore wes anderson cred nesciunt sapiente ea proident.
-                                </div>
-                            </Collapse>
+                        <Col className="col-12">
+                            <div className = "advanced-options-wrapper">
+                                <a  id = "advanced-options-link"
+                                    onClick={() => this.setState({advancedVisible:!this.state.advancedVisible}) }
+                                    aria-controls="example-collapse-text"
+                                    aria-expanded={this.state.advancedVisible}>
+                                    Advanced Options ▼
+                                </a>
+                                <Collapse in={this.state.advancedVisible}>
+                                    <div className="advanced-options">
+                                        <Container>
+                                            <Row  className="justify-content-center text-center">
+                                                <Col >
+                                                    <Form.Check 
+                                                        checked = {this.state.excludePNP}
+                                                        onChange = {(evt) => {
+                                                            this.setState({excludePNP: evt.target.checked})
+                                                            this.handleValueChange({ name: "passNoPass", value: !this.state.excludePNP})
+                                                        } }
+                                                        type="checkbox"
+                                                        id={`exclude-pnp`}
+                                                        label={`Exclude P/NP`}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Check 
+                                                        checked = {this.state.covid19}
+                                                        onChange = {(evt) => {
+                                                            this.setState({covid19: evt.target.checked})
+                                                            this.handleValueChange({ name: "covid", value: !this.state.covid19})
+                                                        } }
+                                                        type="checkbox"
+                                                        id={`exclude-covid-19`}
+                                                        label={`Exclude COVID-19`}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Check 
+                                                        checked = {this.state.lowerDiv}
+                                                        onChange = {(evt) => {
+                                                            this.setState({lowerDiv: evt.target.checked})
+                                                            this.handleValueChange({ name: "lowerDiv", value: !this.state.lowerDiv})
+                                                        } }
+                                                        type="checkbox"
+                                                        id={`lower-div-only`}
+                                                        label={`LowerDiv Only`}
+                                                    />
+                                                </Col>
+                                                <Col>
+                                                    <Form.Check 
+                                                        checked = {this.state.upperDiv}
+                                                        onChange = {(evt) => {
+                                                            this.setState({upperDiv: evt.target.checked})
+                                                            this.handleValueChange({ name: "upperDiv", value: !this.state.upperDiv})
+                                                        } }
+                                                        type="checkbox"
+                                                        id={`upper-div-only`}
+                                                        label={`UpperDiv Only`}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    </div>
+                                </Collapse>
+                            </div>
                         </Col>
                     </Row>
 

@@ -277,7 +277,7 @@
     color: var(--secondary-text-color);
 }
 /*adds top and bottom margin to each input when less than tablet size*/
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 767px) {
     .col{
         margin-top:0.5em;
         margin-bottom:0.5em;
@@ -287,3 +287,19 @@
         margin-bottom:0;
     }
 }
+
+@media (min-width:768px){
+    .advanced-options-wrapper{
+        padding: 0 48px;
+    }
+}
+
+#advanced-options-link{
+    color:var(--main-blue);
+}
+#advanced-options-link:hover{
+    cursor: pointer;
+}
+
+
+
