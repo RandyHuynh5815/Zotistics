@@ -61,6 +61,8 @@
     position: relative;
     z-index: 1;
     color: var(--secondary-text-color);
+    
+
 }
 
 .select-search__value::after {
@@ -153,6 +155,12 @@
     text-align: left;
     cursor: pointer;
     color: var(--secondary-text-color);
+
+    /*for smooth color changes on hover*/
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
 }
 
 .select-search--multiple .select-search__option {
@@ -267,4 +275,15 @@
     padding: 16px;
     text-align: center;
     color: var(--secondary-text-color);
+}
+/*adds top and bottom margin to each input when less than tablet size*/
+@media only screen and (max-width: 720px) {
+    .col{
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+    }
+    .row{
+        margin-top:0;
+        margin-bottom:0;
+    }
 }

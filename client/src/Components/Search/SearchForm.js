@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button, Container} from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
 import './searchform.css';
 
@@ -51,8 +51,9 @@ class SearchForm extends React.Component {
 
         return (
             <Form onSubmit={this.handleFormSubmit}>
+                <Container>
                 <Row className="justify-content-center search-form-row">
-                    <Col className="col-sm-5">
+                    <Col className="col-12 col-sm-12 col-md-5">
                         <SelectSearch
                             options={instructors}
                             search fuzzy
@@ -61,7 +62,7 @@ class SearchForm extends React.Component {
                             placeholder="Instructor Name"
                         />
                     </Col>
-                    <Col className="col-sm-3">
+                    <Col className="col-12 col-sm-12 col-md-3">
                         <SelectSearch
                             closeOnSelect={false}
                             printOptions="on-focus"
@@ -72,7 +73,7 @@ class SearchForm extends React.Component {
                             options={quarters}
                         />
                     </Col>
-                    <Col className="col-sm-3">
+                    <Col className="col-12 col-sm-12 col-md-3">
                         <SelectSearch
                             closeOnSelect={false}
                             printOptions="on-focus"
@@ -86,7 +87,7 @@ class SearchForm extends React.Component {
                 </Row>
 
                 <Row className="justify-content-center search-form-row">
-                    <Col className="col-sm-5">
+                    <Col className="col-12 col-sm-12 col-md-5">
                         <SelectSearch
                             options={departments}
                             search fuzzy
@@ -95,12 +96,12 @@ class SearchForm extends React.Component {
                             placeholder="All Departments"
                         />
                     </Col>
-                    <Col className="col-sm-3">
+                    <Col className="col-12 col-sm-12 col-md-3">
                         <Form.Control
                             onChange={(val) => this.handleValueChange({ name: "classNumber", value: val.target.value })}
                             className="search-text-box" type="text" placeholder="Class Number (Ex. 45C)" />
                     </Col>
-                    <Col className="col-sm-3">
+                    <Col className="col-12 col-sm-12 col-md-3">
                         <Form.Control
                             onChange={(val) => this.handleValueChange({ name: "classCode", value: val.target.value })}
                             className="search-text-box" type="text" placeholder="Class Code (Ex. 34060)" />
@@ -115,6 +116,7 @@ class SearchForm extends React.Component {
                         </Form.Group>
                     </Col>
                 </Row>
+                </Container>
             </Form>
         );
     }
