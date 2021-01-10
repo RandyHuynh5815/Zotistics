@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
+const calc = require('./calculations');
 const app = express()
 const port = 5000
 
@@ -30,6 +31,7 @@ app.use('/search', (req, res) => {
     fetch(`http://api.peterportal.org/rest/v0/grades/calculated?${query}`)
         .then(res => res.json())
         .then(data => {
+            calc.classList(data['courseList']);
             let count = data['gradeDistribution']['COUNT()']
             let a = data['gradeDistribution']['SUM(gradeACount)']
             let b = data['gradeDistribution']['SUM(gradeBCount)']
