@@ -31,7 +31,9 @@ app.use('/search', (req, res) => {
     fetch(`http://api.peterportal.org/rest/v0/grades/calculated?${query}`)
         .then(res => res.json())
         .then(data => {
-            calc.classList(data['courseList']);
+            let classes = calc.classList(data['courseList']);
+            let instructors = calc.instructorList(data['courseList']);
+
             let count = data['gradeDistribution']['COUNT()']
             let a = data['gradeDistribution']['SUM(gradeACount)']
             let b = data['gradeDistribution']['SUM(gradeBCount)']
@@ -42,7 +44,8 @@ app.use('/search', (req, res) => {
             let np = data['gradeDistribution']['SUM(gradeNPCount)']
 
             //sends json as response
-            res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np});
+            res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np,
+                      classes: classes, instructors: instructors});
         });
 })
 
