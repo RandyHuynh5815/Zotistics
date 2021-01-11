@@ -19,6 +19,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/instructors', (req, res) => {
+    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?`)
+        .then(res => res.json())
+        .then(data => {
+            res.json({instructors: calc.uniqueInstructors(data['courseList'])});
+        });
+})
+
 app.use('/search', (req, res) => {
     let params = req.body;
     let quarters = params.quarters.join(';');

@@ -7,11 +7,11 @@ import './searchform.css';
 
 
 //http://api.peterportal.org/docs/REST-API/endpoints/#parameters_4
-const instructors = [
-    { name: 'Alex Thornton', value: 'THORNTON, A.' },
-    { name: 'Richard Pattis', value: 'PATTIS, R.' },
-    { name: 'Michael Shindler', value: 'SHINDLER, M.' },
-];
+// const instructors = [
+//     { name: 'Alex Thornton', value: 'THORNTON, A.' },
+//     { name: 'Richard Pattis', value: 'PATTIS, R.' },
+//     { name: 'Michael Shindler', value: 'SHINDLER, M.' },
+// ];
 
 const quarters = [
     { name: 'Fall', value: 'Fall' },
@@ -48,6 +48,11 @@ class SearchForm extends React.Component {
     }
 
     render() {
+        let instructors = []
+
+        if(this.props.instructors !== []){
+            instructors = this.props.instructors.map(teacher => ({name: teacher, value: teacher}));
+        }
 
         return (
             <Form onSubmit={this.handleFormSubmit}>

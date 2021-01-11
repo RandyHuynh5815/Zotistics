@@ -21,10 +21,16 @@ class Search extends React.Component {
             covid: false,
             lowerDiv: false,
             upperDiv: false,
-            page: HOME // what the page will display below the search forms (HOME or DATA)
+            page: HOME, // what the page will display below the search forms (HOME or DATA)
+            instructors: []
         };
     }
     
+    componentDidMount() {
+        fetch('/instructors')
+            .then(res => res.json())
+            .then(res => this.setState({instructors: res.instructors}))
+    }
 
     handleValueChange = (e) => {
         // console.log(e);
@@ -55,6 +61,7 @@ class Search extends React.Component {
                 <SearchForm 
                     handleValueChange={this.handleValueChange} 
                     handleFormSubmit={this.handleFormSubmit}
+                    instructors={this.state.instructors}
                 />
                 {this.state.page}
             </Container>
