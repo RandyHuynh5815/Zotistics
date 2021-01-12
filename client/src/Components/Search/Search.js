@@ -27,9 +27,8 @@ class Search extends React.Component {
     
 
     handleValueChange = (e) => {
-        // console.log(e);
         this.setState({[e.name]: e.value});
-        // console.log(this.state);
+        console.log(e.name+ " : "+e.value);
     }
 
     handleFormSubmit = (e) =>{
