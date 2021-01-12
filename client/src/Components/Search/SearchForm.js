@@ -40,6 +40,10 @@ const departments = [
 ];
 
 
+function RenderOptions({options}){
+
+}
+
 class SearchForm extends React.Component {
     constructor(props) {
         super(props);
@@ -51,16 +55,20 @@ class SearchForm extends React.Component {
         let instructors = []
 
         if(this.props.instructors !== []){
-            instructors = this.props.instructors.map(teacher => ({name: teacher, value: teacher}));
+            instructors = this.props.instructors;
         }
 
         return (
             <Form onSubmit={this.handleFormSubmit}>
                 <Row className="justify-content-center search-form-row">
                     <Col className="col-sm-5">
+                        
                         <SelectSearch
                             options={instructors}
-                            search fuzzy
+                            filterOptions={(q, options) => {
+                                return options.slice(0, 4);
+                            }}
+                            search 
                             name="instructors"
                             onChange={(val) => this.handleValueChange({ name: "instructor", value: val })}
                             placeholder="Instructor Name"

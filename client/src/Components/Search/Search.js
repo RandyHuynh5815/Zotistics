@@ -29,7 +29,7 @@ class Search extends React.Component {
     componentDidMount() {
         fetch('/instructors')
             .then(res => res.json())
-            .then(res => this.setState({instructors: res.instructors}))
+            .then(res => this.setState({instructors: res.instructors.map(teacher => ({name: teacher, value: teacher}))}))
     }
 
     handleValueChange = (e) => {
