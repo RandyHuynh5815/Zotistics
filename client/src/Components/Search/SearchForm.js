@@ -4,16 +4,6 @@ import SelectSearch from 'react-select-search';
 import './searchform.css';
 const dep = require('./departments')
 
-//TODO: load options from db?
-
-
-//http://api.peterportal.org/docs/REST-API/endpoints/#parameters_4
-// const instructors = [
-//     { name: 'Alex Thornton', value: 'THORNTON, A.' },
-//     { name: 'Richard Pattis', value: 'PATTIS, R.' },
-//     { name: 'Michael Shindler', value: 'SHINDLER, M.' },
-// ];
-
 const quarters = [
     { name: 'Fall', value: 'Fall' },
     { name: 'Winter', value: 'Winter' },
@@ -30,7 +20,6 @@ const years = [
     { name: '2015-2016', value: '2015-16' },
     { name: '2014-2015', value: '2014-15' },
 ];
-
 
 const departments = dep.departments;
 
