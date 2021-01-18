@@ -5,6 +5,7 @@ export default function Data(props) {
         <>
             <p>Data</p>
             <p>Count: {props.data.count}</p>
+            <p>Average GPA: {props.data.averageGPA}</p>
             <p>A: {props.data.a}</p>
             <p>B: {props.data.b}</p>
             <p>C: {props.data.c}</p>
