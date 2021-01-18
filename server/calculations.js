@@ -35,4 +35,14 @@ function filter(){
 
 }
 
-module.exports = {classList, instructorList, filter};
+function uniqueInstructors(data){
+    let instructors = new Set();
+
+    for(classObject of data){
+        instructors.add(classObject.instructor);
+    }
+
+    return [...instructors];
+}
+
+module.exports = {classList, instructorList, filter, uniqueInstructors};
