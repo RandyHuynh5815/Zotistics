@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Row, Col, Button } from 'react-bootstrap';
 import SelectSearch from 'react-select-search';
 import './searchform.css';
+const dep = require('./departments')
 
 //TODO: load options from db?
 
@@ -31,13 +32,7 @@ const years = [
 ];
 
 
-const departments = [
-    { name: 'All Departments', value: 'ALL' },
-    { name: 'STATS', value: 'STATS' },
-    { name: 'COMPSCI', value: 'COMPSCI' },
-    { name: 'ICS', value: 'I&C SCI' },
-    { name: 'IN4MATX', value: 'I&C SCI' },
-];
+const departments = dep.departments;
 
 
 function RenderOptions({options}){
