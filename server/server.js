@@ -45,11 +45,14 @@ app.use('/search', (req, res) => {
             let f = data['gradeDistribution']['SUM(gradeFCount)']
             let p = data['gradeDistribution']['SUM(gradePCount)']
             let np = data['gradeDistribution']['SUM(gradeNPCount)']
-            let averageGPA = data['gradeDistribution']['AVG(averageGPA)']
+            let averageGPA = data['gradeDistribution']['AVG(averageGPA)'].toFixed(2)
 
             //sends json as response
             res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np,
-                      averageGPA: averageGPA, classes: classes, instructors: instructors});
+                      averageGPA: averageGPA, classes: classes, instructors: instructors,
+                      instructor: params.instructor, quarters: params.quarters,
+                      department: params.department, classNumber: params.classNumber,
+                      classCode: params.classCode});
         });
 })
 

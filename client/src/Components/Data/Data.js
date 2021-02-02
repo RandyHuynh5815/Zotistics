@@ -59,29 +59,40 @@ export default function Data(props) {
         });
     }, [])
 
+    let title = props.data.department + " " + props.data.classNumber + " " + props.data.instructor;
+    let instructorAmount = Object.keys(props.data.instructors).length;
+
     return (
         <>
-            {/*<p>Data</p>*/}
-            {/*<p>Count: {props.data.count}</p>*/}
-            {/*<p>Average GPA: {props.data.averageGPA}</p>*/}
-            {/*<p>A: {props.data.a}</p>*/}
-            {/*<p>B: {props.data.b}</p>*/}
-            {/*<p>C: {props.data.c}</p>*/}
-            {/*<p>D: {props.data.d}</p>*/}
-            {/*<p>F: {props.data.f}</p>*/}
-            {/*<p>P: {props.data.p}</p>*/}
-            {/*<p>NP: {props.data.np}</p>*/}
             <Row>
                 <Col sm={2}></Col>
                 <Col sm={8}>
-                    <p>Name and Class</p>
-                    <Row></Row>
+                    <h5 className="text-center">{title}</h5>
+                    <Row className="justify-content-between d-flex">
+                        <div className="flex-even">
+                            {instructorAmount} Instructors
+                        </div>
+                        <div className="flex-even text-center">
+                            <h6>Quarter Year</h6>
+                        </div>
+                        <div className="flex-even text-right">
+                            {props.data.count} Classes
+                        </div>
+                    </Row>
                     <Row>
                         <Col sm={12}>
                             <canvas id="myChart"></canvas>
                         </Col>
                     </Row>
+                    <Row className="justify-content-center">
+                        <Col sm={3}></Col>
+                        <Col sm={6} className="text-center">
+                            <p>Average GPA: {props.data.averageGPA}</p>
+                        </Col>
+                        <Col sm={3}></Col>
+                    </Row>
                 </Col>
+                <Col sm={2}></Col>
             </Row>
         </>
     )
