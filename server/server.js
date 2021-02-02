@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '50mb'}))
 app.use(bodyParser.json({limit: '50mb'}))
 
 app.use('/instructors', (req, res) => {
-    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?`, {
+    fetch(`http://api.peterportal.org/rest/v0/grades/calculated`, {
         headers: {
             'x-api-key': 'Zotistics-48e7d5db47d3bf0ebfef45fe0aea7b3df77d0c77b243ee4bc9b780df6c9dd91f'
         }})
