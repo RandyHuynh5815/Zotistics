@@ -18,7 +18,8 @@ export default class Data extends React.Component {
         this.state = {
             gradeListPercentage: gradeListPercentage,
             gradeListPopulation: gradeListPopulation,
-            instructorDisplay: "inherit"
+            instructorDisplay: "none",
+            sideInfoHeight: "0px"
         }
     }
 
@@ -67,14 +68,26 @@ export default class Data extends React.Component {
                 }
             }
         });
+
+        this.resizeSideLists();
+        window.addEventListener("resize", this.resizeSideLists);
+    }
+
+    resizeSideLists = () => {
+        let height = document.getElementById('graphDiv').offsetHeight + document.getElementById('topDiv').offsetHeight;
+        this.setState({sideInfoHeight: height.toString() + "px"});
     }
 
     displayInstructorList = (e) => {
         if(this.state.instructorDisplay === "none"){
-            this.setState({instructorDisplay: "inherit"})
+            this.setState({instructorDisplay: "inherit"});
         } else {
-            this.setState({instructorDisplay: "none"})
+            this.setState({instructorDisplay: "none"});
         }
+    }
+
+    displayClassList = (e) => {
+
     }
 
     render() {
@@ -85,7 +98,7 @@ export default class Data extends React.Component {
                 <Row>
                     {/* Instructor Side List */}
                     <Col sm={2} className="justify-content-center text-center px-0">
-                        <div className="card overflow-auto" style={{display: this.state.instructorDisplay}} id="profList">
+                        <div className="card overflow-auto" style={{display: this.state.instructorDisplay, maxHeight: this.state.sideInfoHeight}} id="profList">
                             <div className="card-body px-0">
                                 <h5 className="card-title">Instructors</h5>
                                 {Object.entries(this.props.data.instructors).map(([key, value]) => {
@@ -99,7 +112,7 @@ export default class Data extends React.Component {
                     <Col sm={8}>
                         {/* Headers */}
                         <h5 className="text-center">{title}</h5>
-                        <Row className="justify-content-between d-flex">
+                        <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                             <div className="flex-even">
                                 <a id="instructors" onClick={this.displayInstructorList} style={{cursor: "pointer", userSelect: "none"}}><span style={{fontFamily: "Symbola"}}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
                             </div>
@@ -107,11 +120,11 @@ export default class Data extends React.Component {
                                 <h6>Quarter Year</h6>
                             </div>
                             <div className="flex-even text-right">
-                                {this.props.data.count} Classes
+                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{this.props.data.count} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
                             </div>
                         </Row>
                         {/* Graph */}
-                        <Row>
+                        <Row className="justify-content-center" id="graphDiv">
                             <Col sm={12}>
                                 <canvas id="myChart"></canvas>
                             </Col>
