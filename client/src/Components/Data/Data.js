@@ -19,6 +19,7 @@ export default class Data extends React.Component {
             gradeListPercentage: gradeListPercentage,
             gradeListPopulation: gradeListPopulation,
             instructorDisplay: "none",
+            classDisplay: "none",
             sideInfoHeight: "0px"
         }
     }
@@ -87,7 +88,11 @@ export default class Data extends React.Component {
     }
 
     displayClassList = (e) => {
-
+        if(this.state.classDisplay === "none"){
+            this.setState({classDisplay: "inherit"});
+        } else {
+            this.setState({classDisplay: "none"});
+        }
     }
 
     render() {
@@ -139,7 +144,31 @@ export default class Data extends React.Component {
                         </Row>
                     </Col>
                     {/* Class Side List*/}
-                    <Col sm={2}></Col>
+                    <Col sm={2} className="justify-content-center text-center px-0">
+                        <div className="card overflow-auto" style={{display: this.state.classDisplay}} id="cardList">
+                            <div className="card-body px-0">
+                                <h5 className="card-title mb-0">Classes</h5>
+                                <p style={{fontSize: "0.75rem"}}><i>Click class to expand</i></p>
+
+                                {Object.entries(this.props.data.classes).map(([key, value]) => {
+                                    return(
+                                        <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
+                                    )
+                                })}
+
+                        {/*        /!*{% for class in info(df) %}*!/*/}
+                        {/*        /!*<p><a className="card-text text-decoration-none" href="#collapse{{ class[3] }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{{ class[0] }} • {{ class[1] }}</a></p>*!/*/}
+                        {/*        /!*<div className="collapse" id="collapse{{ class[3] }}">*!/*/}
+                        {/*        /!*    <div className="card-block">*!/*/}
+                        {/*        /!*        {% for course in class[2] %}*!/*/}
+                        {/*        /!*        <p style="font-size: 0.7rem;">{{ course[0] }} {{ course[1] }} - {{ course[2] }}</p>*!/*/}
+                        {/*        /!*        {% endfor %}*!/*/}
+                        {/*        /!*    </div>*!/*/}
+                        {/*        /!*</div>*!/*/}
+                        {/*        /!*{% endfor %}*!/*/}
+                            </div>
+                        </div>
+                    </Col>
                 </Row>
             </>
         )
