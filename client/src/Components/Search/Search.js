@@ -10,20 +10,6 @@ import SearchForm from "./SearchForm";
 const HOME = <Home />;
 let DATA = <Data />;
 
-const DEFAULT_STATE = {
-  formID: 0,
-  instructor: "",
-  quarters: [],
-  years: [],
-  department: "",
-  classNumber: "",
-  classCode: "",
-  advancedVisible: false,
-  excludePNP: false,
-  covid19: false,
-  lowerDiv: false,
-  upperDiv: false,
-};
 
 class Search extends React.Component {
   constructor(props) {
@@ -66,6 +52,10 @@ class Search extends React.Component {
   };
 
   addNewForm = () => {
+    var newFormStates = Object.assign({}, this.state.formStates);
+    delete newFormStates["0"]; //fixed bug with 0 key
+
+
     this.setState(
       {
         numForms: this.state.numForms + 1,
@@ -83,11 +73,7 @@ class Search extends React.Component {
                 instructors={this.state.instructors}
               ></SearchForm>
             ),
-          },
-          formStates: {
-            ...this.state.formStates,
-            [this.state.formStates]: DEFAULT_STATE,
-          },
+          }
         });
       }
     );
@@ -130,9 +116,8 @@ class Search extends React.Component {
     return (
       <Container>
         <Form onSubmit={this.handleFormSubmit}>
-          <p>Current Form: {this.state.currentForm}</p>
           {Object.keys(this.state.forms).map((key) => {
-            return <div className={key===""+this.state.currentForm?"visible":"invisible"}>{this.state.forms[key]}</div>;
+            return <div key={key} className={key===""+this.state.currentForm?"visible":"invisible"}>{this.state.forms[key]}</div>;
           })}
           <Row className="justify-content-center search-form-row">
             <Col>
@@ -154,7 +139,7 @@ class Search extends React.Component {
           <Row>
             {Object.keys(this.state.formStates).map((key) => {
               return (
-                <Col>
+                <Col key={key}>
                   <a href="#" onClick={(e) => this.setCurrentForm(key, e)}>
                     {this.state.formStates[key].formID}
                   </a>
