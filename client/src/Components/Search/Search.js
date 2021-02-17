@@ -49,20 +49,21 @@ class Search extends React.Component {
           })),
         })
       )
-      .then(() => this.addNewForm());
+      .then(()=>this.setState({forms:{}, formStates:{}}))
+      .then(() => this.addNewForm())
   }
-
 
   setCurrentForm = (key, e) => {
     e.preventDefault(); //ignore link behavior
-    this.setState({
-      currentForm : key
-    },
-    function(){
-      this.forceUpdate()
-    }
-    )
-  }
+    this.setState(
+      {
+        currentForm: key,
+      },
+      function () {
+        this.forceUpdate();
+      }
+    );
+  };
 
   addNewForm = () => {
     this.setState(
@@ -102,9 +103,7 @@ class Search extends React.Component {
           [formState.formID]: formState,
         },
       },
-      function () {
-        console.log(this.state.formStates);
-      }
+      function () {}
     );
   };
 
@@ -124,18 +123,17 @@ class Search extends React.Component {
         DATA = <Data data={data} />;
         this.setState({ page: DATA });
       });
+    //{currentForm !== 0 ? forms[currentForm] : null}
   };
 
   render() {
-    let { forms, currentForm, formStates } = this.state;
-
-    console.log(Object.keys(formStates));
     return (
       <Container>
         <Form onSubmit={this.handleFormSubmit}>
           <p>Current Form: {this.state.currentForm}</p>
-
-          {currentForm !== 0 ? forms[currentForm] : null}
+          {Object.keys(this.state.forms).map((key) => {
+            return <div className={key===""+this.state.currentForm?"visible":"invisible"}>{this.state.forms[key]}</div>;
+          })}
           <Row className="justify-content-center search-form-row">
             <Col>
               <Form.Group className="text-center">
@@ -154,10 +152,12 @@ class Search extends React.Component {
           </Row>
 
           <Row>
-            {Object.keys(formStates).map((key) => {
+            {Object.keys(this.state.formStates).map((key) => {
               return (
                 <Col>
-                  <a href="#" onClick={(e)=>this.setCurrentForm(key, e)}> {formStates[key].instructor}</a>
+                  <a href="#" onClick={(e) => this.setCurrentForm(key, e)}>
+                    {this.state.formStates[key].formID}
+                  </a>
                 </Col>
               );
             })}

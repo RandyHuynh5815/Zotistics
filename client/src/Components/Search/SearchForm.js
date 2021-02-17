@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Row, Col, Button, Container, Collapse } from "react-bootstrap";
+import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
 import SelectSearch from "react-select-search";
 import "./searchform.css";
 const dep = require("./departments");
@@ -44,6 +44,10 @@ class SearchForm extends React.Component {
 
   }
 
+
+
+
+
   handleValueChange = (e) => {
     this.setState({ [e.name]: e.value }, function () {
       this.props.updateForm(this.state);
@@ -58,10 +62,12 @@ class SearchForm extends React.Component {
     }
 
     return (
-      
         <Container>
+          <Row>{this.state.formID}</Row>
           <Row className="justify-content-center search-form-row">
+            
             <Col className="col-12 col-sm-12 col-md-5">
+
               <SelectSearch
                 options={instructors}
                 filterOptions={(q, options) => {
