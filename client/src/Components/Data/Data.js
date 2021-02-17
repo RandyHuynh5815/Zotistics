@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col} from "react-bootstrap";
+import {Row, Col, FormCheck} from "react-bootstrap";
 import Chart from "chart.js";
 
 export default class Data extends React.Component {
@@ -18,13 +18,27 @@ export default class Data extends React.Component {
         this.state = {
             gradeListPercentage: gradeListPercentage,
             gradeListPopulation: gradeListPopulation,
+            chartData: gradeListPercentage,
             instructorDisplay: "none", // display none or inherit
             classDisplay: "none", // display none or inherit
-            sideInfoHeight: "0px" // max height for the side cards that changes on window resize
+            sideInfoHeight: "0px", // max height for the side cards that changes on window resize
+            chartSwitch: false,
+            chartLabelY: "Percent", // Percent or Students
         }
     }
 
     componentDidMount() {
+        this.buildChart();
+
+        this.resizeSideLists();
+        window.addEventListener("resize", this.resizeSideLists);
+    }
+
+    componentDidUpdate() {
+        this.buildChart();
+    }
+
+    buildChart = () => {
         let ctx = document.getElementById('myChart').getContext('2d');
 
         new Chart(ctx, {
@@ -33,7 +47,7 @@ export default class Data extends React.Component {
                 labels: ['A', 'B', 'C', 'D', 'F', 'P', 'NP'],
                 datasets: [{
                     label: "Percent",
-                    data: this.state.gradeListPercentage,
+                    data: this.state.chartData,
                     backgroundColor: [
                         'rgba(54, 162, 235, 0.6)',
                         'rgba(54, 162, 235, 0.6)',
@@ -57,7 +71,7 @@ export default class Data extends React.Component {
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: "Percent"
+                            labelString: this.state.chartLabelY
                         }
                     }],
                     xAxes: [{
@@ -69,9 +83,6 @@ export default class Data extends React.Component {
                 }
             }
         });
-
-        this.resizeSideLists();
-        window.addEventListener("resize", this.resizeSideLists);
     }
 
     resizeSideLists = () => {
@@ -93,6 +104,15 @@ export default class Data extends React.Component {
         } else {
             this.setState({classDisplay: "none"});
         }
+    }
+
+    changeChart = () => {
+        if(!this.state.chartSwitch){
+            this.setState({chartData: this.state.gradeListPopulation, chartLabelY: "Students"});
+        } else {
+            this.setState({chartData: this.state.gradeListPercentage, chartLabelY: "Percent"});
+        }
+        this.setState({chartSwitch: !this.state.chartSwitch});
     }
 
     render() {
@@ -140,7 +160,16 @@ export default class Data extends React.Component {
                             <Col sm={6} className="text-center">
                                 <p>Average GPA: {this.props.data.averageGPA}</p>
                             </Col>
-                            <Col sm={3}></Col>
+                            <Col sm={3} className="text-right">
+                                <FormCheck
+                                    id="chartSwitch"
+                                    type="switch"
+                                    checked={this.state.chartSwitch}
+                                    onChange={this.changeChart}
+                                    onClick={e => e.target.blur()}
+                                    label="Numbers"
+                                />
+                            </Col>
                         </Row>
                     </Col>
                     {/* Class Side List*/}
