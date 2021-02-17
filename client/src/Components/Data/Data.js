@@ -18,9 +18,9 @@ export default class Data extends React.Component {
         this.state = {
             gradeListPercentage: gradeListPercentage,
             gradeListPopulation: gradeListPopulation,
-            instructorDisplay: "none",
-            classDisplay: "none",
-            sideInfoHeight: "0px"
+            instructorDisplay: "none", // display none or inherit
+            classDisplay: "none", // display none or inherit
+            sideInfoHeight: "0px" // max height for the side cards that changes on window resize
         }
     }
 
@@ -145,7 +145,7 @@ export default class Data extends React.Component {
                     </Col>
                     {/* Class Side List*/}
                     <Col sm={2} className="justify-content-center text-center px-0">
-                        <div className="card overflow-auto" style={{display: this.state.classDisplay}} id="cardList">
+                        <div className="card overflow-auto" style={{display: this.state.classDisplay, maxHeight: this.state.sideInfoHeight}} id="cardList">
                             <div className="card-body px-0">
                                 <h5 className="card-title mb-0">Classes</h5>
                                 <p style={{fontSize: "0.75rem"}}><i>Click class to expand</i></p>
@@ -153,19 +153,20 @@ export default class Data extends React.Component {
                                 {Object.entries(this.props.data.classes).map(([key, value]) => {
                                     return(
                                         <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
+                                        // <>
+                                        //     <p><a className="card-text text-decoration-none" href={"#" + key.replace(" ", "")} data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{key} • {value.count}</a></p>
+                                        //     <div className="collapse" id={key.replace(" ", "")}>
+                                        //         <div className="card-block">
+                                        //             {Object.entries(value.courses).map(([key, value]) => {
+                                        //                 return(
+                                        //                     <p style={{fontSize: "0.7rem"}}>{key}</p>
+                                        //                 )
+                                        //             })}
+                                        //         </div>
+                                        //     </div>
+                                        // </>
                                     )
                                 })}
-
-                        {/*        /!*{% for class in info(df) %}*!/*/}
-                        {/*        /!*<p><a className="card-text text-decoration-none" href="#collapse{{ class[3] }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{{ class[0] }} • {{ class[1] }}</a></p>*!/*/}
-                        {/*        /!*<div className="collapse" id="collapse{{ class[3] }}">*!/*/}
-                        {/*        /!*    <div className="card-block">*!/*/}
-                        {/*        /!*        {% for course in class[2] %}*!/*/}
-                        {/*        /!*        <p style="font-size: 0.7rem;">{{ course[0] }} {{ course[1] }} - {{ course[2] }}</p>*!/*/}
-                        {/*        /!*        {% endfor %}*!/*/}
-                        {/*        /!*    </div>*!/*/}
-                        {/*        /!*</div>*!/*/}
-                        {/*        /!*{% endfor %}*!/*/}
                             </div>
                         </div>
                     </Col>
