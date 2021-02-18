@@ -18,10 +18,21 @@ class Search extends React.Component {
     super(props);
     this.state = {
       instructors: [],
-      forms: {}, //{formID : formComponent}
-      formStates: {}, //{formID : formStates}
-      currentForm: 0,
-      numForms: 0,
+      forms: {
+        1: (
+          <SearchForm
+            handleFormSubmit={this.handleFormSubmit}
+            updateForm={this.updateForm}
+            formID={1}
+            instructors={[]}
+          ></SearchForm>
+        ),
+      }, //{formID : formComponent}
+      formStates: {
+        1: {}
+      }, //{formID : formStates}
+      currentForm: 1,
+      numForms: 1,
       page: HOME, // what the page will display below the search forms (HOME or DATA)
     };
     //we need to do this for some reason
@@ -44,8 +55,17 @@ class Search extends React.Component {
           })),
         })
       )
-      .then(() => this.setState({ forms: {}, formStates: {} }))
-      .then(() => this.addNewForm());
+      .then(() => this.setState({ forms: {
+        1: <SearchForm
+        handleFormSubmit={this.handleFormSubmit}
+        updateForm={this.updateForm}
+        formID={this.state.currentForm}
+        instructors={this.state.instructors}
+      ></SearchForm>
+      }, formStates: {
+
+
+      } }))
   }
 
   /*
