@@ -10,18 +10,20 @@ import SearchForm from "./SearchForm";
 const HOME = <Home />;
 let DATA = <Data />;
 
-
 class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       instructors: [],
-      forms: {},
-      formStates: {},
+      forms: {}, //{formID : formComponent}
+      formStates: {}, //{formID : formStates}
       currentForm: 0,
       numForms: 0,
       page: HOME, // what the page will display below the search forms (HOME or DATA)
     };
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
+
   }
 
   componentDidMount() {
@@ -35,8 +37,8 @@ class Search extends React.Component {
           })),
         })
       )
-      .then(()=>this.setState({forms:{}, formStates:{}}))
-      .then(() => this.addNewForm())
+      .then(() => this.setState({ forms: {}, formStates: {} }))
+      .then(() => this.addNewForm());
   }
 
   setCurrentForm = (key, e) => {
@@ -55,7 +57,6 @@ class Search extends React.Component {
     var newFormStates = Object.assign({}, this.state.formStates);
     delete newFormStates["0"]; //fixed bug with 0 key
 
-
     this.setState(
       {
         numForms: this.state.numForms + 1,
@@ -73,7 +74,7 @@ class Search extends React.Component {
                 instructors={this.state.instructors}
               ></SearchForm>
             ),
-          }
+          },
         });
       }
     );
@@ -81,7 +82,6 @@ class Search extends React.Component {
 
   updateForm = (formState) => {
     console.log("setting form " + formState.formID);
-
     this.setState(
       {
         formStates: {
@@ -93,31 +93,60 @@ class Search extends React.Component {
     );
   };
 
-  handleFormSubmit = (e) => {
+  handleFormSubmit = async (e) => {
     console.log("form submitted");
     e.preventDefault();
 
-    fetch("/search", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(this.state),
+    let {formStates} = this.state;
+
+
+    const fetchDataFromForm = async (formID) => {
+      let result = fetch("/search", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formStates[formID]),
+      }).then((res) => res.json());
+      console.log(result);
+      return result;
+    }
+
+
+    const getResultData = async () => {
+      return Promise.all(
+        Object.keys(formStates)
+        .map(async (formID) => {
+          return await fetchDataFromForm(formID);
+        }))
+      
+    }
+
+    getResultData()
+    .then((results) => {
+      console.log(results);
+      this.setState({page: <Data data={results}></Data>});
+      
     })
-      .then((res) => res.json())
-      .then((data) => {
-        DATA = <Data data={data} />;
-        this.setState({ page: DATA });
-      });
-    //{currentForm !== 0 ? forms[currentForm] : null}
+
+    
+    
   };
 
   render() {
+    let { forms, currentForm, formStates } = this.state;
     return (
       <Container>
         <Form onSubmit={this.handleFormSubmit}>
-          {Object.keys(this.state.forms).map((key) => {
-            return <div key={key} className={key===""+this.state.currentForm?"visible":"invisible"}>{this.state.forms[key]}</div>;
+          {Object.keys(forms).map((key) => {
+            return (
+              <div
+                key={key}
+                className={key === "" + currentForm ? "visible" : "invisible"}
+              >
+                {forms[key]}
+              </div>
+            );
           })}
           <Row className="justify-content-center search-form-row">
             <Col>
@@ -141,7 +170,7 @@ class Search extends React.Component {
               return (
                 <Col key={key}>
                   <a href="#" onClick={(e) => this.setCurrentForm(key, e)}>
-                    {this.state.formStates[key].formID}
+                    {this.state.formStates[key].instructor}
                   </a>
                 </Col>
               );
