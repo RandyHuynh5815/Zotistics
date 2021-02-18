@@ -8,9 +8,12 @@ import Home from "../Home/Home";
 import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
 const HOME = <Home />;
-let DATA = <Data />;
 
 class Search extends React.Component {
+  /*
+    Handles all the searchforms, and keeps track of state of each form
+    Also handles fetching instructors list, fetching results, and setting page to data
+  */
   constructor(props) {
     super(props);
     this.state = {
@@ -21,11 +24,15 @@ class Search extends React.Component {
       numForms: 0,
       page: HOME, // what the page will display below the search forms (HOME or DATA)
     };
+    //we need to do this for some reason
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-
-
   }
 
+  /*
+  fetch /instructors and set state.instructors to options list
+  make sure forms and formStates is empty
+  then add new empty form
+  */
   componentDidMount() {
     fetch("/instructors")
       .then((res) => res.json())
@@ -41,6 +48,9 @@ class Search extends React.Component {
       .then(() => this.addNewForm());
   }
 
+  /*
+  Runs when form name is clicked and sets current form
+  */
   setCurrentForm = (key, e) => {
     e.preventDefault(); //ignore link behavior
     this.setState(
@@ -53,10 +63,13 @@ class Search extends React.Component {
     );
   };
 
+  /*
+  increments numForms and currentForm
+  adds new SearchForm component
+  NOTE: doesn't add state to formStates 
+    because that happens when searchform is updated
+  */
   addNewForm = () => {
-    var newFormStates = Object.assign({}, this.state.formStates);
-    delete newFormStates["0"]; //fixed bug with 0 key
-
     this.setState(
       {
         numForms: this.state.numForms + 1,
@@ -80,26 +93,32 @@ class Search extends React.Component {
     );
   };
 
+  /*
+  update a particular form's formState
+  formID should be included in formState
+  */
   updateForm = (formState) => {
     console.log("setting form " + formState.formID);
-    this.setState(
-      {
-        formStates: {
-          ...this.state.formStates,
-          [formState.formID]: formState,
-        },
+    this.setState({
+      formStates: {
+        ...this.state.formStates,
+        [formState.formID]: formState,
       },
-      function () {}
-    );
+    });
   };
 
+  /*
+  Probably the worst part of this code
+  Runs when submit button is clicked
+  For each formID in formStates, fetches from /search
+  and adds to results a new key/value pair where
+  key=formID and value=allTheDataForThatForm
+  finally, sets page to data component with results
+  */
   handleFormSubmit = async (e) => {
     console.log("form submitted");
     e.preventDefault();
-
-    let {formStates} = this.state;
-
-
+    let { formStates } = this.state;
     const fetchDataFromForm = async (formID) => {
       let result = fetch("/search", {
         method: "post",
@@ -110,29 +129,24 @@ class Search extends React.Component {
       }).then((res) => res.json());
       console.log(result);
       return result;
-    }
-
-
+    };
     const getResultData = async () => {
       return Promise.all(
-        Object.keys(formStates)
-        .map(async (formID) => {
+        Object.keys(formStates).map(async (formID) => {
           return await fetchDataFromForm(formID);
-        }))
-      
-    }
-
-    getResultData()
-    .then((results) => {
+        })
+      ); //only god can judge me
+    };
+    getResultData().then((results) => {
       console.log(results);
-      this.setState({page: <Data data={results}></Data>});
-      
-    })
-
-    
-    
+      this.setState({ page: <Data data={results}></Data> });
+    });
   };
 
+  /*
+  technically renders ALL the searchforms, but makes only
+  the current one visible with css lol
+  */
   render() {
     let { forms, currentForm, formStates } = this.state;
     return (
@@ -166,11 +180,11 @@ class Search extends React.Component {
           </Row>
 
           <Row>
-            {Object.keys(this.state.formStates).map((key) => {
+            {Object.keys(formStates).map((key) => {
               return (
                 <Col key={key}>
                   <a href="#" onClick={(e) => this.setCurrentForm(key, e)}>
-                    {this.state.formStates[key].instructor}
+                    {formStates[key].instructor}
                   </a>
                 </Col>
               );
