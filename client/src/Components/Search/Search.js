@@ -67,8 +67,7 @@ class Search extends React.Component {
               ></SearchForm>
             ),
           },
-          formStates: {
-          },
+          formStates: {},
         })
       );
   }
@@ -95,29 +94,65 @@ class Search extends React.Component {
     because that happens when searchform is updated
   */
   addNewForm = () => {
-    this.setState(
-      {
-        numForms: this.state.numForms + 1,
-        currentForm: this.state.numForms + 1,
-      },
-      function () {
-        this.setState({
-          forms: {
-            ...this.state.forms,
-            [this.state.currentForm]: (
-              <SearchForm
-                handleFormSubmit={this.handleFormSubmit}
-                updateForm={this.updateForm}
-                formID={this.state.currentForm}
-                instructors={this.state.instructors}
-              ></SearchForm>
-            ),
-          },
-        });
-      }
-    );
+    if (this.state.currentForm >= 4) {
+      alert("chiiiiiiiiiiiiiiiilllllllll");
+    } else {
+      this.setState(
+        {
+          numForms: this.state.numForms + 1,
+          currentForm: this.state.numForms + 1,
+        },
+        function () {
+          this.setState({
+            forms: {
+              ...this.state.forms,
+              [this.state.currentForm]: (
+                <SearchForm
+                  handleFormSubmit={this.handleFormSubmit}
+                  updateForm={this.updateForm}
+                  formID={this.state.currentForm}
+                  instructors={this.state.instructors}
+                ></SearchForm>
+              ),
+            },
+          });
+        }
+      );
+    }
   };
 
+  removeForm = (formID) => {
+  
+    if (this.state.numForms > 1) {
+      const newForms = Object.keys(this.state.forms).reduce((object, key) => {
+        if (key !== formID) {
+          object[key] = this.state.forms[key];
+        }
+        return object;
+      }, {});
+  
+      const newFormStates = Object.keys(this.state.formStates).reduce(
+        (object, key) => {
+          if (key !== formID) {
+            object[key] = this.state.forms[key];
+          }
+          return object;
+        },
+        {}
+      );
+      this.setState({
+        forms: newForms,
+        formStates: newFormStates,
+      }, 
+      function(){
+        this.setState({
+          currentForm: 1,
+          numForms:this.state.numForms-1
+        })
+      }
+      );
+    }
+  };
   /*
   update a particular form's formState
   formID should be included in formState
@@ -188,7 +223,7 @@ class Search extends React.Component {
   the current one visible with css lol
   */
   render() {
-    let { forms, currentForm, formStates } = this.state;
+    let { forms, currentForm, formStates, numForms } = this.state;
     return (
       <Container>
         <Form onSubmit={this.handleFormSubmit}>
@@ -204,6 +239,18 @@ class Search extends React.Component {
           })}
           <Row className="justify-content-center search-form-row">
             <Col className="text-right">
+              <Button
+                className={
+                  "zotistics-outline-button " +
+                  (numForms === 1 ? "invisible" : "visible")
+                }
+                onClick={()=>console.log("needs to be implemented lol")}
+              >
+                -
+              </Button>
+            </Col>
+
+            <Col className="text-center" sm="auto">
               <Form.Group>
                 <Button
                   className="submit-button"
@@ -215,8 +262,11 @@ class Search extends React.Component {
               </Form.Group>
             </Col>
             <Col className="text-left">
-              <Button className="add-form-button" onClick={this.addNewForm}>
-                Add
+              <Button
+                className="zotistics-outline-button"
+                onClick={this.addNewForm}
+              >
+                +
               </Button>
             </Col>
           </Row>
@@ -225,14 +275,14 @@ class Search extends React.Component {
             {Object.keys(formStates).map((key) => {
               return (
                 <Col key={key} className="text-center">
-                  <div className="form-tab">
-                    <h5
-                      className="form-tab-header"
-                      onClick={(e) => this.setCurrentForm(key, e)}
-                    >
+                  <div
+                    className="form-tab"
+                    onClick={(e) => this.setCurrentForm(key, e)}
+                  >
+                    <h5 className="form-tab-header">
                       {formStates[key].instructor !== ""
                         ? this.formatInstructorName(formStates[key].instructor)
-                        : "FORM " + key}
+                        : "Form " + key}
                     </h5>
                   </div>
                 </Col>
