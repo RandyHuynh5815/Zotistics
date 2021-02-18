@@ -8,7 +8,7 @@ function App() {
         <div>
             <NavBar/>
             <Search />
-            {/*<Dog />*/}
+            <Dog />
         </div>
     );
 }

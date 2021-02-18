@@ -29,7 +29,7 @@ class Search extends React.Component {
         ),
       }, //{formID : formComponent}
       formStates: {
-        1: {}
+        1: {},
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
@@ -55,17 +55,22 @@ class Search extends React.Component {
           })),
         })
       )
-      .then(() => this.setState({ forms: {
-        1: <SearchForm
-        handleFormSubmit={this.handleFormSubmit}
-        updateForm={this.updateForm}
-        formID={this.state.currentForm}
-        instructors={this.state.instructors}
-      ></SearchForm>
-      }, formStates: {
-
-
-      } }))
+      .then(() =>
+        this.setState({
+          forms: {
+            1: (
+              <SearchForm
+                handleFormSubmit={this.handleFormSubmit}
+                updateForm={this.updateForm}
+                formID={this.state.currentForm}
+                instructors={this.state.instructors}
+              ></SearchForm>
+            ),
+          },
+          formStates: {
+          },
+        })
+      );
   }
 
   /*
@@ -162,6 +167,21 @@ class Search extends React.Component {
       this.setState({ page: <Data data={results}></Data> });
     });
   };
+  /*
+  helper method to lowercase part of instructor name
+  "LAST, F." --> "Last, F."
+  */
+  formatInstructorName = (name) => {
+    if (name) {
+      return (
+        name.substring(0, 1) +
+        name.substring(1, name.indexOf(",")).toLowerCase() +
+        name.substring(name.indexOf(","), name.length)
+      );
+    } else {
+      return "";
+    }
+  };
 
   /*
   technically renders ALL the searchforms, but makes only
@@ -174,19 +194,19 @@ class Search extends React.Component {
         <Form onSubmit={this.handleFormSubmit}>
           {Object.keys(forms).map((key) => {
             return (
-              <div
+              <Row
                 key={key}
                 className={key === "" + currentForm ? "visible" : "invisible"}
               >
                 {forms[key]}
-              </div>
+              </Row>
             );
           })}
           <Row className="justify-content-center search-form-row">
-            <Col>
-              <Form.Group className="text-center">
+            <Col className="text-right">
+              <Form.Group>
                 <Button
-                  id="submit-button"
+                  className="submit-button"
                   as="input"
                   type="submit"
                   name="submit"
@@ -194,18 +214,27 @@ class Search extends React.Component {
                 />
               </Form.Group>
             </Col>
-            <Col>
-              <Button onClick={this.addNewForm}>+</Button>
+            <Col className="text-left">
+              <Button className="add-form-button" onClick={this.addNewForm}>
+                Add
+              </Button>
             </Col>
           </Row>
 
-          <Row>
+          <Row className="justify-content-center">
             {Object.keys(formStates).map((key) => {
               return (
-                <Col key={key}>
-                  <a href="#" onClick={(e) => this.setCurrentForm(key, e)}>
-                    {formStates[key].instructor}
-                  </a>
+                <Col key={key} className="text-center">
+                  <div className="form-tab">
+                    <h5
+                      className="form-tab-header"
+                      onClick={(e) => this.setCurrentForm(key, e)}
+                    >
+                      {formStates[key].instructor !== ""
+                        ? this.formatInstructorName(formStates[key].instructor)
+                        : "FORM " + key}
+                    </h5>
+                  </div>
                 </Col>
               );
             })}
