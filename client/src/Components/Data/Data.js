@@ -5,7 +5,6 @@ import Chart from "chart.js";
 export default class Data extends React.Component {
     constructor(props){
         super(props);
-
         let gradeListPopulation = [props.data.a, props.data.b, props.data.c, props.data.d, props.data.f,
             props.data.p, props.data.np]
         const sum = gradeListPopulation.reduce(function(a, b){
