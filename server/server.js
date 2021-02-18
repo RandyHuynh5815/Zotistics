@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false, limit: '50mb'}))
 app.use(bodyParser.json({limit: '50mb'}))
 
 app.use('/instructors', (req, res) => {
-    fetch(`http://api.peterportal.org/rest/v0/grades/calculated?`, {
+    fetch(`http://api.peterportal.org/rest/v0/grades/calculated`, {
         headers: {
             'x-api-key': 'Zotistics-48e7d5db47d3bf0ebfef45fe0aea7b3df77d0c77b243ee4bc9b780df6c9dd91f'
         }})
@@ -45,11 +45,14 @@ app.use('/search', (req, res) => {
             let f = data['gradeDistribution']['SUM(gradeFCount)']
             let p = data['gradeDistribution']['SUM(gradePCount)']
             let np = data['gradeDistribution']['SUM(gradeNPCount)']
-            let averageGPA = data['gradeDistribution']['AVG(averageGPA)']
+            let averageGPA = data['gradeDistribution']['AVG(averageGPA)'].toFixed(2)
 
             //sends json as response
             res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np,
-                      averageGPA: averageGPA, classes: classes, instructors: instructors});
+                      averageGPA: averageGPA, classes: classes, instructors: instructors,
+                      instructor: params.instructor, quarters: params.quarters,
+                      department: params.department, classNumber: params.classNumber,
+                      classCode: params.classCode});
         });
 })
 
