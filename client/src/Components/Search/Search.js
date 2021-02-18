@@ -50,7 +50,7 @@ class Search extends React.Component {
         ),
       }, //{formID : formComponent}
       formStates: {
-        1: {},
+        1: {color:"transparent"},
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
@@ -296,7 +296,7 @@ class Search extends React.Component {
           <Row className="justify-content-center">
             {Object.keys(formStates).map((key) => {
               return (
-                <Col key={key} className="text-center">
+                <Col lg={3} md={6} sm={12}key={key} className="text-center">
                   <div
                     style={{"border-bottom-color": formStates[key].color}}
                     className="form-tab"
