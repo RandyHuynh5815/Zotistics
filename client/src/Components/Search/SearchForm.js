@@ -29,6 +29,7 @@ class SearchForm extends React.Component {
     this.handleFormSubmit = props.handleFormSubmit;
     this.state = {
       formID: props.formID,
+      color: props.color,
       instructor: "",
       quarters: [],
       years: [],

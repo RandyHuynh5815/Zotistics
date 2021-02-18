@@ -9,6 +9,26 @@ import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
 const HOME = <Home />;
 
+
+/*
+CREDIT: https://gist.github.com/bendc/76c48ce53299e6078a76#file-random-color-js
+*/
+const randomColor = (() => {
+  "use strict";
+
+  const randomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+  return () => {
+    var h = randomInt(0, 360);
+    var s = randomInt(42, 98);
+    var l = randomInt(40, 90);
+    return `hsl(${h},${s}%,${l}%)`;
+  };
+})();
+
+
+
 class Search extends React.Component {
   /*
     Handles all the searchforms, and keeps track of state of each form
@@ -24,6 +44,7 @@ class Search extends React.Component {
             handleFormSubmit={this.handleFormSubmit}
             updateForm={this.updateForm}
             formID={1}
+            color={"hsl(203, 100%, 32%)"}
             instructors={[]}
           ></SearchForm>
         ),
@@ -111,6 +132,7 @@ class Search extends React.Component {
                   handleFormSubmit={this.handleFormSubmit}
                   updateForm={this.updateForm}
                   formID={this.state.currentForm}
+                  color={randomColor()}
                   instructors={this.state.instructors}
                 ></SearchForm>
               ),
@@ -276,6 +298,7 @@ class Search extends React.Component {
               return (
                 <Col key={key} className="text-center">
                   <div
+                    style={{"border-bottom-color": formStates[key].color}}
                     className="form-tab"
                     onClick={(e) => this.setCurrentForm(key, e)}
                   >

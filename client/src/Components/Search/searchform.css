@@ -41,7 +41,7 @@ form tab stuff
 .form-tab{
     border-bottom-width: 3px;
     border-bottom-style: solid;
-    border-bottom-color: var(--main-blue);
+    /*border-bottom-color: var(--main-blue);*/
     transition: all 0.1s ease-out;
 }
 
