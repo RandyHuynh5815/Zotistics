@@ -45,7 +45,7 @@ class Search extends React.Component {
         ),
       }, //{formID : formComponent}
       formStates: {
-        1 : { color: "transparent" },
+        1 : { instructor: "", color: "hsl(203, 100%, 32%)" },
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
