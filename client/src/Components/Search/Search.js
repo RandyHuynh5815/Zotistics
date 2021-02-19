@@ -240,6 +240,29 @@ class Search extends React.Component {
     }
   };
 
+
+
+  formTabs = (formStates) => {
+    return (
+      Object.keys(formStates).map((key) => {
+        return (
+          <Col lg={3} md={6} sm={12}key={key} className="text-center">
+            <div
+              style={{"border-bottom-color": formStates[key].color}}
+              className="form-tab"
+              onClick={(e) => this.setCurrentForm(key, e)}
+            >
+              <h5 className="form-tab-header">
+                {formStates[key].instructor !== ""
+                  ? this.formatInstructorName(formStates[key].instructor)
+                  : "Form " + key}
+              </h5>
+            </div>
+          </Col>
+        );
+      })
+    );
+  }
   /*
   technically renders ALL the searchforms, but makes only
   the current one visible with css lol
@@ -294,23 +317,7 @@ class Search extends React.Component {
           </Row>
 
           <Row className="justify-content-center">
-            {Object.keys(formStates).map((key) => {
-              return (
-                <Col lg={3} md={6} sm={12}key={key} className="text-center">
-                  <div
-                    style={{"border-bottom-color": formStates[key].color}}
-                    className="form-tab"
-                    onClick={(e) => this.setCurrentForm(key, e)}
-                  >
-                    <h5 className="form-tab-header">
-                      {formStates[key].instructor !== ""
-                        ? this.formatInstructorName(formStates[key].instructor)
-                        : "Form " + key}
-                    </h5>
-                  </div>
-                </Col>
-              );
-            })}
+            {this.formTabs(formStates)}
           </Row>
         </Form>
         {this.state.page}

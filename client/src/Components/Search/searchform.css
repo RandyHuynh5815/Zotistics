@@ -21,7 +21,9 @@
     margin-top:1em;
 }
 
-
+.form-check-label{
+    color:var(--secondary-text-color);
+}
 .visible{
     visibility: visible;
 }
