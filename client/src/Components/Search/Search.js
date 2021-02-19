@@ -9,13 +9,10 @@ import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
 const HOME = <Home />;
 
-
 /*
 CREDIT: https://gist.github.com/bendc/76c48ce53299e6078a76#file-random-color-js
 */
 const randomColor = (() => {
-  "use strict";
-
   const randomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -48,11 +45,12 @@ class Search extends React.Component {
         ),
       }, //{formID : formComponent}
       formStates: {
-        1: { color: "transparent" },
+        1 : { color: "transparent" },
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
       page: HOME, // what the page will display below the search forms (HOME or DATA)
+      loaded:false
     };
     //we need to do this for some reason
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -83,10 +81,11 @@ class Search extends React.Component {
                 updateForm={this.updateForm}
                 formID={this.state.currentForm}
                 instructors={this.state.instructors}
+                color={"hsl(203, 100%, 32%)"}
               ></SearchForm>
             ),
           },
-          formStates: {},
+          formStates: {1:{ instructor: "", color: "hsl(203, 100%, 32%)" }},
         })
       );
   }
@@ -136,10 +135,10 @@ class Search extends React.Component {
                 ></SearchForm>
               ),
             },
-            formStates:{
+            formStates: {
               ...this.state.formStates,
-              [this.state.currentForm]: {instructor: "", color:newColor}
-            }
+              [this.state.currentForm]: { instructor: "", color: newColor },
+            },
           });
         }
       );
@@ -166,7 +165,7 @@ class Search extends React.Component {
         },
         function () {
           this.setState({
-            currentForm: 1,
+            currentForm: Object.keys(this.state.formStates)[0],
             numForms: this.state.numForms - 1,
           });
         }
@@ -178,13 +177,13 @@ class Search extends React.Component {
   formID should be included in formState
   */
   updateForm = (formState) => {
-    console.log("setting form " + formState.formID);
     this.setState({
       formStates: {
         ...this.state.formStates,
         [formState.formID]: formState,
       },
     });
+
   };
 
   /*
@@ -239,23 +238,26 @@ class Search extends React.Component {
   };
 
   formTabs = (formStates) => {
-
     return Object.keys(formStates).map((key) => {
       return (
         <Col lg={3} md={6} sm={12} key={key} className="text-center">
           <div
-            style={{ 
-              "borderBottomColor": formStates[key].color,
-              "backgroundColor": (key===this.state.currentForm?
-                          "hsla("+formStates[key].color.slice(4,-1)+", 25%)"
-                          :"transparent")
+            style={{
+              borderBottomColor: formStates[key].color,
+              backgroundColor:
+                key === this.state.currentForm
+                  ? "hsla(" + formStates[key].color.slice(4, -1) + ", 25%)"
+                  : "transparent",
             }}
-            className={"form-tab "+(key===this.state.currentForm?"selected-form-tab":"")}
+            className={
+              "form-tab " +
+              (key === this.state.currentForm ? "selected-form-tab" : "")
+            }
             onClick={(e) => this.setCurrentForm(key, e)}
           >
             <div
               className="close-button"
-              style={this.state.numForms==1?{"display":"none"}:{}}
+              style={this.state.numForms == 1 ? { display: "none" } : {}}
               onClick={() => this.removeForm(key)}
             >
               <a href="#">✕</a>
@@ -290,7 +292,7 @@ class Search extends React.Component {
             );
           })}
           <Row className="justify-content-center search-form-row" noGutters>
-            <Col className="text-right" >
+            <Col className="text-center">
               <Form.Group>
                 <Button
                   className="submit-button"
@@ -301,18 +303,19 @@ class Search extends React.Component {
                 />
               </Form.Group>
             </Col>
-            <Col className="text-left">
-              <Button
-                className="zotistics-outline-button"
-                onClick={this.addNewForm}
-              >
-                +
-              </Button>
-            </Col>
           </Row>
 
           <Row className="justify-content-center">
             {this.formTabs(formStates)}
+            <Col sm={"auto"}>
+              {numForms<4?
+              <Button
+                className="add-form-button"
+                onClick={this.addNewForm}
+              >
+                +
+              </Button>:null}
+            </Col>
           </Row>
         </Form>
         {this.state.page}
