@@ -27,8 +27,6 @@ const randomColor = (() => {
   };
 })();
 
-
-
 class Search extends React.Component {
   /*
     Handles all the searchforms, and keeps track of state of each form
@@ -50,7 +48,7 @@ class Search extends React.Component {
         ),
       }, //{formID : formComponent}
       formStates: {
-        1: {color:"transparent"},
+        1: { color: "transparent" },
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
@@ -118,6 +116,7 @@ class Search extends React.Component {
     if (this.state.currentForm >= 4) {
       alert("chiiiiiiiiiiiiiiiilllllllll");
     } else {
+      let newColor = randomColor();
       this.setState(
         {
           numForms: this.state.numForms + 1,
@@ -132,46 +131,45 @@ class Search extends React.Component {
                   handleFormSubmit={this.handleFormSubmit}
                   updateForm={this.updateForm}
                   formID={this.state.currentForm}
-                  color={randomColor()}
+                  color={newColor}
                   instructors={this.state.instructors}
                 ></SearchForm>
               ),
             },
+            formStates:{
+              ...this.state.formStates,
+              [this.state.currentForm]: {instructor: "", color:newColor}
+            }
           });
         }
       );
     }
   };
 
-  removeForm = (formID) => {
-  
+  /*
+  self explanatory
+  */
+  removeForm = async (formID) => {
     if (this.state.numForms > 1) {
-      const newForms = Object.keys(this.state.forms).reduce((object, key) => {
-        if (key !== formID) {
-          object[key] = this.state.forms[key];
-        }
-        return object;
-      }, {});
-  
-      const newFormStates = Object.keys(this.state.formStates).reduce(
-        (object, key) => {
-          if (key !== formID) {
-            object[key] = this.state.forms[key];
-          }
-          return object;
+      var newForms = Object.assign({}, this.state.forms);
+      delete newForms[formID];
+      newForms = Object.assign({}, Object.values(newForms));
+
+      var newFormStates = Object.assign({}, this.state.formStates);
+      delete newFormStates[formID];
+      newFormStates = Object.assign({}, Object.values(newFormStates));
+
+      this.setState(
+        {
+          forms: newForms,
+          formStates: newFormStates,
         },
-        {}
-      );
-      this.setState({
-        forms: newForms,
-        formStates: newFormStates,
-      }, 
-      function(){
-        this.setState({
-          currentForm: 1,
-          numForms:this.state.numForms-1
-        })
-      }
+        function () {
+          this.setState({
+            currentForm: 1,
+            numForms: this.state.numForms - 1,
+          });
+        }
       );
     }
   };
@@ -240,29 +238,38 @@ class Search extends React.Component {
     }
   };
 
-
-
   formTabs = (formStates) => {
-    return (
-      Object.keys(formStates).map((key) => {
-        return (
-          <Col lg={3} md={6} sm={12}key={key} className="text-center">
+
+    return Object.keys(formStates).map((key) => {
+      return (
+        <Col lg={3} md={6} sm={12} key={key} className="text-center">
+          <div
+            style={{ 
+              "borderBottomColor": formStates[key].color,
+              "backgroundColor": (key===this.state.currentForm?
+                          "hsla("+formStates[key].color.slice(4,-1)+", 25%)"
+                          :"transparent")
+            }}
+            className={"form-tab "+(key===this.state.currentForm?"selected-form-tab":"")}
+            onClick={(e) => this.setCurrentForm(key, e)}
+          >
             <div
-              style={{"border-bottom-color": formStates[key].color}}
-              className="form-tab"
-              onClick={(e) => this.setCurrentForm(key, e)}
+              className="close-button"
+              style={this.state.numForms==1?{"display":"none"}:{}}
+              onClick={() => this.removeForm(key)}
             >
-              <h5 className="form-tab-header">
-                {formStates[key].instructor !== ""
-                  ? this.formatInstructorName(formStates[key].instructor)
-                  : "Form " + key}
-              </h5>
+              <a href="#">✕</a>
             </div>
-          </Col>
-        );
-      })
-    );
-  }
+            <h5 className="form-tab-header">
+              {formStates[key].instructor !== ""
+                ? this.formatInstructorName(formStates[key].instructor)
+                : "Form " + key}
+            </h5>
+          </div>
+        </Col>
+      );
+    });
+  };
   /*
   technically renders ALL the searchforms, but makes only
   the current one visible with css lol
@@ -282,20 +289,8 @@ class Search extends React.Component {
               </Row>
             );
           })}
-          <Row className="justify-content-center search-form-row">
-            <Col className="text-right">
-              <Button
-                className={
-                  "zotistics-outline-button " +
-                  (numForms === 1 ? "invisible" : "visible")
-                }
-                onClick={()=>console.log("needs to be implemented lol")}
-              >
-                -
-              </Button>
-            </Col>
-
-            <Col className="text-center" sm="auto">
+          <Row className="justify-content-center search-form-row" noGutters>
+            <Col className="text-right" >
               <Form.Group>
                 <Button
                   className="submit-button"
