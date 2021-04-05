@@ -5,8 +5,8 @@ import Chart from "chart.js";
 export default class Data extends React.Component {
     constructor(props){
         super(props);
-        let gradeListPopulation = [props.data.a, props.data.b, props.data.c, props.data.d, props.data.f,
-            props.data.p, props.data.np]
+        let gradeListPopulation = [props.data[0].a, props.data[0].b, props.data[0].c, props.data[0].d, props.data[0].f,
+            props.data[0].p, props.data[0].np]
         const sum = gradeListPopulation.reduce(function(a, b){
             return a + b;
         });
@@ -115,8 +115,8 @@ export default class Data extends React.Component {
     }
 
     render() {
-        let title = this.props.data.department + " " + this.props.data.classNumber + " " + this.props.data.instructor;
-        let instructorAmount = Object.keys(this.props.data.instructors).length;
+        let title = this.props.data[0].department + " " + this.props.data[0].classNumber + " " + this.props.data[0].instructor;
+        let instructorAmount = Object.keys(this.props.data[0].instructors).length;
         return (
             <>
                 <Row>
@@ -125,7 +125,7 @@ export default class Data extends React.Component {
                         <div className="card overflow-auto" style={{display: this.state.instructorDisplay, maxHeight: this.state.sideInfoHeight}} id="profList">
                             <div className="card-body px-0">
                                 <h5 className="card-title">Instructors</h5>
-                                {Object.entries(this.props.data.instructors).map(([key, value]) => {
+                                {Object.entries(this.props.data[0].instructors).map(([key, value]) => {
                                     return(
                                         <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value}</p>
                                     )
@@ -144,7 +144,7 @@ export default class Data extends React.Component {
                                 <h6>Quarter Year</h6>
                             </div>
                             <div className="flex-even text-right">
-                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{this.props.data.count} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
+                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{this.props.data[0].count} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
                             </div>
                         </Row>
                         {/* Graph */}
@@ -157,7 +157,7 @@ export default class Data extends React.Component {
                         <Row className="justify-content-center">
                             <Col sm={3}></Col>
                             <Col sm={6} className="text-center">
-                                <p>Average GPA: {this.props.data.averageGPA}</p>
+                                <p>Average GPA: {this.props.data[0].averageGPA}</p>
                             </Col>
                             <Col sm={3} className="text-right">
                                 <FormCheck
@@ -178,7 +178,7 @@ export default class Data extends React.Component {
                                 <h5 className="card-title mb-0">Classes</h5>
                                 <p style={{fontSize: "0.75rem"}}><i>Click class to expand</i></p>
 
-                                {Object.entries(this.props.data.classes).map(([key, value]) => {
+                                {Object.entries(this.props.data[0].classes).map(([key, value]) => {
                                     return(
                                         <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
                                         // <>
