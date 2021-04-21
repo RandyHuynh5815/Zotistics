@@ -33,10 +33,6 @@ export default class Data extends React.Component {
         window.addEventListener("resize", this.resizeSideLists);
     }
 
-    componentDidUpdate() {
-        this.buildChart();
-    }
-
     buildChart = () => {
         let ctx = document.getElementById('myChart').getContext('2d');
 
@@ -90,6 +86,7 @@ export default class Data extends React.Component {
     }
 
     displayInstructorList = (e) => {
+        e.preventDefault();
         if(this.state.instructorDisplay === "none"){
             this.setState({instructorDisplay: "inherit"});
         } else {
@@ -98,6 +95,7 @@ export default class Data extends React.Component {
     }
 
     displayClassList = (e) => {
+        e.preventDefault();
         if(this.state.classDisplay === "none"){
             this.setState({classDisplay: "inherit"});
         } else {
