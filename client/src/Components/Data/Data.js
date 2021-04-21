@@ -1,10 +1,12 @@
 import React from 'react';
 import {Row, Col, FormCheck} from "react-bootstrap";
-import Chart from "chart.js";
+import {Bar} from 'react-chartjs-2';
 
 export default class Data extends React.Component {
     constructor(props){
         super(props);
+        console.log('DATA:')
+        console.log(props.data)
         let gradeListPopulation = [props.data[0].a, props.data[0].b, props.data[0].c, props.data[0].d, props.data[0].f,
             props.data[0].p, props.data[0].np]
         const sum = gradeListPopulation.reduce(function(a, b){
@@ -27,57 +29,9 @@ export default class Data extends React.Component {
     }
 
     componentDidMount() {
-        this.buildChart();
 
         this.resizeSideLists();
         window.addEventListener("resize", this.resizeSideLists);
-    }
-
-    buildChart = () => {
-        let ctx = document.getElementById('myChart').getContext('2d');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['A', 'B', 'C', 'D', 'F', 'P', 'NP'],
-                datasets: [{
-                    label: "Percent",
-                    data: this.state.chartData,
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(255, 206, 86, 0.6)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                legend: {display: false},
-                animation: {duration: 1000},
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: this.state.chartLabelY
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: false,
-                            labelString: 'Grade'
-                        }
-                    }]
-                }
-            }
-        });
     }
 
     resizeSideLists = () => {
@@ -115,6 +69,34 @@ export default class Data extends React.Component {
     render() {
         let title = this.props.data[0].department + " " + this.props.data[0].classNumber + " " + this.props.data[0].instructor;
         let instructorAmount = Object.keys(this.props.data[0].instructors).length;
+        let data = {
+            labels: ['A', 'B', 'C', 'D', 'F', 'P', 'NP'],
+            datasets: this.props.graphData
+        };
+        let options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {display: false},
+            animation: {duration: 1000},
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: this.state.chartLabelY
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Grade'
+                    }
+                }]
+            }
+        }
+
         return (
             <>
                 <Row>
@@ -123,9 +105,9 @@ export default class Data extends React.Component {
                         <div className="card overflow-auto" style={{display: this.state.instructorDisplay, maxHeight: this.state.sideInfoHeight}} id="profList">
                             <div className="card-body px-0">
                                 <h5 className="card-title">Instructors</h5>
-                                {Object.entries(this.props.data[0].instructors).map(([key, value]) => {
+                                {Object.entries(this.props.data[0].instructors).map(([key, value], idx) => {
                                     return(
-                                        <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value}</p>
+                                        <p key={idx} className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value}</p>
                                     )
                                 })}
                             </div>
@@ -148,7 +130,12 @@ export default class Data extends React.Component {
                         {/* Graph */}
                         <Row className="justify-content-center" id="graphDiv">
                             <Col sm={12}>
-                                <canvas id="myChart"></canvas>
+                                <Bar
+                                    data={data}
+                                    width={100}
+                                    height={50}
+                                    options={options}
+                                />
                             </Col>
                         </Row>
                         {/* Buttons and GPA */}
@@ -176,9 +163,9 @@ export default class Data extends React.Component {
                                 <h5 className="card-title mb-0">Classes</h5>
                                 <p style={{fontSize: "0.75rem"}}><i>Click class to expand</i></p>
 
-                                {Object.entries(this.props.data[0].classes).map(([key, value]) => {
+                                {Object.entries(this.props.data[0].classes).map(([key, value], idx) => {
                                     return(
-                                        <p className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
+                                        <p key={idx} className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
                                         // <>
                                         //     <p><a className="card-text text-decoration-none" href={"#" + key.replace(" ", "")} data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{key} • {value.count}</a></p>
                                         //     <div className="collapse" id={key.replace(" ", "")}>

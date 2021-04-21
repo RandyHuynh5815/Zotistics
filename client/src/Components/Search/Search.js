@@ -50,7 +50,7 @@ class Search extends React.Component {
       currentForm: 1,
       numForms: 1,
       page: HOME, // what the page will display below the search forms (HOME or DATA)
-      loaded:false
+      loaded:false,
     };
     //we need to do this for some reason
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -217,10 +217,31 @@ class Search extends React.Component {
       ); //only god can judge me
     };
     getResultData().then((results) => {
-      console.log(results);
-      this.setState({ page: <Data data={results}></Data> });
+      console.log('RESULTS: ', results);
+      this.setState({
+        page: <Data data={results} graphData={this.dataForGraph(results)} />
+      })
     });
   };
+
+  /*
+  Creates an array of objects with the grade data and colors
+  to put in the graph dataset in Data.js
+   */
+  dataForGraph = (gradeData) => {
+    let dataset = [];
+    let colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
+    let count = 0;
+    for(let data of gradeData){
+      dataset.push({
+        data: [data.a, data.b, data.c, data.d, data.f, data.p, data.np],
+        backgroundColor: colors[count]
+      });
+      count++;
+    }
+    return dataset;
+  }
+
   /*
   helper method to lowercase part of instructor name
   "LAST, F." --> "Last, F."
