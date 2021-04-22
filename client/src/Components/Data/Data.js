@@ -5,8 +5,6 @@ import {Bar} from 'react-chartjs-2';
 export default class Data extends React.Component {
     constructor(props){
         super(props);
-        console.log('DATA:')
-        console.log(props.data)
         let gradeListPopulation = [props.data[0].a, props.data[0].b, props.data[0].c, props.data[0].d, props.data[0].f,
             props.data[0].p, props.data[0].np]
         const sum = gradeListPopulation.reduce(function(a, b){
@@ -142,7 +140,10 @@ export default class Data extends React.Component {
                         <Row className="justify-content-center">
                             <Col sm={3}></Col>
                             <Col sm={6} className="text-center">
-                                <p>Average GPA: {this.props.data[0].averageGPA}</p>
+                                {/*<p>Average GPA: {this.props.data[0].averageGPA}</p>*/}
+                               <p>GPA: {this.props.data.map(obj => {
+                                   return obj.averageGPA + ' ';
+                               })}</p>
                             </Col>
                             <Col sm={3} className="text-right">
                                 <FormCheck
