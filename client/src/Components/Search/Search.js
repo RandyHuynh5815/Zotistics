@@ -35,13 +35,13 @@ class Search extends React.Component {
       instructors: [],
       forms: {
         1: (
-          <SearchForm
-            handleFormSubmit={this.handleFormSubmit}
-            updateForm={this.updateForm}
-            formID={1}
-            color={"hsl(203, 100%, 32%)"}
-            instructors={[]}
-          ></SearchForm>
+            <SearchForm
+                handleFormSubmit={this.handleFormSubmit}
+                updateForm={this.updateForm}
+                formID={1}
+                color={"hsl(203, 100%, 32%)"}
+                instructors={[]}
+            />
         ),
       }, //{formID : formComponent}
       formStates: {
@@ -49,8 +49,9 @@ class Search extends React.Component {
       }, //{formID : formStates}
       currentForm: 1,
       numForms: 1,
-      page: HOME, // what the page will display below the search forms (HOME or DATA)
+      // page: HOME, // what the page will display below the search forms (HOME or DATA)
       loaded:false,
+      result: [],
     };
     //we need to do this for some reason
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -63,31 +64,31 @@ class Search extends React.Component {
   */
   componentDidMount() {
     fetch("/instructors")
-      .then((res) => res.json())
-      .then((res) =>
-        this.setState({
-          instructors: res.instructors.map((teacher) => ({
-            name: teacher,
-            value: teacher,
-          })),
-        })
-      )
-      .then(() =>
-        this.setState({
-          forms: {
-            1: (
-              <SearchForm
-                handleFormSubmit={this.handleFormSubmit}
-                updateForm={this.updateForm}
-                formID={this.state.currentForm}
-                instructors={this.state.instructors}
-                color={"hsl(203, 100%, 32%)"}
-              ></SearchForm>
-            ),
-          },
-          formStates: {1:{ instructor: "", color: "hsl(203, 100%, 32%)" }},
-        })
-      );
+        .then((res) => res.json())
+        .then((res) =>
+            this.setState({
+              instructors: res.instructors.map((teacher) => ({
+                name: teacher,
+                value: teacher,
+              })),
+            })
+        )
+        .then(() =>
+            this.setState({
+              forms: {
+                1: (
+                    <SearchForm
+                        handleFormSubmit={this.handleFormSubmit}
+                        updateForm={this.updateForm}
+                        formID={this.state.currentForm}
+                        instructors={this.state.instructors}
+                        color={"hsl(203, 100%, 32%)"}
+                    />
+                ),
+              },
+              formStates: {1:{ instructor: "", color: "hsl(203, 100%, 32%)" }},
+            })
+        );
   }
 
   /*
@@ -96,19 +97,19 @@ class Search extends React.Component {
   setCurrentForm = (key, e) => {
     e.preventDefault(); //ignore link behavior
     this.setState(
-      {
-        currentForm: key,
-      },
-      function () {
-        this.forceUpdate();
-      }
+        {
+          currentForm: key,
+        },
+        function () {
+          this.forceUpdate();
+        }
     );
   };
 
   /*
   increments numForms and currentForm
   adds new SearchForm component
-  NOTE: doesn't add state to formStates 
+  NOTE: doesn't add state to formStates
     because that happens when searchform is updated
   */
   addNewForm = () => {
@@ -117,30 +118,30 @@ class Search extends React.Component {
     } else {
       let newColor = randomColor();
       this.setState(
-        {
-          numForms: this.state.numForms + 1,
-          currentForm: this.state.numForms + 1,
-        },
-        function () {
-          this.setState({
-            forms: {
-              ...this.state.forms,
-              [this.state.currentForm]: (
-                <SearchForm
-                  handleFormSubmit={this.handleFormSubmit}
-                  updateForm={this.updateForm}
-                  formID={this.state.currentForm}
-                  color={newColor}
-                  instructors={this.state.instructors}
-                ></SearchForm>
-              ),
-            },
-            formStates: {
-              ...this.state.formStates,
-              [this.state.currentForm]: { instructor: "", color: newColor },
-            },
-          });
-        }
+          {
+            numForms: this.state.numForms + 1,
+            currentForm: this.state.numForms + 1,
+          },
+          function () {
+            this.setState({
+              forms: {
+                ...this.state.forms,
+                [this.state.currentForm]: (
+                    <SearchForm
+                        handleFormSubmit={this.handleFormSubmit}
+                        updateForm={this.updateForm}
+                        formID={this.state.currentForm}
+                        color={newColor}
+                        instructors={this.state.instructors}
+                    />
+                ),
+              },
+              formStates: {
+                ...this.state.formStates,
+                [this.state.currentForm]: { instructor: "", color: newColor },
+              },
+            });
+          }
       );
     }
   };
@@ -159,16 +160,16 @@ class Search extends React.Component {
       newFormStates = Object.assign({}, Object.values(newFormStates));
 
       this.setState(
-        {
-          forms: newForms,
-          formStates: newFormStates,
-        },
-        function () {
-          this.setState({
-            currentForm: Object.keys(this.state.formStates)[0],
-            numForms: this.state.numForms - 1,
-          });
-        }
+          {
+            forms: newForms,
+            formStates: newFormStates,
+          },
+          function () {
+            this.setState({
+              currentForm: Object.keys(this.state.formStates)[0],
+              numForms: this.state.numForms - 1,
+            });
+          }
       );
     }
   };
@@ -211,16 +212,17 @@ class Search extends React.Component {
     };
     const getResultData = async () => {
       return Promise.all(
-        Object.keys(formStates).map(async (formID) => {
-          return await fetchDataFromForm(formID);
-        })
+          Object.keys(formStates).map(async (formID) => {
+            return await fetchDataFromForm(formID);
+          })
       ); //only god can judge me
     };
     getResultData().then((results) => {
-      console.log('RESULTS: ', results);
-      this.setState({
-        page: <Data data={results} graphData={this.dataForGraph(results)} />
-      })
+      // console.log('RESULTS: ', results);
+      // this.setState({
+      //   page: <Data data={results} graphData={this.dataForGraph(results)} />
+      // })
+      this.setState({result: results});
     });
   };
 
@@ -232,13 +234,15 @@ class Search extends React.Component {
     let dataset = [];
     let colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
     let count = 0;
-    for(let data of gradeData){
+    for(let data of gradeData) {
       dataset.push({
+        label: data.instructor,
         data: [data.a, data.b, data.c, data.d, data.f, data.p, data.np],
         backgroundColor: colors[count]
       });
       count++;
     }
+
     return dataset;
   }
 
@@ -249,9 +253,9 @@ class Search extends React.Component {
   formatInstructorName = (name) => {
     if (name) {
       return (
-        name.substring(0, 1) +
-        name.substring(1, name.indexOf(",")).toLowerCase() +
-        name.substring(name.indexOf(","), name.length)
+          name.substring(0, 1) +
+          name.substring(1, name.indexOf(",")).toLowerCase() +
+          name.substring(name.indexOf(","), name.length)
       );
     } else {
       return "";
@@ -261,35 +265,35 @@ class Search extends React.Component {
   formTabs = (formStates) => {
     return Object.keys(formStates).map((key) => {
       return (
-        <Col lg={3} md={6} sm={12} key={key} className="text-center">
-          <div
-            style={{
-              borderBottomColor: formStates[key].color,
-              backgroundColor:
-                key === this.state.currentForm
-                  ? "hsla(" + formStates[key].color.slice(4, -1) + ", 25%)"
-                  : "transparent",
-            }}
-            className={
-              "form-tab " +
-              (key === this.state.currentForm ? "selected-form-tab" : "")
-            }
-            onClick={(e) => this.setCurrentForm(key, e)}
-          >
+          <Col lg={3} md={6} sm={12} key={key} className="text-center">
             <div
-              className="close-button"
-              style={this.state.numForms == 1 ? { display: "none" } : {}}
-              onClick={() => this.removeForm(key)}
+                style={{
+                  borderBottomColor: formStates[key].color,
+                  backgroundColor:
+                      key === this.state.currentForm
+                          ? "hsla(" + formStates[key].color.slice(4, -1) + ", 25%)"
+                          : "transparent",
+                }}
+                className={
+                  "form-tab " +
+                  (key === this.state.currentForm ? "selected-form-tab" : "")
+                }
+                onClick={(e) => this.setCurrentForm(key, e)}
             >
-              <a href="#">✕</a>
+              <div
+                  className="close-button"
+                  style={this.state.numForms == 1 ? { display: "none" } : {}}
+                  onClick={() => this.removeForm(key)}
+              >
+                <a href="#">✕</a>
+              </div>
+              <h5 className="form-tab-header">
+                {formStates[key].instructor !== ""
+                    ? this.formatInstructorName(formStates[key].instructor)
+                    : "Form " + key}
+              </h5>
             </div>
-            <h5 className="form-tab-header">
-              {formStates[key].instructor !== ""
-                ? this.formatInstructorName(formStates[key].instructor)
-                : "Form " + key}
-            </h5>
-          </div>
-        </Col>
+          </Col>
       );
     });
   };
@@ -300,47 +304,47 @@ class Search extends React.Component {
   render() {
     let { forms, currentForm, formStates, numForms } = this.state;
     return (
-      <Container>
-        <Form onSubmit={this.handleFormSubmit}>
-          {Object.keys(forms).map((key) => {
-            return (
-              <Row
-                key={key}
-                className={key === "" + currentForm ? "visible" : "invisible"}
-              >
-                {forms[key]}
-              </Row>
-            );
-          })}
-          <Row className="justify-content-center search-form-row" noGutters>
-            <Col className="text-center">
-              <Form.Group>
-                <Button
-                  className="submit-button"
-                  as="input"
-                  type="submit"
-                  name="submit"
-                  value="Submit"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+        <Container>
+          <Form onSubmit={this.handleFormSubmit}>
+            {Object.keys(forms).map((key) => {
+              return (
+                  <Row
+                      key={key}
+                      className={key === "" + currentForm ? "visible" : "invisible"}
+                  >
+                    {forms[key]}
+                  </Row>
+              );
+            })}
+            <Row className="justify-content-center search-form-row" noGutters>
+              <Col className="text-center">
+                <Form.Group>
+                  <Button
+                      className="submit-button"
+                      as="input"
+                      type="submit"
+                      name="submit"
+                      value="Submit"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-          <Row className="justify-content-center">
-            {this.formTabs(formStates)}
-            <Col sm={"auto"}>
-              {numForms<4?
-              <Button
-                className="add-form-button"
-                onClick={this.addNewForm}
-              >
-                +
-              </Button>:null}
-            </Col>
-          </Row>
-        </Form>
-        {this.state.page}
-      </Container>
+            <Row className="justify-content-center">
+              {this.formTabs(formStates)}
+              <Col sm={"auto"}>
+                {numForms<4?
+                    <Button
+                        className="add-form-button"
+                        onClick={this.addNewForm}
+                    >
+                      +
+                    </Button>:null}
+              </Col>
+            </Row>
+          </Form>
+          {this.state.result.length !== 0 && <Data data={this.state.result} graphData={this.dataForGraph(this.state.result)} />}
+        </Container>
     );
   }
 }
