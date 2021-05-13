@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useState, useEffect } from "react";
 import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
 import SelectSearch from "react-select-search";
 import "./searchform.css";
+import {useLocation} from "react-router-dom";
 const dep = require("./departments");
 
 const quarters = [
@@ -23,50 +24,46 @@ const years = [
 
 const departments = dep.departments;
 
-class SearchForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleFormSubmit = props.handleFormSubmit;
-    this.state = {
-      formID: props.formID,
-      color: props.color,
-      instructor: "",
-      quarters: [],
-      years: [],
-      department: "",
-      classNumber: "",
-      classCode: "",
-      advancedVisible: false,
-      excludePNP: false,
-      covid19: false,
-      lowerDiv: false,
-      upperDiv: false,
-    };
-  }
+export default function SearchForm({formID, color, updateForm, instructors}){
+  const [state, setState] = useState({
+    formID: formID,
+    color: color,
+    instructor: "",
+    quarters: [],
+    years: [],
+    department: "",
+    classNumber: "",
+    classCode: "",
+    advancedVisible: false,
+    excludePNP: false,
+    covid19: false,
+    lowerDiv: false,
+    upperDiv: false
+  });
 
-  handleValueChange = (e) => {
-    this.setState({ [e.name]: e.value }, function () {
-      this.props.updateForm(this.state);
-    });
+  useEffect(()=>updateForm(state, formID), [state]);
+
+  const handleValueChange = (e) => {
+    setState({...state, [e.name]: e.value });
   };
 
-  render() {
+
     return (
       <Container>
+        {formID}
         <Row className="justify-content-center search-form-row">
           <Col className="col-12 col-sm-12 col-md-5">
             <SelectSearch
-              options={this.props.instructors}
+              options={instructors}
               filterOptions={(q, options) => {
                 return options.slice(0, 4);
               }}
               search
               name="instructors"
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "instructor",
-                  value: val,
-                  formID: this.props.formID,
+                  value: val
                 })
               }
               placeholder="Instructor Name"
@@ -79,10 +76,9 @@ class SearchForm extends React.Component {
               multiple
               name="quarters"
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "quarters",
-                  value: val,
-                  formID: this.props.formID,
+                  value: val
                 })
               }
               placeholder="Quarters"
@@ -95,10 +91,9 @@ class SearchForm extends React.Component {
               printOptions="on-focus"
               name="years"
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "years",
-                  value: val,
-                  formID: this.props.formID,
+                  value: val
                 })
               }
               multiple
@@ -114,10 +109,9 @@ class SearchForm extends React.Component {
               search
               name="department"
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "department",
-                  value: val,
-                  formID: this.props.formID,
+                  value: val
                 })
               }
               placeholder="All Departments"
@@ -126,10 +120,9 @@ class SearchForm extends React.Component {
           <Col className="col-12 col-sm-12 col-md-3">
             <Form.Control
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "classNumber",
-                  value: val.target.value,
-                  formID: this.props.formID,
+                  value: val.target.value
                 })
               }
               className="search-text-box"
@@ -140,10 +133,9 @@ class SearchForm extends React.Component {
           <Col className="col-12 col-sm-12 col-md-3">
             <Form.Control
               onChange={(val) =>
-                this.handleValueChange({
+                handleValueChange({
                   name: "classCode",
-                  value: val.target.value,
-                  formID: this.props.formID,
+                  value: val.target.value
                 })
               }
               className="search-text-box"
@@ -158,28 +150,25 @@ class SearchForm extends React.Component {
               <a
                 id="advanced-options-link"
                 onClick={() =>
-                  this.setState({
-                    advancedVisible: !this.state.advancedVisible,
-                  })
+                  setState({...state, advancedVisible:!state.advancedVisible}) 
                 }
                 aria-controls="example-collapse-text"
-                aria-expanded={this.state.advancedVisible}
+                aria-expanded={state.advancedVisible}
               >
                 Advanced Options ▼
               </a>
-              <Collapse in={this.state.advancedVisible}>
+              <Collapse in={state.advancedVisible}>
                 <div className="advanced-options">
-                  <Container>
+                  
                     <Row className="justify-content-center text-center">
                       <Col>
                         <Form.Check
-                          checked={this.state.excludePNP}
+                          checked={state.excludePNP}
                           onChange={(evt) => {
-                            this.setState({ excludePNP: evt.target.checked });
-                            this.handleValueChange({
-                              name: "passNoPass",
-                              value: !this.state.excludePNP,
-                              formID: this.props.formID,
+                            setState({...state, excludePNP:evt.target.checked}) 
+                            handleValueChange({
+                              name: "excludePNP",
+                              value: !state.excludePNP
                             });
                           }}
                           type="checkbox"
@@ -189,13 +178,12 @@ class SearchForm extends React.Component {
                       </Col>
                       <Col>
                         <Form.Check
-                          checked={this.state.covid19}
+                          checked={state.covid19}
                           onChange={(evt) => {
-                            this.setState({ covid19: evt.target.checked });
-                            this.handleValueChange({
-                              name: "covid",
-                              value: !this.state.covid19,
-                              formID: this.props.formID,
+                            setState({...state, covid19:evt.target.checked}) 
+                            handleValueChange({
+                              name: "covid19",
+                              value: !state.covid19
                             });
                           }}
                           type="checkbox"
@@ -205,13 +193,12 @@ class SearchForm extends React.Component {
                       </Col>
                       <Col>
                         <Form.Check
-                          checked={this.state.lowerDiv}
+                          checked={state.lowerDiv}
                           onChange={(evt) => {
-                            this.setState({ lowerDiv: evt.target.checked });
-                            this.handleValueChange({
+                            setState({...state, lowerDiv:evt.target.checked}) 
+                            handleValueChange({
                               name: "lowerDiv",
-                              value: !this.state.lowerDiv,
-                              formID: this.props.formID,
+                              value: !state.lowerDiv
                             });
                           }}
                           type="checkbox"
@@ -221,13 +208,12 @@ class SearchForm extends React.Component {
                       </Col>
                       <Col>
                         <Form.Check
-                          checked={this.state.upperDiv}
+                          checked={state.upperDiv}
                           onChange={(evt) => {
-                            this.setState({ upperDiv: evt.target.checked });
-                            this.handleValueChange({
+                            setState({...state, upperDiv:evt.target.checked}) 
+                            handleValueChange({
                               name: "upperDiv",
-                              value: !this.state.upperDiv,
-                              formID: this.props.formID,
+                              value: !state.upperDiv
                             });
                           }}
                           type="checkbox"
@@ -236,7 +222,7 @@ class SearchForm extends React.Component {
                         />
                       </Col>
                     </Row>
-                  </Container>
+                  
                 </div>
               </Collapse>
             </div>
@@ -244,7 +230,4 @@ class SearchForm extends React.Component {
         </Row>
       </Container>
     );
-  }
 }
-
-export default SearchForm;
