@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export default function FormTab({formID, color, handleSetForm, handleCloseForm, title, showClose, isSelected}){
+export default function FormTab({color, handleSetForm, handleCloseForm, title, showClose, isSelected}){
     return (
         <div
             style={{

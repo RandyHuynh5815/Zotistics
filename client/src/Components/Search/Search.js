@@ -22,6 +22,21 @@ const randomColor = (() => {
   };
 })();
 
+const EMPTY_STATE = {
+  formID: 1, //make sure to change this when using this
+  color: "hsl(203, 100%, 32%)",
+  instructor: "",
+  quarters: [],
+  years: [],
+  department: "",
+  classNumber: "",
+  classCode: "",
+  advancedVisible: false,
+  excludePNP: false,
+  covid19: false,
+  lowerDiv: false,
+  upperDiv: false
+}
 
 
 /*
@@ -38,56 +53,82 @@ export default function Search() {
     { name: "WOLFF, B.", value: "WOLFF, B." }];
 
   const [instructors, setInstructors] = useState(INITIAL_INSTRUCTORS);
-  const [forms, setForms] = useState({}); // {formID: {formComponent, formState}}
-  const [currentForm, setCurrentForm] = useState(0);
+  const [forms, setForms] = useState({
+    1: EMPTY_STATE
+  }); // {formID: formState}
+  const [currentForm, setCurrentForm] = useState(1);
   const [lastFormID, setLastFormID] = useState(0);
-  const [result, setResult] = useState([]);
+  const [results, setResults] = useState([]);
 
   //on component mount, fetch instructors and add a form
   useEffect(() => fetchInstructors(), []);
-  useEffect(() => addForm(), []);
-
-  //whenever forms changes, add 1 to lastFormID
-
-  //set currentForm to last form whenever lastFormID changes
-  useEffect(() => updateCurrentForm(), [forms]);
-
-  useEffect(() => setLastFormID(lastFormID + 1), [currentForm]);
-
-
-  const updateCurrentForm = () => {
-    let formIDs = Object.keys(forms);
-    if (formIDs.length > 0) {
-      setCurrentForm(formIDs[formIDs.length - 1]);
+  //check currentform in forms and update lastformid on change of forms{}
+  useEffect(() => updateFormNumbers(), [forms]);
+  /*
+    checks if currentForm is in forms{}
+    if not, set currentforms to last formID
+    also updates lastFormID
+    called on every change of forms
+  */
+  const updateFormNumbers = () => {
+    if (!(currentForm in forms)) {
+      const formIDs = Object.keys(forms);
+      const id = formIDs[formIDs.length - 1];
+      setCurrentForm(id);
+      console.log("updating currentformid to " + id);
     }
+    setLastFormID(lastFormID + 1)
+    return null;
   }
+  /*
+    called by SearchForm component with currentFormID
+  */
+  const handleFormValueChange = ({ formID, name, value }) => {
+    if (!(formID in forms)) {
+      console.log("Form " + formID + " not found in forms");
+      console.log(Object.keys(forms));
+      return;
+    }
+    let formState = forms[formID];
+    formState[name] = value;
+    setForms({ ...forms, [formID]: formState });
+  }
+
   /*
     Adds a new form and formstate
   */
   const addForm = () => {
-    const newForm = <SearchForm
-      updateForm={updateForm}
-      formID={lastFormID+1}
-      color={"hsl(203, 100%, 32%)"}
-      instructors={instructors}
-    />
-    const newFormState = { instructor: "", color: "hsl(203, 100%, 32%)" };
-
-    const newForms = { ...forms, [lastFormID+1]: { form: newForm, state: newFormState } }
-    console.log(Object.keys(newForms));
+    let newFormID = lastFormID + 1;
+    let newState = {
+      formID: newFormID, //make sure to change this when using this
+      color: randomColor(),
+      instructor: "",
+      quarters: [],
+      years: [],
+      department: "",
+      classNumber: "",
+      classCode: "",
+      advancedVisible: false,
+      excludePNP: false,
+      covid19: false,
+      lowerDiv: false,
+      upperDiv: false
+    }
+    var newForms = Object.assign({ [newFormID]: newState }, forms);
     setForms(newForms);
+    setCurrentForm(newFormID);
   }
 
+  /*
+    Removes form with given formID
+  */
   const removeForm = (formID) => {
-    console.log("removing form " + formID);
-
     //copy forms
-    var newForms = { ...forms };
+    var newForms = Object.assign({}, forms);
     delete newForms[formID];
-    console.log(newForms);
-    console.log(currentForm);
+    setCurrentForm(Object.keys(newForms).length - 1);
     setForms(newForms);
-
+    updateFormNumbers();
   }
 
   const fetchInstructors = async () => {
@@ -99,51 +140,102 @@ export default function Search() {
             name: teacher,
             value: teacher,
           })))
-      )
+      ).then(addForm());
   }
 
-  const updateForm = (state, formID) => {
-    console.log("updating form "+formID);
-    console.log(forms);
+  /*
+  fetches results for one particular form as JSON
+  */
+  const fetchDataFromForm = async (formID) =>
+    fetch("/search", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(forms[formID]),
+    }).then((res) => res.json())
+      .then((res) => Object.assign({ color: forms[formID].color }, res))
+
+  /*
+  Runs when submit button is clicked
+  For each formID in formStates, fetches from /search
+  and adds to results a new key/value pair where
+  key=formID and value=allTheDataForThatForm
+  */
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log("form submitted");
+    const getResultData = async () => {
+      return Promise.all(
+        Object.keys(forms).map(async (formID) => {
+          return await fetchDataFromForm(formID);
+        })
+      );
+    };
+    getResultData().then((results) => {
+      setResults(results);
+    });
+  };
+
+  /*
+  Creates an array of objects with the grade data and colors
+  to put in the graph dataset in Data.js
+   */
+  const dataForGraph = (gradeData) => {
+    let dataset = [];
+    let colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
+    let count = 0;
+    for (let data of gradeData) {
+      dataset.push({
+        label: data.instructor,
+        data: [data.a, data.b, data.c, data.d, data.f, data.p, data.np],
+        backgroundColor: data.color
+      });
+      count++;
+    }
+    return dataset;
   }
 
   return (
-    <>
-    {"forms: "+Object.keys(forms)}
-    <p />
-    {"currentForm: "+currentForm}
-      {Object.keys(forms).map((formID)=>
-        <Row className={formID===currentForm?"visible":"invisible"}>
-          {forms[formID].form}
+    <div className="search-content-wrapper">
+      <Form onSubmit={handleFormSubmit}>
+        <Row>
+          {currentForm in forms ?
+            <SearchForm
+              formID={currentForm}
+              instructors={instructors}
+              handleFormValueChange={handleFormValueChange}
+              state={forms[currentForm]}
+            /> : null}
         </Row>
-      )}
-      
-      
-      
-      <Row className="justify-content-center search-form-row" noGutters>
-            <Col className="text-center">
-              <Form.Group>
-                <Button
-                  className="submit-button"
-                  as="input"
-                  type="submit"
-                  name="submit"
-                  value="Submit"
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-      <div className="form-tabs-group text-center">
-        {lastFormID > 0 ? <FormTabs
-          currentForm={currentForm}
-          forms={forms}
-          setCurrentForm={setCurrentForm}
-          removeForm={removeForm}
-          addForm={addForm} /> : null}
-      </div>
 
-    </>
+        <Row className="justify-content-center search-form-row" noGutters>
+          <Col className="text-center">
+            <Form.Group >
+              <Button
+                className="submit-button"
+                as="input"
+                type="submit"
+                name="submit"
+                value="Submit"
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row className="justify-content-center form-tabs-row">
+            {lastFormID > 0 ?
+              <FormTabs
+                currentForm={currentForm}
+                forms={forms}
+                setCurrentForm={setCurrentForm}
+                removeForm={removeForm}
+                addForm={addForm} /> : null}
+          
+        </Row>
+      </Form>
 
+      {results.length !== 0 && <Data data={results} graphData={dataForGraph(results)} />}
+    </div>
   );
 }
 
