@@ -18,6 +18,9 @@ export default class Data extends React.Component {
             gradeListPercentage: gradeListPercentage,
             gradeListPopulation: gradeListPopulation,
             chartData: gradeListPercentage,
+            title: props.data[0].department + " " + props.data[0].classNumber + " " + props.data[0].instructor,
+            instructorAmount: props.data.map(x => Object.keys(x.instructors).length).reduce((a,b) => a + b),
+            classAmount: props.data.map(x => x.count).reduce((a,b) => a + b),
             instructorDisplay: "none", // display none or inherit
             classDisplay: "none", // display none or inherit
             sideInfoHeight: "0px", // max height for the side cards that changes on window resize
@@ -64,13 +67,10 @@ export default class Data extends React.Component {
     }
 
     render() {
-        let title = this.props.data[0].department + " " + this.props.data[0].classNumber + " " + this.props.data[0].instructor;
-        let instructorAmount = this.props.data.map(x => Object.keys(x.instructors).length).reduce((a,b) => a + b);
-        let classAmount = this.props.data.map(x => x.count).reduce((a,b) => a + b);
         let data = {
             labels: ['A', 'B', 'C', 'D', 'F', 'P', 'NP'],
             datasets: this.props.graphData
-        };
+        }
         let options = {
             responsive: true,
             maintainAspectRatio: true,
@@ -115,16 +115,16 @@ export default class Data extends React.Component {
                     </Col>
                     <Col sm={8}>
                         {/* Headers */}
-                        <h5 className="text-center">{title}</h5>
+                        <h5 className="text-center">{this.state.title}</h5>
                         <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                             <div className="flex-even">
-                                <a id="instructors" onClick={this.displayInstructorList} style={{cursor: "pointer", userSelect: "none"}}><span style={{fontFamily: "Symbola"}}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
+                                <a id="instructors" onClick={this.displayInstructorList} style={{cursor: "pointer", userSelect: "none"}}><span style={{fontFamily: "Symbola"}}>&#x2B9C;</span> <u>{this.state.instructorAmount} Instructors</u></a>
                             </div>
                             <div className="flex-even text-center">
                                 <h6>Quarter Year</h6>
                             </div>
                             <div className="flex-even text-right">
-                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{classAmount} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
+                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{this.state.classAmount} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
                             </div>
                         </Row>
                         {/* Graph */}
