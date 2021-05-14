@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
 import FormTabs from "./FormTabs"
-/*
+/*  
 CREDIT: https://gist.github.com/bendc/76c48ce53299e6078a76#file-random-color-js
 */
 const randomColor = (() => {
