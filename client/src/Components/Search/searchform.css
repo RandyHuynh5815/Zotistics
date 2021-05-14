@@ -5,18 +5,31 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
+
+
 .add-form-button{
-    border-color:var(--main-blue);
-    color:white;
-    
-    background-color: var(--main-blue);
+    color:var(--main-text-color);
+    background-color: transparent;
+    margin-top:10px;
+    width: 40px;
+    height: 40px;
+    padding-top:5px;
+    text-align: center;
+    vertical-align: middle;
     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    border-radius: 100px;
-
-
+    border-radius: 50%;
 }
 
+.add-form-button:hover{
+    background-color: var(--main-blue);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    cursor: pointer;
+}
+
+.form-tabs-group{
+    text-align: center;
+    margin: auto;
+}
 
 /*
 show close button on hover
@@ -66,6 +79,7 @@ div.form-tab:hover div.close-button {
     margin-top:1em;
 }
 
+
 .form-check-label{
     color:var(--secondary-text-color);
 }
@@ -86,12 +100,47 @@ form tab stuff
 }
 
 
-@media(max-width:720px){
+@media(max-width:844px){
     .form-tab{
         margin-top:1em;
     }
+    .search-content-wrapper{
+        margin-bottom:20vh;
+    }
 }
+
+@media(max-width: 768px){
+    .add-form-button{
+        margin-left:45%;
+    }
+}
+
+@media only screen and (max-width: 844px) {
+    .col{
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+    }
+    .row{
+        margin-top:0;
+        margin-bottom:0;
+    }
+}
+
+@media (min-width:843px){
+    .advanced-options-wrapper{
+        padding: 0 48px;
+    }
+    .form-tabs-row{
+        width:80%;
+        margin-left:10%;
+    }
+    
+}
+
+
+
 .form-tab{
+    margin-top:0.5em;
     border-bottom-width: 3px;
     border-bottom-style: solid;
     padding-top:0.5em;
@@ -369,22 +418,7 @@ form tab stuff
     color: var(--secondary-text-color);
 }
 /*adds top and bottom margin to each input when less than tablet size*/
-@media only screen and (max-width: 767px) {
-    .col{
-        margin-top:0.5em;
-        margin-bottom:0.5em;
-    }
-    .row{
-        margin-top:0;
-        margin-bottom:0;
-    }
-}
 
-@media (min-width:768px){
-    .advanced-options-wrapper{
-        padding: 0 48px;
-    }
-}
 
 #advanced-options-link{
     color:var(--main-blue);

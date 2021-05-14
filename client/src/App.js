@@ -5,11 +5,11 @@ import NavBar from './Components/NavBar/NavBar'
 import Search from "./Components/Search/Search";
 function App() {
     return (
-        <div>
+        <>
             <NavBar/>
             <Search />
             <Dog />
-        </div>
+        </>
     );
 }
 

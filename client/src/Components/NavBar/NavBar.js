@@ -16,7 +16,7 @@ export default function NavBar() {
                         <Nav>
                             <Nav.Link href="/" className="tabLinks">Info</Nav.Link>
                             <Nav.Link href="/" className="tabLinks">Feedback</Nav.Link>
-                            <Nav.Link href="/" className="tabLinks">Donate</Nav.Link>
+                            <Nav.Link href="https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=E5G2Z2F2FCXYL&source=url" className="tabLinks">Donate</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Col>

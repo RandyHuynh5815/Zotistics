@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
 import SelectSearch from "react-select-search";
 import "./searchform.css";
+import { useLocation } from "react-router-dom";
 const dep = require("./departments");
 
 const quarters = [
@@ -23,228 +24,175 @@ const years = [
 
 const departments = dep.departments;
 
-class SearchForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleFormSubmit = props.handleFormSubmit;
-    this.state = {
-      formID: props.formID,
-      color: props.color,
-      instructor: "",
-      quarters: [],
-      years: [],
-      department: "",
-      classNumber: "",
-      classCode: "",
-      advancedVisible: false,
-      excludePNP: false,
-      covid19: false,
-      lowerDiv: false,
-      upperDiv: false,
-    };
-  }
+export default function SearchForm({ formID, instructors, handleFormValueChange, state }) {
 
-  handleValueChange = (e) => {
-    this.setState({ [e.name]: e.value }, function () {
-      this.props.updateForm(this.state);
-    });
+  const handleValueChange = (e) => {
+    handleFormValueChange({ formID: formID, name: e.name, value: e.value })
   };
 
-  render() {
-    return (
-      <Container>
-        <Row className="justify-content-center search-form-row">
-          <Col className="col-12 col-sm-12 col-md-5">
-            <SelectSearch
-              options={this.props.instructors}
-              filterOptions={(q, options) => {
-                return options.slice(0, 4);
-              }}
-              search
-              name="instructors"
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "instructor",
-                  value: val,
-                  formID: this.props.formID,
-                })
+  return (
+    <Container>
+      <Row className="justify-content-center search-form-row">
+        <Col className="col-12 col-sm-12 col-md-5">
+          <SelectSearch
+            options={instructors}
+            filterOptions={(q, options) => {
+              return options.slice(0, 4);
+            }}
+            search
+            name="instructors"
+            onChange={(val) =>
+              handleValueChange({
+                name: "instructor",
+                value: val
+              })
+            }
+            placeholder="Instructor Name"
+          />
+        </Col>
+        <Col className="col-12 col-sm-12 col-md-3">
+          <SelectSearch
+            closeOnSelect={false}
+            printOptions="on-focus"
+            multiple
+            name="quarters"
+            onChange={(val) =>
+              handleValueChange({
+                name: "quarters",
+                value: val
+              })
+            }
+            placeholder="Quarters"
+            options={quarters}
+          />
+        </Col>
+        <Col className="col-12 col-sm-12 col-md-3">
+          <SelectSearch
+            closeOnSelect={false}
+            printOptions="on-focus"
+            name="years"
+            onChange={(val) =>
+              handleValueChange({
+                name: "years",
+                value: val
+              })
+            }
+            multiple
+            placeholder="Years"
+            options={years}
+          />
+        </Col>
+      </Row>
+      <Row className="justify-content-center search-form-row">
+        <Col className="col-12 col-sm-12 col-md-5">
+          <SelectSearch
+            options={departments}
+            search
+            name="department"
+            onChange={(val) =>
+              handleValueChange({
+                name: "department",
+                value: val
+              })
+            }
+            placeholder="All Departments"
+          />
+        </Col>
+        <Col className="col-12 col-sm-12 col-md-3">
+          <Form.Control
+            onChange={(val) =>
+              handleValueChange({
+                name: "classNumber",
+                value: val.target.value
+              })
+            }
+            className="search-text-box"
+            type="text"
+            placeholder="Class Number (Ex. 45C)"
+          />
+        </Col>
+        <Col className="col-12 col-sm-12 col-md-3">
+          <Form.Control
+            onChange={(val) =>
+              handleValueChange({
+                name: "classCode",
+                value: val.target.value
+              })
+            }
+            className="search-text-box"
+            type="text"
+            placeholder="Class Code (Ex. 34060)"
+          />
+        </Col>
+      </Row>
+      <Row className="justify-content-center search-form-row">
+        <Col className="col-12">
+          <div className="advanced-options-wrapper">
+            <a
+              id="advanced-options-link"
+              onClick={() =>
+                handleValueChange({ name: "advancedVisible", value: !state.advancedVisible })
               }
-              placeholder="Instructor Name"
-            />
-          </Col>
-          <Col className="col-12 col-sm-12 col-md-3">
-            <SelectSearch
-              closeOnSelect={false}
-              printOptions="on-focus"
-              multiple
-              name="quarters"
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "quarters",
-                  value: val,
-                  formID: this.props.formID,
-                })
-              }
-              placeholder="Quarters"
-              options={quarters}
-            />
-          </Col>
-          <Col className="col-12 col-sm-12 col-md-3">
-            <SelectSearch
-              closeOnSelect={false}
-              printOptions="on-focus"
-              name="years"
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "years",
-                  value: val,
-                  formID: this.props.formID,
-                })
-              }
-              multiple
-              placeholder="Years"
-              options={years}
-            />
-          </Col>
-        </Row>
-        <Row className="justify-content-center search-form-row">
-          <Col className="col-12 col-sm-12 col-md-5">
-            <SelectSearch
-              options={departments}
-              search
-              name="department"
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "department",
-                  value: val,
-                  formID: this.props.formID,
-                })
-              }
-              placeholder="All Departments"
-            />
-          </Col>
-          <Col className="col-12 col-sm-12 col-md-3">
-            <Form.Control
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "classNumber",
-                  value: val.target.value,
-                  formID: this.props.formID,
-                })
-              }
-              className="search-text-box"
-              type="text"
-              placeholder="Class Number (Ex. 45C)"
-            />
-          </Col>
-          <Col className="col-12 col-sm-12 col-md-3">
-            <Form.Control
-              onChange={(val) =>
-                this.handleValueChange({
-                  name: "classCode",
-                  value: val.target.value,
-                  formID: this.props.formID,
-                })
-              }
-              className="search-text-box"
-              type="text"
-              placeholder="Class Code (Ex. 34060)"
-            />
-          </Col>
-        </Row>
-        <Row className="justify-content-center search-form-row">
-          <Col className="col-12">
-            <div className="advanced-options-wrapper">
-              <a
-                id="advanced-options-link"
-                onClick={() =>
-                  this.setState({
-                    advancedVisible: !this.state.advancedVisible,
-                  })
-                }
-                aria-controls="example-collapse-text"
-                aria-expanded={this.state.advancedVisible}
-              >
-                Advanced Options ▼
+              aria-controls="example-collapse-text"
+              aria-expanded={state.advancedVisible}
+            >
+              Advanced Options ▼
               </a>
-              <Collapse in={this.state.advancedVisible}>
-                <div className="advanced-options">
-                  <Container>
-                    <Row className="justify-content-center text-center">
-                      <Col>
-                        <Form.Check
-                          checked={this.state.excludePNP}
-                          onChange={(evt) => {
-                            this.setState({ excludePNP: evt.target.checked });
-                            this.handleValueChange({
-                              name: "passNoPass",
-                              value: !this.state.excludePNP,
-                              formID: this.props.formID,
-                            });
-                          }}
-                          type="checkbox"
-                          id={`exclude-pnp`}
-                          label={`Exclude P/NP`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check
-                          checked={this.state.covid19}
-                          onChange={(evt) => {
-                            this.setState({ covid19: evt.target.checked });
-                            this.handleValueChange({
-                              name: "covid",
-                              value: !this.state.covid19,
-                              formID: this.props.formID,
-                            });
-                          }}
-                          type="checkbox"
-                          id={`exclude-covid-19`}
-                          label={`Exclude COVID-19`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check
-                          checked={this.state.lowerDiv}
-                          onChange={(evt) => {
-                            this.setState({ lowerDiv: evt.target.checked });
-                            this.handleValueChange({
-                              name: "lowerDiv",
-                              value: !this.state.lowerDiv,
-                              formID: this.props.formID,
-                            });
-                          }}
-                          type="checkbox"
-                          id={`lower-div-only`}
-                          label={`LowerDiv Only`}
-                        />
-                      </Col>
-                      <Col>
-                        <Form.Check
-                          checked={this.state.upperDiv}
-                          onChange={(evt) => {
-                            this.setState({ upperDiv: evt.target.checked });
-                            this.handleValueChange({
-                              name: "upperDiv",
-                              value: !this.state.upperDiv,
-                              formID: this.props.formID,
-                            });
-                          }}
-                          type="checkbox"
-                          id={`upper-div-only`}
-                          label={`UpperDiv Only`}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
-                </div>
-              </Collapse>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
+            <Collapse in={state.advancedVisible}>
+              <div className="advanced-options">
 
-export default SearchForm;
+                <Row className="justify-content-center text-center">
+                  <Col>
+                    <Form.Check
+                      checked={state.excludePNP}
+                      onChange={(evt) => {
+                        handleValueChange({ name: "excludePNP", value: evt.target.checked })
+                      }}
+                      type="checkbox"
+                      id={`exclude-pnp`}
+                      label={`Exclude P/NP`}
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Check
+                      checked={state.covid19}
+                      onChange={(evt) => {
+                        handleValueChange({ name: "covid19", value: evt.target.checked })
+                      }}
+                      type="checkbox"
+                      id={`exclude-covid-19`}
+                      label={`Exclude COVID-19`}
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Check
+                      checked={state.lowerDiv}
+                      onChange={(evt) => {
+                        handleValueChange({ name: "lowerDiv", value: evt.target.checked })
+                      }}
+                      type="checkbox"
+                      id={`lower-div-only`}
+                      label={`LowerDiv Only`}
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Check
+                      checked={state.upperDiv}
+                      onChange={(evt) => {
+                        handleValueChange({ name: "upperDiv", value: evt.target.checked })
+                      }}
+                      type="checkbox"
+                      id={`upper-div-only`}
+                      label={`UpperDiv Only`}
+                    />
+                  </Col>
+                </Row>
+
+              </div>
+            </Collapse>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  );
+}

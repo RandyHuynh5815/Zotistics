@@ -7,6 +7,9 @@
   --secondary-text-color: #424242;
   --secondary-bg-color: #eeeaea;
 }
+#root{
+  width:100%!important;
+}
 
 body{
   background: var(--main-bg-color);
