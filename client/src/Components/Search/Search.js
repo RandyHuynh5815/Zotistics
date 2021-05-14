@@ -42,7 +42,7 @@ const INITIAL_INSTRUCTORS = [
   Handles all the searchforms, and keeps track of state of each form
   Also handles fetching instructors list, fetching results, and setting page to data
 */
-export default function Search() {
+export default function Search({nightMode}) {
   const [instructors, setInstructors] = useState(INITIAL_INSTRUCTORS);
   const [forms, setForms] = useState({
     1: EMPTY_STATE
@@ -270,7 +270,7 @@ export default function Search() {
         </Row>
       </Form>
 
-      {results.length !== 0 && <Data data={results} graphData={dataForGraph(results)} />}
+      {results.length !== 0 && <Data data={results} graphData={dataForGraph(results)} nightMode={nightMode}/>}
     </div>
   );
 }

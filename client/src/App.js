@@ -33,7 +33,7 @@ export default function App() {
     return (
         <>
             <NavBar/>
-            <Search />
+            <Search nightMode={nightMode}/>
             <Dog nightMode={nightMode} setNightMode={setNightMode}/>
         </>
     );
