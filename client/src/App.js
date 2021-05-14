@@ -6,17 +6,14 @@ import Search from "./Components/Search/Search";
 import Info from "./Components/Info/Info"
 import {BrowserRouter as Router, 
         Switch, 
-        Route,
-        useLocation} from 'react-router-dom';
-
-
+        Route} from 'react-router-dom';
 
 
 export default function App() {
     const [nightMode, setNightMode] = useState(false);
 
     useEffect(()=>updateColors(), [nightMode]);
-    
+
     const updateColors = ()=> {
         //switches some colors around
         console.log("updating colors");
@@ -34,7 +31,6 @@ export default function App() {
         }
     }
 
-
     return (
         <>
         <NavBar/>
@@ -45,10 +41,10 @@ export default function App() {
                     </Route>
                     <Route path="/">
                         <Search nightMode={nightMode}/>
+                        <Dog nightMode={nightMode} setNightMode={setNightMode}/>
                     </Route>
                 </Switch>
             </Router>
-            <Dog nightMode={nightMode} setNightMode={setNightMode}/>
         </>
     );
 }
