@@ -66,6 +66,7 @@ export default class Data extends React.Component {
     render() {
         let title = this.props.data[0].department + " " + this.props.data[0].classNumber + " " + this.props.data[0].instructor;
         let instructorAmount = this.props.data.map(x => Object.keys(x.instructors).length).reduce((a,b) => a + b);
+        let classAmount = this.props.data.map(x => x.count).reduce((a,b) => a + b);
         let data = {
             labels: ['A', 'B', 'C', 'D', 'F', 'P', 'NP'],
             datasets: this.props.graphData
@@ -123,7 +124,7 @@ export default class Data extends React.Component {
                                 <h6>Quarter Year</h6>
                             </div>
                             <div className="flex-even text-right">
-                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{this.props.data[0].count} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
+                                <a id="instructors" onClick={this.displayClassList} style={{cursor: "pointer", userSelect: "none"}}><u>{classAmount} Classes</u><span style={{fontFamily: "Symbola"}}> &#x2B9E;</span></a>
                             </div>
                         </Row>
                         {/* Graph */}
@@ -164,22 +165,25 @@ export default class Data extends React.Component {
                             <div className="card-body px-0">
                                 <h5 className="card-title mb-0">Classes</h5>
                                 <p style={{fontSize: "0.75rem"}}><i>Click class to expand</i></p>
-
-                                {Object.entries(this.props.data[0].classes).map(([key, value], idx) => {
-                                    return(
-                                        <p key={idx} className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
-                                        // <>
-                                        //     <p><a className="card-text text-decoration-none" href={"#" + key.replace(" ", "")} data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{key} • {value.count}</a></p>
-                                        //     <div className="collapse" id={key.replace(" ", "")}>
-                                        //         <div className="card-block">
-                                        //             {Object.entries(value.courses).map(([key, value]) => {
-                                        //                 return(
-                                        //                     <p style={{fontSize: "0.7rem"}}>{key}</p>
-                                        //                 )
-                                        //             })}
-                                        //         </div>
-                                        //     </div>
-                                        // </>
+                                {this.props.data.map(x => {
+                                    return (
+                                        Object.entries(x.classes).map(([key, value], idx) => {
+                                            return(
+                                                <p key={idx} className="card-text text-decoration-none" style={{color: "#212529"}}>{key} • {value.count}</p>
+                                                // <>
+                                                //     <p><a className="card-text text-decoration-none" href={"#" + key.replace(" ", "")} data-toggle="collapse" aria-expanded="false" aria-controls="collapse1" style={{color: "#212529"}}>{key} • {value.count}</a></p>
+                                                //     <div className="collapse" id={key.replace(" ", "")}>
+                                                //         <div className="card-block">
+                                                //             {Object.entries(value.courses).map(([key, value]) => {
+                                                //                 return(
+                                                //                     <p style={{fontSize: "0.7rem"}}>{key}</p>
+                                                //                 )
+                                                //             })}
+                                                //         </div>
+                                                //     </div>
+                                                // </>
+                                            )
+                                        })
                                     )
                                 })}
                             </div>
