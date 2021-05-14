@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
 import SelectSearch from "react-select-search";
-import "./searchform.css";
+
 import { useLocation } from "react-router-dom";
 const dep = require("./departments");
 

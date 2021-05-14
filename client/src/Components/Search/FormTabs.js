@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import FormTab from './FormTab';
 import {AiOutlinePlus} from 'react-icons/ai'
 export default function FormTabs({ currentForm, forms, setCurrentForm, removeForm, addForm }) {
-
+    
     return <>
         {Object.keys(forms).map((formID) =>
             <Col lg={3} md={5} sm={12} key={formID} className="text-center">

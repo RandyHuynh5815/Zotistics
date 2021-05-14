@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Container from "react-bootstrap/Container";
+import "./searchform.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -7,24 +7,17 @@ import Button from "react-bootstrap/Button";
 import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
 import FormTabs from "./FormTabs"
-/*  
-CREDIT: https://gist.github.com/bendc/76c48ce53299e6078a76#file-random-color-js
-*/
-const randomColor = (() => {
-  const randomInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-  return () => {
-    var h = randomInt(0, 360);
-    var s = randomInt(42, 98);
-    var l = randomInt(40, 90);
-    return `hsl(${h},${s}%,${l}%)`;
-  };
-})();
+
+
+const OPACITY = 0.6
+const HSL =  [[204,  82, 57], //blue
+              [130,  84, 73], //green
+              [  8, 100, 67], //orange
+              [344,  68, 80]] //pink
 
 const EMPTY_STATE = {
   formID: 1, //make sure to change this when using this
-  color: "hsl(203, 100%, 32%)",
+  color: `hsl(${HSL[0][0]}, ${HSL[0][1]}%, ${HSL[0][2]}%)`,
   instructor: "",
   quarters: [],
   years: [],
@@ -38,20 +31,18 @@ const EMPTY_STATE = {
   upperDiv: false
 }
 
+const INITIAL_INSTRUCTORS = [
+  { name: "SHEPHERD, B.", value: "SHEPHERD, B." },
+  { name: "LEVIN, K.", value: "LEVIN, K." },
+  { name: "SEONG, A.", value: "SEONG, A." },
+  { name: "SPENCER, P.", value: "SPENCER, P." },
+  { name: "WOLFF, B.", value: "WOLFF, B." }];
 
 /*
   Handles all the searchforms, and keeps track of state of each form
   Also handles fetching instructors list, fetching results, and setting page to data
 */
 export default function Search() {
-
-  const INITIAL_INSTRUCTORS = [
-    { name: "SHEPHERD, B.", value: "SHEPHERD, B." },
-    { name: "LEVIN, K.", value: "LEVIN, K." },
-    { name: "SEONG, A.", value: "SEONG, A." },
-    { name: "SPENCER, P.", value: "SPENCER, P." },
-    { name: "WOLFF, B.", value: "WOLFF, B." }];
-
   const [instructors, setInstructors] = useState(INITIAL_INSTRUCTORS);
   const [forms, setForms] = useState({
     1: EMPTY_STATE
@@ -59,6 +50,7 @@ export default function Search() {
   const [currentForm, setCurrentForm] = useState(1);
   const [lastFormID, setLastFormID] = useState(0);
   const [results, setResults] = useState([]);
+
 
   //on component mount, fetch instructors and add a form
   useEffect(() => fetchInstructors(), []);
@@ -99,9 +91,10 @@ export default function Search() {
   */
   const addForm = () => {
     let newFormID = lastFormID + 1;
+    const i = Object.keys(forms).length //index in HSL array
     let newState = {
       formID: newFormID, //make sure to change this when using this
-      color: randomColor(),
+      color: `hsl(${HSL[i][0]}, ${HSL[i][1]}%, ${HSL[i][2]}%)`,
       instructor: "",
       quarters: [],
       years: [],
@@ -126,10 +119,25 @@ export default function Search() {
     //copy forms
     var newForms = Object.assign({}, forms);
     delete newForms[formID];
+    
+    //reassign colors
+    newForms = reassignColors(newForms);
+
     setCurrentForm(Object.keys(newForms).length - 1);
     setForms(newForms);
     updateFormNumbers();
+
   }
+
+  const reassignColors = (formStates) => {
+    let i = 0;
+    for(let f in formStates){
+      console.log(f);
+      formStates[f].color = `hsl(${HSL[i][0]}, ${HSL[i][1]}%, ${HSL[i][2]}%)`
+      i++;
+    }
+    return formStates;
+  } 
 
   const fetchInstructors = async () => {
     fetch("/instructors")
@@ -177,33 +185,47 @@ export default function Search() {
     });
   };
 
+
+  /*
+    returns array of colors for use in chartjs
+    [
+      [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 1(always blue n yellow)
+      [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 2
+      [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 3
+      [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor]   //form 4
+    ]
+  */
+
+  const getGraphColors = (numGraphs) =>{
+    
+    const NUMBARS = 7;    
+
+    //im going straight to hell
+    let colors = HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
+
+    if(numGraphs == 1){
+      //change the first one to yellow for pnp
+      let [h,s,l] = [43, 100, 67];
+      colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+      colors[0][6] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+    }
+    return colors;
+  }
+
   /*
   Creates an array of objects with the grade data and colors
   to put in the graph dataset in Data.js
    */
   const dataForGraph = (gradeData) => {
     let dataset = [];
-    let colors;
-    if(gradeData.length > 1){
-      colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
-    } else {
-      colors = [[
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(54, 162, 235, 0.6)',
-        'rgba(255, 206, 86, 0.6)',
-        'rgba(255, 206, 86, 0.6)'
-      ]]
-    }
+    let colors = getGraphColors(Object.keys(gradeData).length);
 
     let count = 0;
     for (let data of gradeData) {
       dataset.push({
         label: data.instructor,
         data: [data.a, data.b, data.c, data.d, data.f, data.p, data.np],
-        backgroundColor: data.color
+        backgroundColor: colors[count]
       });
       count++;
     }

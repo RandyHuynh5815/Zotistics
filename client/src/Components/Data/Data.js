@@ -1,7 +1,7 @@
 import React from 'react';
 import {Row, Col, FormCheck} from "react-bootstrap";
 import {Bar} from 'react-chartjs-2';
-
+import "./Data.css";
 export default class Data extends React.Component {
     constructor(props){
         super(props);
@@ -81,6 +81,9 @@ export default class Data extends React.Component {
                     ticks: {
                         beginAtZero: true
                     },
+                    gridLines: {
+                        color : "#FFFFFF"
+                    },
                     scaleLabel: {
                         display: true,
                         labelString: this.state.chartLabelY
@@ -97,7 +100,7 @@ export default class Data extends React.Component {
 
         return (
             <>
-                <Row>
+                <Row className="data-row">
                     {/* Instructor Side List */}
                     <Col sm={2} className="justify-content-center text-center px-0">
                         <div className="card overflow-auto" style={{display: this.state.instructorDisplay, maxHeight: this.state.sideInfoHeight}} id="profList">
