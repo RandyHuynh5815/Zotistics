@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, FormCheck } from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
-import "./Data.css";
 
 
 export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
@@ -12,7 +11,7 @@ export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data })
                 {data.map(x => {
                     return (
                         Object.entries(x.instructors).map(([key, value], idx) => {
-                            return <p key={idx} className="card-text text-decoration-none" style={{ color: "#212529" }}>{key} • {value}</p>
+                            return <p key={idx} className="card-text text-decoration-none" >{key} • {value}</p>
                         })
                     )
                 })}
@@ -32,7 +31,7 @@ export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
                     return (
                         Object.entries(x.classes).map(([key, value], idx) => {
                             return (
-                                <p key={idx} className="card-text text-decoration-none" style={{ color: "#212529" }}>{key} • {value.count}</p>
+                                <p key={idx} className="card-text text-decoration-none">{key} • {value.count}</p>
                             )
                         })
                     )
@@ -45,19 +44,16 @@ export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
 
 
 
-export default function Data({data, graphData, nightMode }) {
-    const [gradeListPopulation, setGradeListPopulation] = useState([data[0].a, data[0].b, data[0].c, data[0].d, data[0].f, data[0].p, data[0].np]);
-    const sum = gradeListPopulation.reduce((a, b) => a + b);
-    const [gradeListPercentage, setGradeListPercentage] = useState(gradeListPopulation.map(grade => ((grade / sum) * 100).toFixed(1)));
+export default function Data({data, nightMode, graphDataPopulation, graphDataPercent}) {
     const [instructorAmount, setInstructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
-    const [chartData, setChartData] = useState(gradeListPercentage);
     const [classAmount, setClassAmount] = useState(data.map(x => x.count).reduce((a, b) => a + b));
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
-    const [chartSwitch, setChartSwitch] = useState(false);
-    const [chartLabelY, setChartLabelY] = useState("Percent"); // Percent or Students
+    const [chartSwitch, setChartSwitch] = useState(false); //true = percent, false = numbers
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
+    const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
+    
 
     var options = {
         responsive: true,
@@ -74,7 +70,7 @@ export default function Data({data, graphData, nightMode }) {
                 },
                 scaleLabel: {
                     display: true,
-                    labelString: chartLabelY
+                    labelString: chartSwitch?"Percent":"Students"
                 }
             }],
             xAxes: [{
@@ -87,13 +83,14 @@ export default function Data({data, graphData, nightMode }) {
                 },
             }]
         }
+        
     }
 
 
-    useEffect(()=>updateChartOptions(), [chartLabelY, nightMode])
+    useEffect(()=>updateChartOptions(), [chartSwitch])
+    useEffect(()=>updateChartOptions(), [nightMode])
     useEffect(() => init(), []);
     //when gradelistpercentage changes, set chart data to it
-    useEffect(() => setChartData(gradeListPercentage), [gradeListPercentage]);
 
     const init = () => {
         //stuff to run at start
@@ -124,19 +121,6 @@ export default function Data({data, graphData, nightMode }) {
         }
     }
 
-    const changeChart = () => {
-        if (!this.state.chartSwitch) {
-            setChartData(gradeListPopulation);
-            setChartLabelY("Students");
-        } else {
-            this.setState({ chartData: this.state.gradeListPercentage, chartLabelY: "Percent" });
-            setChartData(gradeListPercentage);
-            setChartLabelY("Percent");
-        }
-        setChartSwitch(!chartSwitch);
-    }
-
-
     const updateChartOptions = () =>{
         options = {
             responsive: true,
@@ -153,7 +137,7 @@ export default function Data({data, graphData, nightMode }) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: chartLabelY
+                        labelString: chartSwitch?"Percent":"Students"
                     }
                 }],
                 xAxes: [{
@@ -167,6 +151,7 @@ export default function Data({data, graphData, nightMode }) {
                 }]
             }
         }
+        setChartData({labels:labels, datasets: chartSwitch?graphDataPercent:graphDataPopulation});
     }
 
     return (
@@ -186,13 +171,13 @@ export default function Data({data, graphData, nightMode }) {
                     {/* Links to expand Instructor and Classes Lists */}
                     <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                         <div className="flex-even">
-                            <a className="side-list-link" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
+                            <a className="main-text-color" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
                         </div>
                         <div className="flex-even text-center">
-                            <h5 className="side-list-link">Quarter Year</h5>
+                            <h5 className="main-text-color">Quarter Year</h5>
                         </div>
                         <div className="flex-even text-right">
-                            <a className="side-list-link" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></a>
+                            <a className="main-text-color" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></a>
                         </div>
                     </Row>
 
@@ -200,7 +185,7 @@ export default function Data({data, graphData, nightMode }) {
                     <Row className="justify-content-center" id="graphDiv">
                         <Col sm={12}>
                             <Bar
-                                data={{labels:labels, datasets:graphData}}
+                                data={chartData}
                                 width={100}
                                 height={50}
                                 options={options}
@@ -213,16 +198,14 @@ export default function Data({data, graphData, nightMode }) {
                         <Col sm={3}></Col>
                         <Col sm={6} className="text-center">
                             {/*<p>Average GPA: {data[0].averageGPA}</p>*/}
-                            <p>GPA: {data.map(obj => {
-                                return obj.averageGPA + ' ';
-                            })}</p>
+                            <p className="main-text-color">GPA: {data.map(obj =>obj.averageGPA).join(", ")}</p>
                         </Col>
                         <Col sm={3} className="text-right">
                             <FormCheck
                                 id="chartSwitch"
                                 type="switch"
                                 checked={chartSwitch}
-                                onChange={changeChart}
+                                onChange={()=>setChartSwitch(!chartSwitch)}
                                 onClick={e => e.target.blur()}
                                 label="Numbers"
                             />

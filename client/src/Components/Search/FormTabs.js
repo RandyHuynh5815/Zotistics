@@ -8,8 +8,9 @@ import {AiOutlinePlus} from 'react-icons/ai'
 export default function FormTabs({ currentForm, forms, setCurrentForm, removeForm, addForm }) {
     
     return <>
+        <Row className="justify-content-center">
         {Object.keys(forms).map((formID) =>
-            <Col lg={3} md={5} sm={12} key={formID} className="text-center">
+            <Col md={3} key={formID} className="text-center">
                     <FormTab
                         formID={formID}
                         color={forms[formID].color}
@@ -20,10 +21,13 @@ export default function FormTabs({ currentForm, forms, setCurrentForm, removeFor
                         title={forms[formID].instructor !== "" ? forms[formID].instructor : "New Form "} />
             </Col>)}
             {Object.keys(forms).length <= 3? 
+                    <Col m="auto">
                     <div className="add-form-button" onClick={addForm}>
                         <AiOutlinePlus />
                     </div>
+                    </Col>
                 :null}
+                </Row>
     </>
 
 };

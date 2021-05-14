@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const calc = require('./calculations');
+const instructors = require("./instructors.json")
 const app = express()
 const port = 5000
 
@@ -18,6 +19,9 @@ app.use('/instructors', (req, res) => {
             res.json({instructors: calc.uniqueInstructors(data['courseList'])});
         });
 })
+
+app.use('/cachedinstructors', (req, res) => res.json(instructors));
+
 
 app.use('/search', (req, res) => {
     let params = req.body;
