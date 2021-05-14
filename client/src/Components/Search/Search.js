@@ -4,10 +4,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Home from "../Home/Home";
 import Data from "../Data/Data";
 import SearchForm from "./SearchForm";
-const HOME = <Home />;
+// const HOME = <Home />;
 
 /*
 CREDIT: https://gist.github.com/bendc/76c48ce53299e6078a76#file-random-color-js
@@ -232,7 +231,21 @@ class Search extends React.Component {
    */
   dataForGraph = (gradeData) => {
     let dataset = [];
-    let colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
+    let colors;
+    if(gradeData.length > 1){
+      colors = ['rgba(72, 21, 103, 0.6)', 'rgba(57, 86, 140, 0.6)', 'rgba(31, 150, 138, 0.6)', 'rgba(85, 198, 104, 0.6)'];
+    } else {
+      colors = [[
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(255, 206, 86, 0.6)'
+      ]]
+    }
+
     let count = 0;
     for(let data of gradeData) {
       dataset.push({
@@ -282,7 +295,7 @@ class Search extends React.Component {
             >
               <div
                   className="close-button"
-                  style={this.state.numForms == 1 ? { display: "none" } : {}}
+                  style={this.state.numForms === 1 ? { display: "none" } : {}}
                   onClick={() => this.removeForm(key)}
               >
                 <a href="#">✕</a>
