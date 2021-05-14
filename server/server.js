@@ -5,17 +5,34 @@ const calc = require('./calculations');
 const app = express()
 const port = 5000
 
+const url = 'https://api.peterportal.org/graphql'
+const query = `
+    query {
+      grades {
+        grade_distributions {
+          course_offering {
+            instructors
+          }
+        }
+      }
+    }
+`
+
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb'}))
 app.use(bodyParser.json({limit: '50mb'}))
 
 app.use('/instructors', (req, res) => {
-    fetch(`http://api.peterportal.org/rest/v0/grades/calculated`, {
+    fetch(url, {
+        body: JSON.stringify({query}),
+        method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
             'x-api-key': 'Zotistics-48e7d5db47d3bf0ebfef45fe0aea7b3df77d0c77b243ee4bc9b780df6c9dd91f'
         }})
         .then(res => res.json())
         .then(data => {
-            res.json({instructors: calc.uniqueInstructors(data['courseList'])});
+            // console.log(data.data.grades.grade_distributions)
+            res.send({instructors: calc.uniqueInstructors(data.data.grades.grade_distributions)})
         });
 })
 

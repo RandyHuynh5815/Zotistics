@@ -39,7 +39,7 @@ function uniqueInstructors(data){
     let instructors = new Set();
 
     for(classObject of data){
-        instructors.add(classObject.instructor);
+        instructors.add(classObject.course_offering.instructors[0]);
     }
 
     return [...instructors];
