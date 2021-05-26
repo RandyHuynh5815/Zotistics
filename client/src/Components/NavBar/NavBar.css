@@ -1,0 +1,17 @@
+@font-face {
+    font-family: Ubuntu; src: url('./Ubuntu-Regular.ttf');
+}
+
+.tabLinks {
+    font-size: 1rem;
+    font-family: 'Ubuntu', sans-serif;
+    color: #c4e5ff !important;
+}
+
+.tabLinks:hover {
+    color: var(--main-bg-color) !important;
+}
+
+#navbar {
+    background-color: var(--main-blue);
+}

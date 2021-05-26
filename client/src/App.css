@@ -513,28 +513,3 @@ form tab stuff
 #advanced-options-link:hover{
   cursor: pointer;
 }
-
-@font-face {
-  font-family: Courgette; src: url('./Components/NavBar/Courgette-Regular.ttf');
-}
-
-.tabLinks {
-  font-size: 1rem;
-  font-family: 'Courgette', cursive;
-  color: #c4e5ff !important;
-}
-
-.tabLinks:hover {
-  color: var(--main-bg-color) !important;
-}
-
-#logo {
-  font-family: 'Courgette', cursive;
-  font-weight: bold;
-  font-size: 2.5rem;
-  color: var(--main-yellow);
-}
-
-#navbar {
-  background-color: var(--main-blue);
-}
