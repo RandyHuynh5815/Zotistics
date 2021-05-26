@@ -10,11 +10,7 @@ const url = 'https://api.peterportal.org/graphql'
 const query = `
     query {
       grades {
-        grade_distributions {
-          course_offering {
-            instructors
-          }
-        }
+        instructors
       }
     }
 `
@@ -32,13 +28,11 @@ app.use('/instructors', (req, res) => {
         }})
         .then(res => res.json())
         .then(data => {
-            // console.log(data.data.grades.grade_distributions)
-            res.send({instructors: calc.uniqueInstructors(data.data.grades.grade_distributions)})
+            res.send({instructors: data.data.grades.instructors})
         });
 })
 
-app.use('/cachedinstructors', (req, res) => res.json(instructors));
-
+//app.use('/cachedinstructors', (req, res) => res.json(instructors));
 
 app.use('/search', (req, res) => {
     let params = req.body;

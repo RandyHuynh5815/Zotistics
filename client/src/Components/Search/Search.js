@@ -151,7 +151,7 @@ export default function Search({ nightMode }) {
   }
 
   const fetchInstructors = async () => {
-    fetch("/cachedinstructors")
+    fetch("/instructors")
       .then((res) => res.json())
       .then((res) =>
         setInstructors(
