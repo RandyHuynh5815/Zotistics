@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, FormCheck } from "react-bootstrap";
+import {Row, Col, FormCheck, Button} from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
+import InfoModal from './Modal'
 
 
 export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
@@ -53,7 +54,10 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
     const [chartSwitch, setChartSwitch] = useState(false); //true = percent, false = numbers
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
     const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
-    
+    const [show, setShow] = useState(false); // Modal display
+
+    const handleModalClose = () => setShow(false);
+    const handleModalShow = () => setShow(true);
 
     var options = {
         responsive: true,
@@ -195,9 +199,12 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
 
                     {/* Buttons and GPA */}
                     <Row className="justify-content-center">
-                        <Col sm={3}></Col>
+                        <Col sm={3}>
+                            <Button variant="outline-secondary" size="sm" onClick={handleModalShow}>
+                                Details
+                            </Button>
+                        </Col>
                         <Col sm={6} className="text-center">
-                            {/*<p>Average GPA: {data[0].averageGPA}</p>*/}
                             <p className="main-text-color">GPA: {data.map(obj =>obj.averageGPA).join(", ")}</p>
                         </Col>
                         <Col sm={3} className="text-right">
@@ -222,6 +229,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     />
                 </Col>
             </Row>
+            <InfoModal handleModalClose={handleModalClose} show={show} data={data} />
         </>
     );
 }

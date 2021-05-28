@@ -67,7 +67,8 @@ app.use('/search', (req, res) => {
                       averageGPA: averageGPA, classes: classes, instructors: instructors,
                       instructor: params.instructor, quarters: params.quarters,
                       department: params.department, classNumber: params.classNumber,
-                      classCode: params.classCode});
+                      classCode: params.classCode, courseList: data['courseList']
+            });
         });
 })
 

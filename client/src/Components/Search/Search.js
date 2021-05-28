@@ -215,7 +215,7 @@ export default function Search({ nightMode }) {
     //im going straight to hell
     let colors = HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
 
-    if (numGraphs == 1) {
+    if (numGraphs === 1) {
       //change the first one to yellow for pnp
       let [h, s, l] = [43, 100, 67];
       colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
@@ -292,7 +292,7 @@ export default function Search({ nightMode }) {
           </Row>
         </Form>
 
-        {results.length !== 0 && resultsPopulation.length!=0 && resultsPercent.length!=0 &&
+        {results.length !== 0 && resultsPopulation.length !== 0 && resultsPercent.length !==0 &&
           <Data
             data={results}
             graphDataPopulation={resultsPopulation}
