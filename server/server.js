@@ -84,9 +84,9 @@ app.use('/search', (req, res) => {
         }})
         .then(res => res.json())
         .then(data => {
-            let classList = data.data.grades.grade_distributions;
-            let count = classList.length;
-            let stats = calc.cumulativeData(classList);
+            let classList = data.data.grades.grade_distributions; // list of objects for info for each class
+            let count = classList.length; // total amount of classes in query
+            let stats = calc.cumulativeData(classList); // object that has grade data
             let classes = calc.classList(classList);
             let instructors = calc.instructorList(classList);
 

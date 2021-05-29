@@ -1,4 +1,8 @@
 
+/*
+  Returns object of classes and their occurrences to use
+  in the side bar of the results page next to the graph
+ */
 function classList(data){
     let classes = {}; // { className: {count, {year, quarter, code}} }
 
@@ -18,6 +22,10 @@ function classList(data){
     return classes;
 }
 
+/*
+  Returns object of instructors and their occurrences to use
+  in the side bar of the results page next to the graph
+ */
 function instructorList(data){
     let instructors = {};
 
@@ -32,6 +40,9 @@ function instructorList(data){
     return instructors;
 }
 
+/*
+  Sums up the amount of grades in the query and averages the gpa
+ */
 function cumulativeData(data){
     let stats = {a: 0, b: 0, c: 0, d: 0, f: 0, p: 0, np: 0, gpa: 0}
     for(classObject of data){
