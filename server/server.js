@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const calc = require('./calculations');
-const instructors = require("./instructors.json")
+// const instructors = require("./instructors.json")
 const app = express()
 const port = 5000
 
@@ -37,6 +37,14 @@ function searchQuery(args){
         query {
           grades(${args}) {
             grade_distributions{
+              grade_a_count
+              grade_b_count
+              grade_c_count
+              grade_d_count
+              grade_f_count
+              grade_p_count
+              grade_np_count
+              average_gpa
               course_offering{
                 year
                 quarter
@@ -76,8 +84,18 @@ app.use('/search', (req, res) => {
         }})
         .then(res => res.json())
         .then(data => {
-            console.log(data.data.grades.grade_distributions)
-            res.send({data})
+            let classList = data.data.grades.grade_distributions;
+            let count = classList.length;
+            let stats = calc.cumulativeData(classList);
+            let classes = calc.classList(classList);
+            let instructors = calc.instructorList(classList);
+
+            res.send({count: count, a: stats.a, b: stats.b, c: stats.c, d: stats.d, f: stats.f, p: stats.p, np: stats.np,
+                      averageGPA: stats.gpa, classes: classes, instructors: instructors,
+                      instructor: params.instructor, quarters: params.quarters,
+                      department: params.department, classNumber: params.classNumber,
+                      classCode: params.classCode, courseList: data['courseList']
+            });
         });
     // .then(data => {
     //     let classes = calc.classList(data['courseList']);
