@@ -6,7 +6,7 @@ import InfoModal from './Modal'
 
 export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
     return (
-        <div className="card overflow-auto" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
+        <div className="card overflow-auto shadow-sm" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
             <div className="card-body px-0">
                 <h5 className="card-title">Instructors</h5>
                 {data.map(x => {
@@ -24,7 +24,7 @@ export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data })
 
 export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
     return (
-        <div className="card overflow-auto" style={{ display: classDisplay, maxHeight: sideInfoHeight }} id="cardList">
+        <div className="card overflow-auto shadow-sm" style={{ display: classDisplay, maxHeight: sideInfoHeight }} id="cardList">
             <div className="card-body px-0">
                 <h5 className="card-title mb-0">Classes</h5>
                 <p style={{ fontSize: "0.75rem" }}><i>Click class to expand</i></p>

@@ -1,11 +1,11 @@
 :root {
-  --main-bg-color:hsl(210, 17%, 98%);
+  --main-bg-color:#fff;
   --main-text-color: #111111;
   --main-blue: hsl(203, 100%, 32%);
   --main-yellow: #ffd200;
-  --transparent-blue:rgb(0, 100, 164, 0.1);
+  --transparent-blue:rgba(0, 100, 164, 0.1);
   --secondary-text-color: #424242;
-  --secondary-bg-color: #eeeaea;
+  --secondary-bg-color: #f5f6f7;
 }
 
 .main-text-color{
@@ -246,6 +246,7 @@ form tab stuff
   border:none;
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   height:36px;
+  /*box-shadow: 0 .12rem .2rem rgba(0,0,0,.075)!important;*/
 }
 .search-text-box:hover{
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -320,6 +321,7 @@ form tab stuff
   line-height: 36px;
   -webkit-appearance: none;
   color: var(--secondary-text-color);
+  /*box-shadow: 0 .12rem .2rem rgba(0,0,0,.075)!important;*/
 }
 
 .select-search__input::-webkit-search-decoration,

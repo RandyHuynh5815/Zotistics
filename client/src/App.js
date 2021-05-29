@@ -24,9 +24,9 @@ export default function App() {
             root.style.setProperty('--secondary-bg-color', '#424242');
             root.style.setProperty('--secondary-text-color', '#8e8e8e');
         }else{
-            root.style.setProperty('--main-bg-color', 'hsl(210, 17%, 98%)');
+            root.style.setProperty('--main-bg-color', '#fff');
             root.style.setProperty('--main-text-color', '#111111');
-            root.style.setProperty('--secondary-bg-color', '#eeeaea');
+            root.style.setProperty('--secondary-bg-color', '#f5f6f7');
             root.style.setProperty('--secondary-text-color', '#424242');
         }
     }
