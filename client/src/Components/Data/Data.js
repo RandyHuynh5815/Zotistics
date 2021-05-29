@@ -46,8 +46,8 @@ export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
 
 
 export default function Data({data, nightMode, graphDataPopulation, graphDataPercent}) {
-    const [instructorAmount, setInstructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
-    const [classAmount, setClassAmount] = useState(data.map(x => x.count).reduce((a, b) => a + b));
+    const [instructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
+    const [classAmount] = useState(data.map(x => x.count).reduce((a, b) => a + b));
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
