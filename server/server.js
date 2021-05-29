@@ -74,7 +74,6 @@ app.use('/search', (req, res) => {
     let department = params.department.replace('&', '%26').replace('/', '%2');
     let args = `instructor: "${params.instructor}", quarter: "${quarters}", year: "${years}", department: "${department}",
         number: "${params.classNumber}", code: ${code}`
-
     fetch(url, {
         body: JSON.stringify({"query": searchQuery(args)}),
         method: 'POST',
@@ -84,7 +83,8 @@ app.use('/search', (req, res) => {
         }})
         .then(res => res.json())
         .then(data => {
-            let classList = data.data.grades.grade_distributions; // list of objects for info for each class
+            let unfiltered = data.data.grades.grade_distributions; // list of objects for info for each class
+            let classList = calc.filter(unfiltered, params.excludePNP, params.covid19, params.lowerDiv, params.upperDiv);
             let count = classList.length; // total amount of classes in query
             let stats = calc.cumulativeData(classList); // object that has grade data
             let classes = calc.classList(classList);

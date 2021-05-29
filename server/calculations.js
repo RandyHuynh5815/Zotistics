@@ -6,7 +6,7 @@
 function classList(data){
     let classes = {}; // { className: {count, {year, quarter, code}} }
 
-    for(classObject of data){
+    for(let classObject of data){
         let c = classObject.course_offering;
         let className = `${c.course ? c.course.department : null} ${c.course ? c.course.number : null}`;
         let course = {year: c.year, quarter: c.quarter, code: c.section.code};
@@ -29,7 +29,7 @@ function classList(data){
 function instructorList(data){
     let instructors = {};
 
-    for(classObject of data){
+    for(let classObject of data){
         if(classObject.course_offering.instructors[0].name in instructors){
             instructors[classObject.instructor]++;
         } else {
@@ -45,7 +45,7 @@ function instructorList(data){
  */
 function cumulativeData(data){
     let stats = {a: 0, b: 0, c: 0, d: 0, f: 0, p: 0, np: 0, gpa: 0}
-    for(classObject of data){
+    for(let classObject of data){
         stats.a += classObject.grade_a_count;
         stats.b += classObject.grade_b_count;
         stats.c += classObject.grade_c_count;
@@ -59,8 +59,49 @@ function cumulativeData(data){
     return stats;
 }
 
-function filter(){
+/*
+  Filters the api result based on the advanced options in the query
+ */
+function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
+    let final = [];
 
+    for(let c of data){
+        let push = true;
+        let co = c.course_offering;
+
+        if(lowerDiv === true && upperDiv === false && co.course !== null){
+            let num = parseInt(co.course.number.replace(/\D/g, ""));
+            if(num >= 100){
+                push = false;
+            }
+        }
+        if(upperDiv === true && lowerDiv === false && co.course !== null){
+            let num = parseInt(co.course.number.replace(/\D/g, ""));
+            if(num < 100){
+                push = false;
+            }
+        }
+        if(covid19 === true){
+            if((co.year === '2019-20' && co.quarter.toUpperCase() === 'WINTER') ||
+                (co.year === '2019-20' && co.quarter.toUpperCase() === 'SPRING') ||
+                (co.year === '2020-21' && co.quarter.toUpperCase() === 'SUMMER') ||
+                (co.year === '2020-21' && co.quarter.toUpperCase() === 'FALL') ||
+                (co.year === '2020-21' && co.quarter.toUpperCase() === 'WINTER')){
+                push = false;
+            }
+        }
+        if(excludePNP){
+            if(c.grade_a_count === 0 && c.grade_b_count === 0 && c.grade_c_count === 0 && c.grade_d_count === 0 && c.grade_f_count === 0){
+                push = false
+            }
+        }
+
+        if(push === true){
+            final.push(c);
+        }
+    }
+
+    return final
 }
 
 module.exports = {classList, instructorList, filter, cumulativeData};
