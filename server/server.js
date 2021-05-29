@@ -94,31 +94,9 @@ app.use('/search', (req, res) => {
                       averageGPA: stats.gpa, classes: classes, instructors: instructors,
                       instructor: params.instructor, quarters: params.quarters,
                       department: params.department, classNumber: params.classNumber,
-                      classCode: params.classCode, courseList: data['courseList']
+                      classCode: params.classCode, courseList: classList
             });
         });
-    // .then(data => {
-    //     let classes = calc.classList(data['courseList']);
-    //     let instructors = calc.instructorList(data['courseList']);
-    //
-    //     let count = data['gradeDistribution']['COUNT()']
-    //     let a = data['gradeDistribution']['SUM(gradeACount)']
-    //     let b = data['gradeDistribution']['SUM(gradeBCount)']
-    //     let c = data['gradeDistribution']['SUM(gradeCCount)']
-    //     let d = data['gradeDistribution']['SUM(gradeDCount)']
-    //     let f = data['gradeDistribution']['SUM(gradeFCount)']
-    //     let p = data['gradeDistribution']['SUM(gradePCount)']
-    //     let np = data['gradeDistribution']['SUM(gradeNPCount)']
-    //     let averageGPA = data['gradeDistribution']['AVG(averageGPA)'].toFixed(2)
-    //
-    //     //sends json as response
-    //     res.json({count: count, a: a, b: b, c: c, d: d, f: f, p: p, np: np,
-    //               averageGPA: averageGPA, classes: classes, instructors: instructors,
-    //               instructor: params.instructor, quarters: params.quarters,
-    //               department: params.department, classNumber: params.classNumber,
-    //               classCode: params.classCode, courseList: data['courseList']
-    //     });
-    // });
 })
 
 

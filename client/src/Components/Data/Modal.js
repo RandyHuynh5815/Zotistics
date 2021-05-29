@@ -24,24 +24,27 @@ export default function InfoModal(props) {
                         <th scope="col">Title</th>
                         <th scope="col">Instructor</th>
                         <th scope="col">Code</th>
+                        <th scope="col">GPA</th>
                     </tr>
                     </thead>
                     <tbody>
                         {props.data.map(cl => {
                             return (
                                 cl.courseList.map(course => {
+                                    let c = course.course_offering
                                     return (
                                         <tr>
-                                            <td>{course.quarter} {course.year}</td>
-                                            <td>{course.department}</td>
-                                            <td>{course.number}</td>
-                                            <td>title</td>
-                                            <td>{course.instructor}</td>
-                                            <td>{course.code}</td>
+                                            <td>{c.quarter} {c.year}</td>
+                                            <td>{c.course ? c.course.department : "dept"}</td>
+                                            <td>{c.course ? c.course.number : "num"}</td>
+                                            <td>{c.course ? c.course.title : "title"}</td>
+                                            <td>{c.instructors[0].name}</td>
+                                            <td>{c.section.code}</td>
+                                            <td>{course.average_gpa}</td>
                                         </tr>
-                                    )
+                                    );
                                 })
-                            )
+                            );
                         })}
                     </tbody>
                 </Table>

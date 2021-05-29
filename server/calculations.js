@@ -3,16 +3,15 @@ function classList(data){
     let classes = {}; // { className: {count, {year, quarter, code}} }
 
     for(classObject of data){
-        console.log(classObject)
-        let className = `${classObject.course_offering.course.department} ${classObject.course_offering.course.number}`
-        let course = {year: classObject.course_offering.year, quarter: classObject.course_offering.quarter,
-                      code: classObject.course_offering.section.code}
+        let c = classObject.course_offering;
+        let className = `${c.course ? c.course.department : null} ${c.course ? c.course.number : null}`;
+        let course = {year: c.year, quarter: c.quarter, code: c.section.code};
 
         if(className in classes){
             classes[className].count++;
             classes[className].courses.push(course);
         } else {
-            classes[className] = {count: 1, courses: [course]}
+            classes[className] = {count: 1, courses: [course]};
         }
     }
 
@@ -53,14 +52,4 @@ function filter(){
 
 }
 
-function uniqueInstructors(data){
-    let instructors = new Set();
-
-    for(classObject of data){
-        instructors.add(classObject.course_offering.instructors[0]);
-    }
-
-    return [...instructors];
-}
-
-module.exports = {classList, instructorList, filter, uniqueInstructors, cumulativeData};
+module.exports = {classList, instructorList, filter, cumulativeData};
