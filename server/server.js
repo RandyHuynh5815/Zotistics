@@ -71,9 +71,9 @@ app.use('/search', (req, res) => {
     let quarters = params.quarters.join(';');
     let years = params.years.join(';');
     let code = (params.classCode !== '') ? parseFloat(params.classCode) : null
-    let department = params.department.replace('&', '%26').replace('/', '%2');
-    let args = `instructor: "${params.instructor}", quarter: "${quarters}", year: "${years}", department: "${department}",
+    let args = `instructor: "${params.instructor}", quarter: "${quarters}", year: "${years}", department: "${params.department}",
         number: "${params.classNumber}", code: ${code}`
+
     fetch(url, {
         body: JSON.stringify({"query": searchQuery(args)}),
         method: 'POST',
