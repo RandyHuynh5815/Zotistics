@@ -37,7 +37,7 @@ function instructorList(data){
             instructors[teacher] = 1;
         }
     }
-    console.log(instructors)
+
     return instructors;
 }
 
