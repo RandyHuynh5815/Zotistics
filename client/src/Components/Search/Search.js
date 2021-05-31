@@ -245,7 +245,7 @@ export default function Search({ nightMode }) {
       });
       count++;
     }
-    console.log(dataset)
+
     return dataset;
   }
 
