@@ -30,7 +30,13 @@ function instructorList(data){
     let instructors = {};
 
     for(let classObject of data){
-        let teacher = classObject.course_offering.instructors[0].name
+        let teacher = null;
+        if(classObject.course_offering.instructors !== null){
+            if(classObject.course_offering.instructors[0] !== null){
+                teacher = classObject.course_offering.instructors[0].name;
+            }
+        }
+        //let teacher = classObject.course_offering.instructors[0].name
         if(teacher in instructors){
             instructors[teacher]++;
         } else {
