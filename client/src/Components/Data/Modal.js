@@ -34,7 +34,7 @@ export default function InfoModal(props) {
                                     let c = course.course_offering
                                     return (
                                         <tr>
-                                            <td>{c.quarter} {c.year}</td>
+                                            <td>{c.quarter} {c.exact_year}</td>
                                             <td>{c.course ? c.course.department : "dept"}</td>
                                             <td>{c.course ? c.course.number : "num"}</td>
                                             <td>{c.course ? c.course.title : "title"}</td>

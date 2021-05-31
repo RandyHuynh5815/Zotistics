@@ -85,6 +85,7 @@ app.use('/search', (req, res) => {
         .then(data => {
             let unfiltered = data.data.grades.grade_distributions; // list of objects for info for each class
             let classList = calc.filter(unfiltered, params.excludePNP, params.covid19, params.lowerDiv, params.upperDiv);
+            calc.addData(classList);
             let count = classList.length; // total amount of classes in query
             let stats = calc.cumulativeData(classList); // object that has grade data
             let classes = calc.classList(classList);

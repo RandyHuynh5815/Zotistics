@@ -42,6 +42,32 @@ function instructorList(data){
 }
 
 /*
+  Returns exact year from a course object
+  Winter 2017-18 => Winter 2018
+ */
+function exactYear(course){
+    let quarter = course.course_offering.quarter.toUpperCase();
+    let year = course.course_offering.year.split('-');
+    let exactYear;
+    if(quarter === 'SUMMER' || quarter === 'FALL'){
+        exactYear = year[0]
+    } else if(quarter === 'WINTER' || quarter === 'SPRING'){
+        exactYear = year[0][0] + year[0][1] + year[1]
+    }
+
+    return exactYear
+}
+
+/*
+  Adds additional data for each course in the api result
+ */
+function addData(data){
+    for(let i = 0; i < data.length; i++){
+        data[i].course_offering.exact_year = exactYear(data[i]);
+    }
+}
+
+/*
   Sums up the amount of grades in the query and averages the gpa
  */
 function cumulativeData(data){
@@ -105,4 +131,4 @@ function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
     return final
 }
 
-module.exports = {classList, instructorList, filter, cumulativeData};
+module.exports = {classList, instructorList, filter, cumulativeData, addData};
