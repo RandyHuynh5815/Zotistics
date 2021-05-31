@@ -178,7 +178,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                             <a className="main-text-color" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
                         </div>
                         <div className="flex-even text-center">
-                            <h5 className="main-text-color">Quarter Year</h5>
+                            <h5 className="main-text-color">{data.length === 1 ? data[0].quarter + ' ' + data[0].year : 'Multiple'}</h5>
                         </div>
                         <div className="flex-even text-right">
                             <a className="main-text-color" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></a>

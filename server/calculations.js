@@ -42,20 +42,38 @@ function instructorList(data){
 }
 
 /*
-  Returns exact year from a course object
+  Returns exact year from a quarter and year combo
   Winter 2017-18 => Winter 2018
  */
-function exactYear(course){
-    let quarter = course.course_offering.quarter.toUpperCase();
-    let year = course.course_offering.year.split('-');
+function exactYear(quarter, year){
+    let yearSplit = year.split('-');
+    let quarterUpper = quarter.toUpperCase()
     let exactYear;
-    if(quarter === 'SUMMER' || quarter === 'FALL'){
-        exactYear = year[0]
-    } else if(quarter === 'WINTER' || quarter === 'SPRING'){
-        exactYear = year[0][0] + year[0][1] + year[1]
+    if(quarterUpper === 'SUMMER' || quarterUpper === 'FALL'){
+        exactYear = yearSplit[0]
+    } else if(quarterUpper === 'WINTER' || quarterUpper === 'SPRING'){
+        exactYear = yearSplit[0][0] + yearSplit[0][1] + yearSplit[1]
     }
 
     return exactYear
+}
+
+/*
+  Returns exact quarter and year from the search query
+  Winter 2017-18 => Winter 2018
+ */
+function quarterYear(quarters, years){
+    if(quarters.length === 1 && years.length === 1){
+        return {quarter: quarters[0], year: exactYear(quarters[0], years[0])}
+    } else if(quarters.length === 1 && years.length === 0){
+        return {quarter: quarters[0], year: ''}
+    } else if(quarters.length === 0 && years.length === 1){
+        return {quarter: '', year: years[0]}
+    } else if(quarters.length === 0 && years.length === 0){
+        return {quarter: 'All', year: ''}
+    } else {
+        return {quarter: 'Custom', year: ''}
+    }
 }
 
 /*
@@ -63,7 +81,11 @@ function exactYear(course){
  */
 function addData(data){
     for(let i = 0; i < data.length; i++){
-        data[i].course_offering.exact_year = exactYear(data[i]);
+        let quarter = data[i].course_offering.quarter.toUpperCase();
+        let year = data[i].course_offering.year;
+        data[i].course_offering.exact_year = exactYear(quarter, year);
+        data[i].course_offering.quarter = data[i].course_offering.quarter.charAt(0).toUpperCase() +
+            data[i].course_offering.quarter.slice(1).toLowerCase(); // all caps to first letter upper case and rest lower case
     }
 }
 
@@ -131,4 +153,4 @@ function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
     return final
 }
 
-module.exports = {classList, instructorList, filter, cumulativeData, addData};
+module.exports = {classList, instructorList, filter, cumulativeData, addData, quarterYear};

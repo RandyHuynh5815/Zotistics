@@ -83,17 +83,18 @@ app.use('/search', (req, res) => {
         }})
         .then(res => res.json())
         .then(data => {
-            let unfiltered = data.data.grades.grade_distributions; // list of objects for info for each class
-            let classList = calc.filter(unfiltered, params.excludePNP, params.covid19, params.lowerDiv, params.upperDiv);
+            let filtered = calc.filter(data.data.grades.grade_distributions, params.excludePNP, params.covid19, params.lowerDiv, params.upperDiv);
+            let classList = filtered.reverse() // reversed to order it from most recent to oldest
             calc.addData(classList);
             let count = classList.length; // total amount of classes in query
             let stats = calc.cumulativeData(classList); // object that has grade data
             let classes = calc.classList(classList);
             let instructors = calc.instructorList(classList);
+            let displayTerm = calc.quarterYear(params.quarters, params.years); // used to display term in results page above graph
 
             res.send({count: count, a: stats.a, b: stats.b, c: stats.c, d: stats.d, f: stats.f, p: stats.p, np: stats.np,
                       averageGPA: stats.gpa, classes: classes, instructors: instructors,
-                      instructor: params.instructor, quarters: params.quarters,
+                      instructor: params.instructor, quarter: displayTerm.quarter, year: displayTerm.year,
                       department: params.department, classNumber: params.classNumber,
                       classCode: params.classCode, courseList: classList
             });
