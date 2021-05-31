@@ -38,9 +38,9 @@ export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="0">
                                         <div>
-                                            {value.courses.map(j => {
+                                            {value.courses.map((j, idx) => {
                                                 return (
-                                                    <Card.Text style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
+                                                    <Card.Text key={idx} style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
                                                 )
                                             })}
                                         </div>
@@ -64,7 +64,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
-    const [chartSwitch, setChartSwitch] = useState(false); //true = percent, false = numbers
+    const [chartSwitch, setChartSwitch] = useState(true); //true = percent, false = numbers
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
     const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
     const [show, setShow] = useState(false); // Modal display
@@ -188,13 +188,13 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     {/* Links to expand Instructor and Classes Lists */}
                     <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                         <div className="flex-even">
-                            <a className="main-text-color" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></a>
+                            <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></Button>
                         </div>
                         <div className="flex-even text-center">
                             <h5 className="main-text-color">{data.length === 1 ? data[0].quarter + ' ' + data[0].year : 'Multiple'}</h5>
                         </div>
                         <div className="flex-even text-right">
-                            <a className="main-text-color" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></a>
+                            <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
                         </div>
                     </Row>
 
