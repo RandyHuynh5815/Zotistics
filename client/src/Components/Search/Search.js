@@ -239,12 +239,13 @@ export default function Search({ nightMode }) {
       let dataPercentage = dataPopulation.map(d => 100 * d / sum);
 
       dataset.push({
-        label: data.instructor,
+        label: `${count}`,
         data: percent ? dataPercentage : dataPopulation,
         backgroundColor: colors[count]
       });
       count++;
     }
+    console.log(dataset)
     return dataset;
   }
 
