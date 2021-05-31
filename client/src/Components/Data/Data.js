@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import {Row, Col, FormCheck, Button} from "react-bootstrap";
+import {Row, Col, FormCheck, Button, Card, Accordion} from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
 import InfoModal from './Modal'
 
 
 export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
     return (
-        <div className="card overflow-auto shadow-sm" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
-            <div className="card-body px-0">
+        <Card className="overflow-auto shadow-sm" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
+            <Card.Body className="px-0">
                 <h5 className="card-title">Instructors</h5>
                 {data.map(x => {
                     return (
@@ -16,29 +16,42 @@ export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data })
                         })
                     )
                 })}
-            </div>
-        </div>
+            </Card.Body>
+        </Card>
     );
 }
 
 
 export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
     return (
-        <div className="card overflow-auto shadow-sm" style={{ display: classDisplay, maxHeight: sideInfoHeight }} id="cardList">
-            <div className="card-body px-0">
+        <Card className="overflow-auto shadow-sm" style={{ display: classDisplay, maxHeight: sideInfoHeight }} id="cardList">
+            <Card.Body className="px-0">
                 <h5 className="card-title mb-0">Classes</h5>
                 <p style={{ fontSize: "0.75rem" }}><i>Click class to expand</i></p>
                 {data.map(x => {
                     return (
                         Object.entries(x.classes).map(([key, value], idx) => {
                             return (
-                                <p key={idx} className="card-text text-decoration-none">{key} • {value.count}</p>
+                                <Accordion key={idx}>
+                                    <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button} variant="link" eventKey="0">
+                                        {key} • {value.count}
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="0">
+                                        <div>
+                                            {value.courses.map(j => {
+                                                return (
+                                                    <Card.Text style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
+                                                )
+                                            })}
+                                        </div>
+                                    </Accordion.Collapse>
+                                </Accordion>
                             )
                         })
                     )
                 })}
-            </div>
-        </div>);
+            </Card.Body>
+        </Card>);
 }
 
 
