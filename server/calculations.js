@@ -8,7 +8,7 @@ function classList(data){
 
     for(let classObject of data){
         let c = classObject.course_offering;
-        let className = `${c.course ? c.course.department : null} ${c.course ? c.course.number : null}`;
+        let className = `${c.course.department} ${c.course.number}`;
         let course = {year: c.year, quarter: c.quarter, code: c.section.code};
 
         if(className in classes){
@@ -30,13 +30,7 @@ function instructorList(data){
     let instructors = {};
 
     for(let classObject of data){
-        let teacher = null;
-        if(classObject.course_offering.instructors !== null){
-            if(classObject.course_offering.instructors[0] !== null){
-                teacher = classObject.course_offering.instructors[0].name;
-            }
-        }
-        //let teacher = classObject.course_offering.instructors[0].name
+        let teacher = classObject.course_offering.instructors[0].shortened_name
         if(teacher in instructors){
             instructors[teacher]++;
         } else {
@@ -124,13 +118,13 @@ function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
         let push = true;
         let co = c.course_offering;
 
-        if(lowerDiv === true && upperDiv === false && co.course !== null){
+        if(lowerDiv === true && upperDiv === false){
             let num = parseInt(co.course.number.replace(/\D/g, ""));
             if(num >= 100){
                 push = false;
             }
         }
-        if(upperDiv === true && lowerDiv === false && co.course !== null){
+        if(upperDiv === true && lowerDiv === false){
             let num = parseInt(co.course.number.replace(/\D/g, ""));
             if(num < 100){
                 push = false;

@@ -7,8 +7,6 @@ export default function InfoModal(props) {
         <Modal
             show={props.show}
             onHide={props.handleModalClose}
-            backdrop="static"
-            keyboard={false}
             size="xl"
         >
             <Modal.Header closeButton>
@@ -35,10 +33,10 @@ export default function InfoModal(props) {
                                     return (
                                         <tr>
                                             <td>{c.quarter} {c.exact_year}</td>
-                                            <td>{c.course ? c.course.department : "dept"}</td>
-                                            <td>{c.course ? c.course.number : "num"}</td>
-                                            <td>{c.course ? c.course.title : "title"}</td>
-                                            <td>{c.instructors[0].name}</td>
+                                            <td>{c.course.department}</td>
+                                            <td>{c.course.number}</td>
+                                            <td>{c.course.title}</td>
+                                            <td>{c.instructors[0].name ? c.instructors[0].name : c.instructors[0].shortened_name}</td>
                                             <td>{c.section.code}</td>
                                             <td>{course.average_gpa}</td>
                                         </tr>

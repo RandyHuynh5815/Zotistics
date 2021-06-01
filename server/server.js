@@ -50,6 +50,7 @@ function searchQuery(args){
                 quarter
                 instructors{
                   name
+                  shortened_name
                 }
                 section{
                   code
