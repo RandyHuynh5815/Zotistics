@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {Row, Col, FormCheck, Button, Card, Accordion} from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
 import InfoModal from './Modal'
+import ClassSideList from "./ClassSideList";
 
 
 export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
@@ -20,43 +21,6 @@ export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data })
         </Card>
     );
 }
-
-
-export const ClassSideList = ({classDisplay, sideInfoHeight, data}) => {
-    return (
-        <Card className="overflow-auto shadow-sm" style={{ display: classDisplay, maxHeight: sideInfoHeight }} id="cardList">
-            <Card.Body className="px-0">
-                <h5 className="card-title mb-0">Classes</h5>
-                <p style={{ fontSize: "0.75rem" }}><i>Click class to expand</i></p>
-                {data.map(x => {
-                    return (
-                        Object.entries(x.classes).map(([key, value], idx) => {
-                            return (
-                                <Accordion key={idx}>
-                                    <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button} variant="link" eventKey="0">
-                                        {key} • {value.count}
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey="0">
-                                        <div>
-                                            {value.courses.map((j, idx) => {
-                                                return (
-                                                    <Card.Text key={idx} style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
-                                                )
-                                            })}
-                                        </div>
-                                    </Accordion.Collapse>
-                                </Accordion>
-                            )
-                        })
-                    )
-                })}
-            </Card.Body>
-        </Card>);
-}
-
-
-
-
 
 export default function Data({data, nightMode, graphDataPopulation, graphDataPercent}) {
     const [instructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
@@ -171,6 +135,12 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
         setChartData({labels:labels, datasets: chartSwitch?graphDataPercent:graphDataPopulation});
     }
 
+    const dataForClassSideList = () => {
+        return data.map(x => {
+           return x.classes
+        })
+    }
+
     return (
         <>
             <Row className="data-row">
@@ -238,7 +208,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     <ClassSideList
                         classDisplay={classDisplay}
                         sideInfoHeight={sideInfoHeight}
-                        data={data}
+                        data={dataForClassSideList()}
                     />
                 </Col>
             </Row>

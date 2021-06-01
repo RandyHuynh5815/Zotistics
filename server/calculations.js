@@ -19,7 +19,10 @@ function classList(data){
         }
     }
 
-    return classes;
+    // turns classes object into an array of objects
+    return Object.entries(classes).map(([key, value]) => ({
+        name: key, count: value.count, courses: value.courses
+    }))
 }
 
 /*

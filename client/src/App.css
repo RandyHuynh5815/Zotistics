@@ -119,6 +119,10 @@ body{
   cursor: pointer;
 }
 
+.btn:focus{
+  box-shadow: none!important;
+}
+
 .form-tabs-group{
   text-align: center;
   margin: auto;
@@ -507,7 +511,6 @@ form tab stuff
   color: var(--secondary-text-color);
 }
 /*adds top and bottom margin to each input when less than tablet size*/
-
 
 #advanced-options-link{
   color:var(--main-blue);
