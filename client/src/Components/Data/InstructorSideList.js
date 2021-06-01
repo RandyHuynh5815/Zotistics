@@ -7,10 +7,10 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
 
     const handleSortAmount = (e) => {
         e.preventDefault();
-        let result = JSON.parse(JSON.stringify(instructors));
+        let result = JSON.parse(JSON.stringify(instructors)); // deep copy
 
         for(let i = 0; i < instructors.length; i++){
-            result[i].sort((a, b) => b.count - a.count);
+            result[i].sort((a, b) => b.count - a.count); // sorts descending
         }
 
         setInstructors(result);
@@ -18,13 +18,14 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
 
     const handleSortName = (e) => {
         e.preventDefault();
-        let result = JSON.parse(JSON.stringify(instructors));
+        let result = JSON.parse(JSON.stringify(instructors)); // deep copy
 
         for(let i = 0; i < instructors.length; i++){
             result[i].sort((a, b) => {
                 let fa = a.name.toLowerCase()
                 let fb = b.name.toLowerCase();
 
+                // sorts ascending
                 if (fa < fb) { return -1; }
                 if (fa > fb) { return 1; }
                 return 0;

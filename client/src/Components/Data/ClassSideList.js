@@ -7,10 +7,10 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
 
     const handleSortAmount = (e) => {
         e.preventDefault();
-        let result = JSON.parse(JSON.stringify(courses));
+        let result = JSON.parse(JSON.stringify(courses)); // deep copy
 
         for(let i = 0; i < courses.length; i++){
-            result[i].sort((a, b) => b.count - a.count);
+            result[i].sort((a, b) => b.count - a.count); // sorts descending
         }
 
         setCourses(result);
@@ -18,16 +18,29 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
 
     const handleSortName = (e) => {
         e.preventDefault();
-        let result = JSON.parse(JSON.stringify(courses));
+        let result = JSON.parse(JSON.stringify(courses)); // deep copy
 
         for(let i = 0; i < courses.length; i++){
             result[i].sort((a, b) => {
-                let fa = a.name.toLowerCase()
-                let fb = b.name.toLowerCase();
+                // tokenizes string (dept_code course_num)
+                let aSplit = a.name.toLowerCase().split(' ')
+                let bSplit = b.name.toLowerCase().split(' ')
 
-                if (fa < fb) { return -1; }
-                if (fa > fb) { return 1; }
-                return 0;
+                // remove alphabetic characters from class number and removed from previous array
+                let aNum = parseInt(aSplit.pop().replace(/\D/g, ''));
+                let bNum = parseInt(bSplit.pop().replace(/\D/g, ''));
+
+                // turns the array into a string excluding the course number
+                let aa = aSplit.join(' ');
+                let bb = bSplit.join(' ')
+
+                // compares department code
+                // sorts ascending
+                if (aa < bb) { return -1; }
+                if (aa > bb) { return 1; }
+
+                // if both dept codes are the same, it compares the course number
+                return aNum - bNum; // sorts ascending
             });
         }
 
