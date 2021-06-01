@@ -1,0 +1,18 @@
+
+.sidelist-sort-btn {
+    background-color: #47484C!important;
+    border: none!important;
+    opacity: 0.5;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sidelist-sort-btn:hover {
+    background-color: #47484C!important;
+    opacity: 0.8;
+}
+
+.sidelist-sort-btn:active {
+    background-color: #47484C!important;
+    opacity: 0.9;
+}
