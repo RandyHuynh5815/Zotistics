@@ -3,24 +3,7 @@ import {Row, Col, FormCheck, Button, Card, Accordion} from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
 import InfoModal from './Modal'
 import ClassSideList from "./ClassSideList";
-
-
-export const InstructorsSideList = ({ instructorDisplay, sideInfoHeight, data }) => {
-    return (
-        <Card className="overflow-auto shadow-sm" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
-            <Card.Body className="px-0">
-                <h5 className="card-title">Instructors</h5>
-                {data.map(x => {
-                    return (
-                        Object.entries(x.instructors).map(([key, value], idx) => {
-                            return <p key={idx} className="card-text text-decoration-none" >{key} • {value}</p>
-                        })
-                    )
-                })}
-            </Card.Body>
-        </Card>
-    );
-}
+import InstructorSideList from "./InstructorSideList";
 
 export default function Data({data, nightMode, graphDataPopulation, graphDataPercent}) {
     const [instructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
@@ -141,15 +124,21 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
         })
     }
 
+    const dataForInstructorSideList = () => {
+        return data.map(x => {
+            return x.instructors
+        })
+    }
+
     return (
         <>
             <Row className="data-row">
                 {/* Instructor Side List */}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    <InstructorsSideList
+                    <InstructorSideList
                         instructorDisplay={instructorDisplay}
                         sideInfoHeight={sideInfoHeight}
-                        data={data}
+                        data={dataForInstructorSideList()}
                     />
                 </Col>
 

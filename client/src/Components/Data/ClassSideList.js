@@ -48,25 +48,30 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
                         <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                {courses.map(x =>
-                    x.map((c, idx) => (
-                            <Accordion key={idx}>
-                                <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button}
-                                                  variant="link" eventKey="0">
-                                    {c.name} • {c.count}
-                                </Accordion.Toggle>
-                                <Accordion.Collapse eventKey="0">
-                                    <div>
-                                        {c.courses.map((j, idx) => (
-                                                <Card.Text key={idx} style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
-                                            )
-                                        )}
-                                    </div>
-                                </Accordion.Collapse>
-                            </Accordion>
-                        )
-                    )
-                )}
+                {courses.map((x, idx) => (
+                    <>
+                    {x.map((c, idx) => (
+                                <Accordion key={idx}>
+                                    <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button}
+                                                      variant="link" eventKey="0">
+                                        {c.name} • {c.count}
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="0">
+                                        <div>
+                                            {c.courses.map((j, idx) => (
+                                                    <Card.Text key={idx} style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
+                                                )
+                                            )}
+                                        </div>
+                                    </Accordion.Collapse>
+                                </Accordion>
+                            )
+                        )}
+                        {idx < courses.length - 1 &&
+                        <p key={idx} className="p-0 m-0">---</p>
+                        }
+                    </>
+                ))}
             </Card.Body>
         </Card>);
 }

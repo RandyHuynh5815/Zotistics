@@ -41,7 +41,9 @@ function instructorList(data){
         }
     }
 
-    return instructors;
+    return Object.entries(instructors).map(([key, value]) => ({
+        name: key, count: value
+    }))
 }
 
 /*
