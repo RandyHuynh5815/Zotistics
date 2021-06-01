@@ -36,29 +36,31 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
     }
 
     return (
-        <Card className="overflow-auto shadow-sm" style={{ display: instructorDisplay, maxHeight: sideInfoHeight }} id="profList">
-            <Card.Body className="px-0">
-                <h5 className="card-title mb-0">Instructors</h5>
-                <Dropdown>
-                    <Dropdown.Toggle size="sm" className="sidelist-sort-btn mb-1">
-                        Sort
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
-                        <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-                {instructors.map((x, idx) => (
-                    <>
-                        {x.map((j, idx) => (
-                            <p key={idx} className="card-text text-decoration-none my-1" >{j.name} • {j.count}</p>
-                        ))}
-                        {idx < instructors.length - 1 &&
-                            <p key={idx} className="p-0 m-0">---</p>
-                        }
-                    </>
-                ))}
-            </Card.Body>
-        </Card>
+        <div style={{ display: instructorDisplay}}>
+            <Dropdown className="text-right">
+                <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
+                    Sort
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
+                    <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+            <Card className="overflow-auto shadow-sm" style={{ maxHeight: sideInfoHeight }}>
+                <Card.Body className="px-0">
+                    <h5 className="card-title mb-0">Instructors</h5>
+                    {instructors.map((x, idx) => (
+                        <>
+                            {x.map((j, idx) => (
+                                <p key={idx} className="card-text text-decoration-none my-2" >{j.name} • {j.count}</p>
+                            ))}
+                            {idx < instructors.length - 1 &&
+                                <p key={idx} className="p-0 m-0">---</p>
+                            }
+                        </>
+                    ))}
+                </Card.Body>
+            </Card>
+        </div>
     );
 }
