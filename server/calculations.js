@@ -97,19 +97,34 @@ function addData(data){
 /*
   Sums up the amount of grades in the query and averages the gpa
  */
-function cumulativeData(data){
+function cumulativeData(original_data, data, params){
     let stats = {a: 0, b: 0, c: 0, d: 0, f: 0, p: 0, np: 0, gpa: 0}
-    for(let classObject of data){
-        stats.a += classObject.grade_a_count;
-        stats.b += classObject.grade_b_count;
-        stats.c += classObject.grade_c_count;
-        stats.d += classObject.grade_d_count;
-        stats.f += classObject.grade_f_count;
-        stats.p += classObject.grade_p_count;
-        stats.np += classObject.grade_np_count;
-        stats.gpa += classObject.average_gpa;
+
+    if(!params.excludePNP && !params.covid19 && !params.lowerDiv && !params.upperDiv){ // no advanced options
+        let agg = original_data.data.grades.aggregate
+        stats.a = agg.sum_grade_a_count;
+        stats.b = agg.sum_grade_b_count;
+        stats.c = agg.sum_grade_c_count;
+        stats.d = agg.sum_grade_d_count;
+        stats.f = agg.sum_grade_f_count;
+        stats.p = agg.sum_grade_p_count;
+        stats.np = agg.sum_grade_p_count;
+        stats.gpa = agg.average_gpa.toFixed(2);
+
+    } else { // if at least one advanced option is true
+        for(let classObject of data){
+            stats.a += classObject.grade_a_count;
+            stats.b += classObject.grade_b_count;
+            stats.c += classObject.grade_c_count;
+            stats.d += classObject.grade_d_count;
+            stats.f += classObject.grade_f_count;
+            stats.p += classObject.grade_p_count;
+            stats.np += classObject.grade_np_count;
+            stats.gpa += classObject.average_gpa;
+        }
+        stats.gpa = (stats.gpa / data.length).toFixed(2)
     }
-    stats.gpa = (stats.gpa / data.length).toFixed(2)
+
     return stats;
 }
 

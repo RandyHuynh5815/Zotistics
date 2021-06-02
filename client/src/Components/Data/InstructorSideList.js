@@ -50,14 +50,14 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
                 <Card.Body className="px-0">
                     <h5 className="card-title mb-0">Instructors</h5>
                     {instructors.map((x, idx) => (
-                        <>
-                            {x.map((j, idx) => (
-                                <p key={idx} className="card-text text-decoration-none my-2" >{j.name} • {j.count}</p>
+                        <div key={idx}>
+                            {x.map((j, idxn) => (
+                                <p key={idxn} className="card-text text-decoration-none my-2" >{j.name} • {j.count}</p>
                             ))}
                             {idx < instructors.length - 1 &&
-                                <p key={idx} className="p-0 m-0">---</p>
+                                <p className="p-0 m-0">---</p>
                             }
-                        </>
+                        </div>
                     ))}
                 </Card.Body>
             </Card>

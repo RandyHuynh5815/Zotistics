@@ -36,6 +36,16 @@ function searchQuery(args){
     return `
         query {
           grades(${args}) {
+            aggregate{
+              sum_grade_a_count
+              sum_grade_b_count
+              sum_grade_c_count
+              sum_grade_d_count
+              sum_grade_f_count
+              sum_grade_p_count
+              sum_grade_np_count
+              average_gpa
+            }
             grade_distributions{
               grade_a_count
               grade_b_count
@@ -88,7 +98,7 @@ app.use('/search', (req, res) => {
             let classList = filtered.reverse() // reversed to order it from most recent to oldest
             calc.addData(classList);
             let count = classList.length; // total amount of classes in query
-            let stats = calc.cumulativeData(classList); // object that has grade data
+            let stats = calc.cumulativeData(data, classList, params); // object that has grade data
             let classes = calc.classList(classList);
             let instructors = calc.instructorList(classList);
             let displayTerm = calc.quarterYear(params.quarters, params.years); // used to display term in results page above graph

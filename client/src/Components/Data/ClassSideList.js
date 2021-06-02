@@ -63,7 +63,7 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
                     <h5 className="card-title mb-0">Classes</h5>
                     <p className="mb-0" style={{ fontSize: "0.75rem" }}><i>Click class to expand</i></p>
                     {courses.map((x, idx) => (
-                        <>
+                        <div key={idx}>
                         {x.map((c, idx) => (
                             <Accordion key={idx}>
                                 <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button}
@@ -81,9 +81,9 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
                             </Accordion>
                         ))}
                         {idx < courses.length - 1 &&
-                        <p key={idx} className="p-0 m-0">---</p>
+                        <p className="p-0 m-0">---</p>
                         }
-                        </>
+                        </div>
                     ))}
                 </Card.Body>
             </Card>
