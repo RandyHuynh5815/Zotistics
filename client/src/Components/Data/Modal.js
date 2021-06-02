@@ -28,10 +28,10 @@ export default function InfoModal(props) {
                     <tbody>
                         {props.data.map(cl => {
                             return (
-                                cl.courseList.map(course => {
+                                cl.courseList.map((course, idx) => {
                                     let c = course.course_offering
                                     return (
-                                        <tr>
+                                        <tr key={idx}>
                                             <td>{c.quarter} {c.exact_year}</td>
                                             <td>{c.course.department}</td>
                                             <td>{c.course.number}</td>

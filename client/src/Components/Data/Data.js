@@ -16,6 +16,10 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
     const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
     const [show, setShow] = useState(false); // Modal display
 
+    // caps viewable side list
+    const MAX_INSTRUCTORS = 500
+    const MAX_CLASSES = 500
+
     const handleModalClose = () => setShow(false);
     const handleModalShow = () => setShow(true);
 
@@ -135,11 +139,13 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
             <Row className="data-row">
                 {/* Instructor Side List */}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    <InstructorSideList
-                        instructorDisplay={instructorDisplay}
-                        sideInfoHeight={sideInfoHeight}
-                        data={dataForInstructorSideList()}
-                    />
+                    {instructorAmount <= MAX_INSTRUCTORS &&
+                        <InstructorSideList
+                            instructorDisplay={instructorDisplay}
+                            sideInfoHeight={sideInfoHeight}
+                            data={dataForInstructorSideList()}
+                        />
+                    }
                 </Col>
 
                 {/*middle section */}
@@ -194,14 +200,18 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
 
                 {/* Class Side List*/}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    <ClassSideList
-                        classDisplay={classDisplay}
-                        sideInfoHeight={sideInfoHeight}
-                        data={dataForClassSideList()}
-                    />
+                    {classAmount <= MAX_CLASSES &&
+                        <ClassSideList
+                            classDisplay={classDisplay}
+                            sideInfoHeight={sideInfoHeight}
+                            data={dataForClassSideList()}
+                        />
+                    }
                 </Col>
             </Row>
-            <InfoModal handleModalClose={handleModalClose} show={show} data={data} />
+            {classAmount <= MAX_CLASSES &&
+                <InfoModal handleModalClose={handleModalClose} show={show} data={data} />
+            }
         </>
     );
 }
