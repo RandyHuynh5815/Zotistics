@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {CaretDownFill, XLg, BoxArrowUpRight} from 'react-bootstrap-icons'
+import {CaretDownFill} from 'react-bootstrap-icons'
 import {Accordion, Button, Card, Dropdown, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {calculateData} from "../Search/calculations";
 import './Data.css'

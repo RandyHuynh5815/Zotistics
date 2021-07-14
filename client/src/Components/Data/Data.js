@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {Row, Col, FormCheck, Button, Card, Accordion} from "react-bootstrap";
+import {Row, Col, FormCheck, Button} from "react-bootstrap";
 import { Bar } from 'react-chartjs-2';
 import InfoModal from './Modal'
 import ClassSideList from "./ClassSideList";
 import InstructorSideList from "./InstructorSideList";
-// {data, nightMode, graphDataPopulation, graphDataPercent, setResults, queryParams}
+
 export default function Data(props) {
-    // const [instructorAmount] = useState(props.data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
-    // const [classAmount] = useState(props.data.map(x => x.count).reduce((a, b) => a + b));
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
@@ -146,14 +144,20 @@ export default function Data(props) {
                 <Col sm={8}>
                     {/* Links to expand Instructor and Classes Lists */}
                     <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
-                        <div className="flex-even">
-                            <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{props.instructorAmount} Instructors</u></Button>
+                        <div className="align-self-center">
+                            {props.instructorAmount <= MAX_INSTRUCTORS
+                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{props.instructorAmount} Instructors</u></Button>
+                                : <p className="text-decoration-none shadow-none text-dark m-0">{props.instructorAmount} Instructors</p>
+                            }
                         </div>
-                        <div className="flex-even text-center">
+                        <div className="text-center">
                             <h5 className="main-text-color">{props.data.length === 1 ? props.data[0].quarter + ' ' + props.data[0].year : 'Multiple'}</h5>
                         </div>
-                        <div className="flex-even text-right">
-                            <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{props.classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
+                        <div className="text-right align-self-center">
+                            {props.classAmount <= MAX_CLASSES
+                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{props.classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
+                                : <p className="text-decoration-none shadow-none text-dark m-0">{props.classAmount} Classes</p>
+                            }
                         </div>
                     </Row>
 
