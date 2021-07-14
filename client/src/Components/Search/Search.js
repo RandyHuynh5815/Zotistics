@@ -46,6 +46,7 @@ export default function Search({ nightMode }) {
     const [results, setResults] = useState([]);
     const [resultsPercent, setResultsPercent] = useState([]);
     const [resultsPopulation, setResultsPopulation] = useState([]);
+    const [queryParams, setQueryParams] = useState();
     let query = new URLSearchParams(useLocation().search);
 
     const EMPTY_STATE = {
@@ -72,10 +73,12 @@ export default function Search({ nightMode }) {
     //check currentform in forms and update lastformid on change of forms{}
     useEffect(() => updateFormNumbers(), [forms]);
 
-    // useEffect(()=>{
-    //     setResultsPercent(dataForGraph(results, true));
-    //     setResultsPopulation(dataForGraph(results, false));
-    // }, [results])
+    useEffect(()=> {
+        setResultsPercent(dataForGraph(results, true));
+        setResultsPopulation(dataForGraph(results, false));
+    }, [results])
+
+
     /*
       checks if currentForm is in forms{}
       if not, set currentforms to last formID
@@ -152,7 +155,6 @@ export default function Search({ nightMode }) {
     const reassignColors = (formStates) => {
         let i = 0;
         for (let f in formStates) {
-            console.log(f);
             formStates[f].color = `hsl(${HSL[i][0]}, ${HSL[i][1]}%, ${HSL[i][2]}%)`
             i++;
         }
@@ -232,16 +234,6 @@ export default function Search({ nightMode }) {
     fetches results for one particular form as JSON
     */
     const fetchDataFromForm = async (formID) => {
-        // return fetch("/search", {
-        //     method: "post",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(forms[formID]),
-        // }).then((res) => res.json())
-        //     .then((res) => {
-        //         return Object.assign({ color: forms[formID].color }, res)
-        //     })
         return fetch(API_URL, {
             body: JSON.stringify({"query": calc.searchQuery(forms[formID])}),
             method: 'POST',
@@ -254,21 +246,10 @@ export default function Search({ nightMode }) {
                 let params = forms[formID];
                 let filtered = calc.filter(data.data.grades.grade_distributions, params.excludePNP, params.covid19, params.lowerDiv, params.upperDiv);
                 let classList = filtered.reverse() // reversed to order it from most recent to oldest
-                calc.addData(classList);
-                let count = classList.length; // total amount of classes in query
-                let stats = calc.cumulativeData(data, classList, params); // object that has grade data
-                let classes = calc.classList(classList);
-                let instructors = calc.instructorList(classList);
-                let displayTerm = calc.quarterYear(params.quarters, params.years); // used to display term in results page above graph
+                let result = calc.calculateData(classList, params, data)
+                setQueryParams(params);
 
-                let result = {count: count, a: stats.a, b: stats.b, c: stats.c, d: stats.d, f: stats.f, p: stats.p, np: stats.np,
-                    averageGPA: stats.gpa, classes: classes, instructors: instructors,
-                    instructor: params.instructor, quarter: displayTerm.quarter, year: displayTerm.year,
-                    department: params.department, classNumber: params.classNumber,
-                    classCode: params.classCode, courseList: classList
-                };
-
-                return Object.assign({ color: forms[formID].color }, result)
+                return Object.assign({ color: forms[formID].color }, result);
             });
     }
 
@@ -290,10 +271,9 @@ export default function Search({ nightMode }) {
             );
         };
         getResultData().then((res) => {
-            console.log('res', res)
             setResults(res);
-            setResultsPercent(dataForGraph(res, true));
-            setResultsPopulation(dataForGraph(res, false));
+            // setResultsPercent(dataForGraph(res, true));
+            // setResultsPopulation(dataForGraph(res, false));
         });
     };
 
@@ -348,6 +328,10 @@ export default function Search({ nightMode }) {
                     graphDataPopulation={resultsPopulation}
                     graphDataPercent={resultsPercent}
                     nightMode={nightMode}
+                    setResults={setResults}
+                    queryParams={queryParams}
+                    instructorAmount={results.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b)}
+                    classAmount={results.map(x => x.count).reduce((a, b) => a + b)}
                 />
                 }
             </Container>

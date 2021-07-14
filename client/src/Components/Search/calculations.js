@@ -16,12 +16,14 @@ export function classList(data){
             classes[className].courses.push(course);
         } else {
             classes[className] = {count: 1, courses: [course]};
+            classes[className].department = c.course.department
+            classes[className].number = c.course.number
         }
     }
 
     // turns classes object into an array of objects
     return Object.entries(classes).map(([key, value]) => ({
-        name: key, count: value.count, courses: value.courses
+        name: key, count: value.count, courses: value.courses, department: value.department, number: value.number
     }))
 }
 
@@ -97,10 +99,10 @@ export function addData(data){
 /*
   Sums up the amount of grades in the query and averages the gpa
  */
-export function cumulativeData(original_data, data, params){
+export function cumulativeData(original_data, data, params, option = true){
     let stats = {a: 0, b: 0, c: 0, d: 0, f: 0, p: 0, np: 0, gpa: 0}
 
-    if(!params.excludePNP && !params.covid19 && !params.lowerDiv && !params.upperDiv){ // no advanced options
+    if(option && !params.excludePNP && !params.covid19 && !params.lowerDiv && !params.upperDiv){ // no advanced options
         let agg = original_data.data.grades.aggregate
         stats.a = agg.sum_grade_a_count;
         stats.b = agg.sum_grade_b_count;
@@ -173,6 +175,27 @@ export function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
     return final
 }
 
+/*
+    Combines all calculations into one function
+ */
+export function calculateData(data, params, originalData, option) {
+    console.log('data', data)
+    addData(data);
+    let count = data.length; // total amount of classes in query
+    console.log('data length', count)
+    let stats = cumulativeData(originalData, data, params, option); // object that has grade data
+    let classes = classList(data);
+    let instructors = instructorList(data);
+    let displayTerm = quarterYear(params.quarters, params.years); // used to display term in results page above graph
+
+    return {count: count, a: stats.a, b: stats.b, c: stats.c, d: stats.d, f: stats.f, p: stats.p, np: stats.np,
+        averageGPA: stats.gpa, classes: classes, instructors: instructors,
+        instructor: params.instructor, quarter: displayTerm.quarter, year: displayTerm.year,
+        department: params.department, classNumber: params.classNumber,
+        classCode: params.classCode, courseList: data
+    };
+}
+
 export function searchQuery(params){
     let quarters = params.quarters.join(';');
     let years = params.years.join(';');
@@ -223,5 +246,3 @@ export function searchQuery(params){
         }
         `
 }
-
-//module.exports = {classList, instructorList, filter, cumulativeData, addData, quarterYear, searchQuery};

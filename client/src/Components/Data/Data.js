@@ -4,16 +4,16 @@ import { Bar } from 'react-chartjs-2';
 import InfoModal from './Modal'
 import ClassSideList from "./ClassSideList";
 import InstructorSideList from "./InstructorSideList";
-
-export default function Data({data, nightMode, graphDataPopulation, graphDataPercent}) {
-    const [instructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
-    const [classAmount] = useState(data.map(x => x.count).reduce((a, b) => a + b));
+// {data, nightMode, graphDataPopulation, graphDataPercent, setResults, queryParams}
+export default function Data(props) {
+    // const [instructorAmount] = useState(props.data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b));
+    // const [classAmount] = useState(props.data.map(x => x.count).reduce((a, b) => a + b));
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
     const [chartSwitch, setChartSwitch] = useState(true); //true = percent, false = numbers
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
-    const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
+    const [chartData, setChartData] = useState({labels:labels, datasets: props.graphDataPercent});
     const [show, setShow] = useState(false); // Modal display
 
     // caps viewable side list
@@ -22,6 +22,10 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
 
     const handleModalClose = () => setShow(false);
     const handleModalShow = () => setShow(true);
+
+    useEffect(() => {
+        setChartData({labels:labels, datasets: props.graphDataPercent})
+    }, [props.data])
 
     var options = {
         responsive: true,
@@ -34,7 +38,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     beginAtZero: true
                 },
                 gridLines: {
-                    color: nightMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
+                    color: props.nightMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
                 },
                 scaleLabel: {
                     display: true,
@@ -47,7 +51,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     labelString: 'Grade'
                 },
                 gridLines: {
-                    color: nightMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
+                    color: props.nightMode ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
                 },
             }]
         }
@@ -56,7 +60,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
 
 
     useEffect(()=>updateChartOptions(), [chartSwitch])
-    useEffect(()=>updateChartOptions(), [nightMode])
+    useEffect(()=>updateChartOptions(), [props.nightMode])
     useEffect(() => init(), []);
     //when gradelistpercentage changes, set chart data to it
 
@@ -101,7 +105,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                         beginAtZero: true
                     },
                     gridLines: {
-                        color: nightMode ?  "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
+                        color: props.nightMode ?  "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
                     },
                     scaleLabel: {
                         display: true,
@@ -114,24 +118,12 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                         labelString: 'Grade'
                     },
                     gridLines: {
-                        color: nightMode ?  "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
+                        color: props.nightMode ?  "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)" //change later
                     },
                 }]
             }
         }
-        setChartData({labels:labels, datasets: chartSwitch?graphDataPercent:graphDataPopulation});
-    }
-
-    const dataForClassSideList = () => {
-        return data.map(x => {
-           return x.classes
-        })
-    }
-
-    const dataForInstructorSideList = () => {
-        return data.map(x => {
-            return x.instructors
-        })
+        setChartData({labels:labels, datasets: chartSwitch?props.graphDataPercent:props.graphDataPopulation});
     }
 
     return (
@@ -139,11 +131,13 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
             <Row className="data-row">
                 {/* Instructor Side List */}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    {instructorAmount <= MAX_INSTRUCTORS &&
+                    {props.instructorAmount <= MAX_INSTRUCTORS &&
                         <InstructorSideList
                             instructorDisplay={instructorDisplay}
                             sideInfoHeight={sideInfoHeight}
-                            data={dataForInstructorSideList()}
+                            data={props.data}
+                            setResults={props.setResults}
+                            queryParams={props.queryParams}
                         />
                     }
                 </Col>
@@ -153,13 +147,13 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                     {/* Links to expand Instructor and Classes Lists */}
                     <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                         <div className="flex-even">
-                            <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></Button>
+                            <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{props.instructorAmount} Instructors</u></Button>
                         </div>
                         <div className="flex-even text-center">
-                            <h5 className="main-text-color">{data.length === 1 ? data[0].quarter + ' ' + data[0].year : 'Multiple'}</h5>
+                            <h5 className="main-text-color">{props.data.length === 1 ? props.data[0].quarter + ' ' + props.data[0].year : 'Multiple'}</h5>
                         </div>
                         <div className="flex-even text-right">
-                            <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
+                            <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{props.classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
                         </div>
                     </Row>
 
@@ -183,7 +177,7 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
                             </Button>
                         </Col>
                         <Col sm={6} className="text-center">
-                            <p className="main-text-color">GPA: {data.map(obj =>obj.averageGPA).join(", ")}</p>
+                            <p className="main-text-color">GPA: {props.data.map(obj =>obj.averageGPA).join(", ")}</p>
                         </Col>
                         <Col sm={3} className="text-right">
                             <FormCheck
@@ -200,17 +194,19 @@ export default function Data({data, nightMode, graphDataPopulation, graphDataPer
 
                 {/* Class Side List*/}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    {classAmount <= MAX_CLASSES &&
+                    {props.classAmount <= MAX_CLASSES &&
                         <ClassSideList
                             classDisplay={classDisplay}
                             sideInfoHeight={sideInfoHeight}
-                            data={dataForClassSideList()}
+                            data={props.data}
+                            setResults={props.setResults}
+                            queryParams={props.queryParams}
                         />
                     }
                 </Col>
             </Row>
-            {classAmount <= MAX_CLASSES &&
-                <InfoModal handleModalClose={handleModalClose} show={show} data={data} />
+            {props.classAmount <= MAX_CLASSES &&
+                <InfoModal handleModalClose={handleModalClose} show={show} data={props.data} />
             }
         </>
     );

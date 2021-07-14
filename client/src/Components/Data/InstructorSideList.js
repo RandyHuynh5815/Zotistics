@@ -1,9 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Card, Dropdown, Button, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {calculateData} from "../Search/calculations";
 import './Data.css'
-import {Card, Dropdown} from "react-bootstrap";
 
-export default function InstructorSideList({ instructorDisplay, sideInfoHeight, data }) {
-    const [instructors , setInstructors] = useState(data);
+export default function InstructorSideList(props) {
+    const [instructors , setInstructors] = useState(props.data.map(x => x.instructors)); // condensed data
+
+    useEffect(() => {
+        setInstructors(props.data.map(x => x.instructors))
+    }, [props.data])
 
     const handleSortAmount = (e) => {
         e.preventDefault();
@@ -35,8 +40,25 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
         setInstructors(result);
     }
 
+    const removeInstructor = (e, idx, inst) => {
+        e.preventDefault();
+        let result = JSON.parse(JSON.stringify(props.data));
+        let cl = result[idx].courseList;
+
+        for(let i = cl.length - 1; i >= 0; i--){
+            if(cl[i].course_offering.instructors[0].shortened_name === inst){
+                cl.splice(i, 1);
+            }
+        }
+
+        let final = calculateData(result[idx].courseList, props.queryParams, undefined, false)
+        final.color = result[idx].color
+        result[idx] = final
+        props.setResults(result);
+    }
+
     return (
-        <div style={{ display: instructorDisplay}}>
+        <div style={{ display: props.instructorDisplay}}>
             <Dropdown className="text-right">
                 <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
                     Sort
@@ -46,16 +68,21 @@ export default function InstructorSideList({ instructorDisplay, sideInfoHeight, 
                     <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <Card className="overflow-auto shadow-sm" style={{ maxHeight: sideInfoHeight }}>
+            <Card className="overflow-auto shadow-sm" style={{ maxHeight: props.sideInfoHeight }}>
                 <Card.Body className="px-0">
-                    <h5 className="card-title mb-0">Instructors</h5>
+                    <h5 className="card-title mb-1">Instructors</h5>
                     {instructors.map((x, idx) => (
                         <div key={idx}>
                             {x.map((j, idxn) => (
-                                <p key={idxn} className="card-text text-decoration-none my-2" >{j.name} • {j.count}</p>
+                                <ToggleButtonGroup key={idxn} type="checkbox" className="">
+                                    <ToggleButton className="sidelist-item px-1" value={1} onClick={e => e.target.blur()}>
+                                        {j.name} • {j.count}
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
                             ))}
+                            {/* Adds line divider between different query tabs*/}
                             {idx < instructors.length - 1 &&
-                                <p className="p-0 m-0">---</p>
+                            <p className="p-0 m-0">---</p>
                             }
                         </div>
                     ))}

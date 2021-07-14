@@ -1,9 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {CaretDownFill, XLg, BoxArrowUpRight} from 'react-bootstrap-icons'
+import {Accordion, Button, Card, Dropdown, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import {calculateData} from "../Search/calculations";
 import './Data.css'
-import {Accordion, Button, Card, Dropdown} from "react-bootstrap";
 
-export default function ClassSideList({classDisplay, sideInfoHeight, data}){
-    const [courses , setCourses] = useState(data);
+export default function ClassSideList(props){
+    const [courses , setCourses] = useState(props.data.map(x => x.classes)); // condensed data
+
+    useEffect(() => {
+        setCourses(props.data.map(x => x.classes))
+    }, [props.data])
 
     const handleSortAmount = (e) => {
         e.preventDefault();
@@ -47,8 +53,25 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
         setCourses(result);
     }
 
+    const removeCourse = (e, idx, dept, num) => {
+        e.preventDefault();
+        let result = JSON.parse(JSON.stringify(props.data));
+        let cl = result[idx].courseList;
+
+        for(let i = cl.length - 1; i >= 0; i--){
+            if(cl[i].course_offering.course.department === dept && cl[i].course_offering.course.number === num){
+                cl.splice(i, 1);
+            }
+        }
+
+        let final = calculateData(result[idx].courseList, props.queryParams, undefined, false)
+        final.color = result[idx].color
+        result[idx] = final
+        props.setResults(result);
+    }
+
     return (
-        <div style={{ display: classDisplay }}>
+        <div style={{ display: props.classDisplay }}>
             <Dropdown className="text-left">
                 <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
                     Sort
@@ -58,18 +81,24 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
                     <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <Card className="overflow-auto shadow-sm" style={{ maxHeight: sideInfoHeight }}>
+            <Card className="overflow-auto shadow-sm" style={{ maxHeight: props.sideInfoHeight }}>
                 <Card.Body className="px-0">
                     <h5 className="card-title mb-0">Classes</h5>
-                    <p className="mb-0" style={{ fontSize: "0.75rem" }}><i>Click class to expand</i></p>
-                    {courses.map((x, idx) => (
-                        <div key={idx}>
+                    {courses.map((x, i) => (
+                        <div key={i}>
                         {x.map((c, idx) => (
-                            <Accordion key={idx}>
-                                <Accordion.Toggle className="text-decoration-none shadow-none text-dark" as={Button}
+                            <Accordion key={idx} className="mb-1">
+                                <ToggleButtonGroup type="checkbox" className="">
+                                    <ToggleButton className="sidelist-item px-1" id="tbg-check-2" value={1} onClick={e => e.target.blur()}>
+                                        {c.name} • {c.count}
+                                    </ToggleButton>
+                                </ToggleButtonGroup>
+
+                                <Accordion.Toggle className="card-text text-decoration-none shadow-none sidelist-item px-1" as={Button}
                                                   variant="link" eventKey="0">
-                                    {c.name} • {c.count}
+                                    <CaretDownFill fontSize="0.65rem"/>
                                 </Accordion.Toggle>
+
                                 <Accordion.Collapse eventKey="0">
                                     <div>
                                         {c.courses.map((j, idx) => (
@@ -80,7 +109,7 @@ export default function ClassSideList({classDisplay, sideInfoHeight, data}){
                                 </Accordion.Collapse>
                             </Accordion>
                         ))}
-                        {idx < courses.length - 1 &&
+                        {i < courses.length - 1 &&
                         <p className="p-0 m-0">---</p>
                         }
                         </div>
