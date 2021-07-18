@@ -11,7 +11,7 @@ import FormTabs from "./FormTabs"
 import {useLocation} from 'react-router-dom';
 const calc = require('./calculations');
 
-const OPACITY = 0.6
+//const OPACITY = 0.6
 const HSL = [[204, 82, 57], //blue
     [130, 84, 73], //green
     [8, 100, 67], //orange
@@ -44,8 +44,8 @@ export default function Search({ nightMode }) {
     const [currentForm, setCurrentForm] = useState(1);
     const [lastFormID, setLastFormID] = useState(0);
     const [results, setResults] = useState([]);
-    const [resultsPercent, setResultsPercent] = useState([]);
-    const [resultsPopulation, setResultsPopulation] = useState([]);
+    // const [resultsPercent, setResultsPercent] = useState([]);
+    // const [resultsPopulation, setResultsPopulation] = useState([]);
     const [queryParams, setQueryParams] = useState();
     let query = new URLSearchParams(useLocation().search);
 
@@ -73,10 +73,10 @@ export default function Search({ nightMode }) {
     //check currentform in forms and update lastformid on change of forms{}
     useEffect(() => updateFormNumbers(), [forms]);
 
-    useEffect(()=> {
-        setResultsPercent(dataForGraph(results, true));
-        setResultsPopulation(dataForGraph(results, false));
-    }, [results])
+    // useEffect(()=> {
+    //     setResultsPercent(dataForGraph(results, true));
+    //     setResultsPopulation(dataForGraph(results, false));
+    // }, [results])
 
 
     /*
@@ -171,46 +171,46 @@ export default function Search({ nightMode }) {
       ]
     */
 
-    const getGraphColors = (numGraphs) => {
+    // const getGraphColors = (numGraphs) => {
+    //
+    //     const NUMBARS = 7;
+    //
+    //     //im going straight to hell
+    //     let colors = HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
+    //
+    //     if (numGraphs === 1) {
+    //         //change the first one to yellow for pnp
+    //         let [h, s, l] = [43, 100, 67];
+    //         colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+    //         colors[0][6] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+    //     }
+    //     return colors;
+    // }
 
-        const NUMBARS = 7;
-
-        //im going straight to hell
-        let colors = HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
-
-        if (numGraphs === 1) {
-            //change the first one to yellow for pnp
-            let [h, s, l] = [43, 100, 67];
-            colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
-            colors[0][6] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
-        }
-        return colors;
-    }
-
-    /*
-    Creates an array of objects with the grade data and colors
-    to put in the graph dataset in Data.js
-     */
-    const dataForGraph = (gradeData, percent) => {
-        let dataset = [];
-        let colors = getGraphColors(Object.keys(gradeData).length);
-
-        let count = 0;
-        for (let data of gradeData) {
-            let dataPopulation = [data.a, data.b, data.c, data.d, data.f, data.p, data.np];
-            let sum = dataPopulation.reduce((a, b) => a + b);
-            let dataPercentage = dataPopulation.map(d => 100 * d / sum);
-
-            dataset.push({
-                label: `${count}`,
-                data: percent ? dataPercentage : dataPopulation,
-                backgroundColor: colors[count]
-            });
-            count++;
-        }
-
-        return dataset;
-    }
+    // /*
+    // Creates an array of objects with the grade data and colors
+    // to put in the graph dataset in Data.js
+    //  */
+    // const dataForGraph = (gradeData, percent) => {
+    //     let dataset = [];
+    //     let colors = getGraphColors(Object.keys(gradeData).length);
+    //
+    //     let count = 0;
+    //     for (let data of gradeData) {
+    //         let dataPopulation = [data.a, data.b, data.c, data.d, data.f, data.p, data.np];
+    //         let sum = dataPopulation.reduce((a, b) => a + b);
+    //         let dataPercentage = dataPopulation.map(d => 100 * d / sum);
+    //
+    //         dataset.push({
+    //             label: `${count}`,
+    //             data: percent ? dataPercentage : dataPopulation,
+    //             backgroundColor: colors[count]
+    //         });
+    //         count++;
+    //     }
+    //
+    //     return dataset;
+    // }
 
     const fetchInstructors = async () => {
         fetch(API_URL, {
@@ -272,8 +272,6 @@ export default function Search({ nightMode }) {
         };
         getResultData().then((res) => {
             setResults(res);
-            // setResultsPercent(dataForGraph(res, true));
-            // setResultsPopulation(dataForGraph(res, false));
         });
     };
 
@@ -322,16 +320,13 @@ export default function Search({ nightMode }) {
                     </Row>
                 </Form>
 
-                {results.length !== 0 && resultsPopulation.length !== 0 && resultsPercent.length !==0 &&
+                {results.length !== 0 &&
                 <Data
                     data={results}
-                    graphDataPopulation={resultsPopulation}
-                    graphDataPercent={resultsPercent}
                     nightMode={nightMode}
                     setResults={setResults}
                     queryParams={queryParams}
-                    instructorAmount={results.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b)}
-                    classAmount={results.map(x => x.count).reduce((a, b) => a + b)}
+                    HSL={HSL}
                 />
                 }
             </Container>

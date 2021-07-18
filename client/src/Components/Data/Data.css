@@ -30,7 +30,7 @@
 }
 
 .sidelist-item:hover {
-    background-color: rgba(71, 72, 76, 0.1)!important;
+    background-color: rgba(71, 72, 76, 0.11)!important;
     color: var(--main-text-color);
 }
 

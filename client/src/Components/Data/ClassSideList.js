@@ -7,9 +7,9 @@ import './Data.css'
 export default function ClassSideList(props){
     const [courses , setCourses] = useState(props.data.map(x => x.classes)); // condensed data
 
-    useEffect(() => {
-        setCourses(props.data.map(x => x.classes))
-    }, [props.data])
+    // useEffect(() => {
+    //     setCourses(props.data.map(x => x.classes))
+    // }, [props.data])
 
     const handleSortAmount = (e) => {
         e.preventDefault();

@@ -6,13 +6,18 @@ import ClassSideList from "./ClassSideList";
 import InstructorSideList from "./InstructorSideList";
 
 export default function Data(props) {
+    const [data, setData] = useState(JSON.parse(JSON.stringify(props.data)))
+    const [instructorAmount, setInstructorAmount] = useState(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b))
+    const [classAmount, setClassAmount] = useState(data.map(x => x.count).reduce((a, b) => a + b))
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
     const [chartSwitch, setChartSwitch] = useState(true); //true = percent, false = numbers
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
-    const [chartData, setChartData] = useState({labels:labels, datasets: props.graphDataPercent});
     const [show, setShow] = useState(false); // Modal display
+    const [excludeInstructors, setExcludeInstructors] = useState(new Set()) // instructor name
+    const [excludeCourses, setExcludeCourses] = useState(new Set()) // course department and number
+    const [removedClasses, setRemovedClasses] = useState(new Set()) // removed course objects
 
     // caps viewable side list
     const MAX_INSTRUCTORS = 500
@@ -22,10 +27,61 @@ export default function Data(props) {
     const handleModalShow = () => setShow(true);
 
     useEffect(() => {
-        setChartData({labels:labels, datasets: props.graphDataPercent})
-    }, [props.data])
+        let percent = dataForGraph(data, true);
+        setGraphDataPercent(percent);
+        setGraphDataPopulation(dataForGraph(data, false));
+        setChartData({labels:labels, datasets: percent})
+        // setInstructorAmount(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b))
+        // setClassAmount(data.map(x => x.count).reduce((a, b) => a + b))
+    }, [data])
 
-    var options = {
+    const getGraphColors = (numGraphs) => {
+        const NUMBARS = 7;
+        const OPACITY = 0.6
+
+        //im going straight to hell
+        let colors = props.HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
+
+        if (numGraphs === 1) {
+            //change the first one to yellow for pnp
+            let [h, s, l] = [43, 100, 67];
+            colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+            colors[0][6] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
+        }
+        return colors;
+    }
+
+    /*
+        Creates an array of objects with the grade data and colors
+        to put in the graph dataset in Data.js
+    */
+    const dataForGraph = (gradeData, percent) => {
+        let dataset = [];
+        let colors = getGraphColors(Object.keys(gradeData).length);
+        let count = 0;
+
+        for (let data of gradeData) {
+            let dataPopulation = [data.a, data.b, data.c, data.d, data.f, data.p, data.np];
+            let sum = dataPopulation.reduce((a, b) => a + b);
+            let dataPercentage = dataPopulation.map(d => 100 * d / sum);
+
+            dataset.push({
+                label: `${count}`,
+                data: percent ? dataPercentage : dataPopulation,
+                // data: dataPercentage,
+                backgroundColor: colors[count]
+            });
+            count++;
+        }
+
+        return dataset;
+    }
+
+    const [graphDataPercent, setGraphDataPercent] = useState(dataForGraph(data, true));
+    const [graphDataPopulation, setGraphDataPopulation] = useState(dataForGraph(data, false));
+    const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
+
+    let options = {
         responsive: true,
         maintainAspectRatio: true,
         legend: { display: false },
@@ -121,7 +177,7 @@ export default function Data(props) {
                 }]
             }
         }
-        setChartData({labels:labels, datasets: chartSwitch?props.graphDataPercent:props.graphDataPopulation});
+        setChartData({labels:labels, datasets: chartSwitch?graphDataPercent:graphDataPopulation});
     }
 
     return (
@@ -129,13 +185,18 @@ export default function Data(props) {
             <Row className="data-row">
                 {/* Instructor Side List */}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    {props.instructorAmount <= MAX_INSTRUCTORS &&
+                    {instructorAmount <= MAX_INSTRUCTORS &&
                         <InstructorSideList
                             instructorDisplay={instructorDisplay}
                             sideInfoHeight={sideInfoHeight}
-                            data={props.data}
-                            setResults={props.setResults}
+                            data={data}
+                            setData={setData}
                             queryParams={props.queryParams}
+                            removedClasses={removedClasses}
+                            setRemovedClasses={setRemovedClasses}
+                            exludeInstructors={excludeInstructors}
+                            setExcludeInstructors={setExcludeInstructors}
+                            exludeCourses={excludeCourses}
                         />
                     }
                 </Col>
@@ -145,18 +206,18 @@ export default function Data(props) {
                     {/* Links to expand Instructor and Classes Lists */}
                     <Row className="justify-content-between d-flex mb-1 px-2" id="topDiv">
                         <div className="align-self-center">
-                            {props.instructorAmount <= MAX_INSTRUCTORS
-                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{props.instructorAmount} Instructors</u></Button>
-                                : <p className="text-decoration-none shadow-none text-dark m-0">{props.instructorAmount} Instructors</p>
+                            {instructorAmount <= MAX_INSTRUCTORS
+                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pl-0" onClick={displayInstructorList} style={{ cursor: "pointer", userSelect: "none" }}><span style={{ fontFamily: "Symbola" }}>&#x2B9C;</span> <u>{instructorAmount} Instructors</u></Button>
+                                : <p className="text-decoration-none shadow-none text-dark m-0">{instructorAmount} Instructors</p>
                             }
                         </div>
                         <div className="text-center">
-                            <h5 className="main-text-color">{props.data.length === 1 ? props.data[0].quarter + ' ' + props.data[0].year : 'Multiple'}</h5>
+                            <h5 className="main-text-color">{data.length === 1 ? data[0].quarter + ' ' + data[0].year : 'Multiple'}</h5>
                         </div>
                         <div className="text-right align-self-center">
-                            {props.classAmount <= MAX_CLASSES
-                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{props.classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
-                                : <p className="text-decoration-none shadow-none text-dark m-0">{props.classAmount} Classes</p>
+                            {classAmount <= MAX_CLASSES
+                                ? <Button variant='link' className="text-decoration-none shadow-none text-dark pr-0" onClick={displayClassList} style={{ cursor: "pointer", userSelect: "none" }}><u>{classAmount} Classes</u><span style={{ fontFamily: "Symbola" }}> &#x2B9E;</span></Button>
+                                : <p className="text-decoration-none shadow-none text-dark m-0">{classAmount} Classes</p>
                             }
                         </div>
                     </Row>
@@ -181,7 +242,7 @@ export default function Data(props) {
                             </Button>
                         </Col>
                         <Col sm={6} className="text-center">
-                            <p className="main-text-color">GPA: {props.data.map(obj =>obj.averageGPA).join(", ")}</p>
+                            <p className="main-text-color">GPA: {data.map(obj =>obj.averageGPA).join(", ")}</p>
                         </Col>
                         <Col sm={3} className="text-right">
                             <FormCheck
@@ -198,19 +259,19 @@ export default function Data(props) {
 
                 {/* Class Side List*/}
                 <Col sm={2} className="justify-content-center text-center px-0">
-                    {props.classAmount <= MAX_CLASSES &&
+                    {classAmount <= MAX_CLASSES &&
                         <ClassSideList
                             classDisplay={classDisplay}
                             sideInfoHeight={sideInfoHeight}
-                            data={props.data}
-                            setResults={props.setResults}
+                            data={data}
+                            setData={setData}
                             queryParams={props.queryParams}
                         />
                     }
                 </Col>
             </Row>
-            {props.classAmount <= MAX_CLASSES &&
-                <InfoModal handleModalClose={handleModalClose} show={show} data={props.data} />
+            {classAmount <= MAX_CLASSES &&
+                <InfoModal handleModalClose={handleModalClose} show={show} data={data} />
             }
         </>
     );

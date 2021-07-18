@@ -110,7 +110,7 @@ export function cumulativeData(original_data, data, params, option = true){
         stats.d = agg.sum_grade_d_count;
         stats.f = agg.sum_grade_f_count;
         stats.p = agg.sum_grade_p_count;
-        stats.np = agg.sum_grade_p_count;
+        stats.np = agg.sum_grade_np_count;
         stats.gpa = agg.average_gpa.toFixed(2);
 
     } else { // if at least one advanced option is true
@@ -179,10 +179,8 @@ export function filter(data, excludePNP, covid19, lowerDiv, upperDiv){
     Combines all calculations into one function
  */
 export function calculateData(data, params, originalData, option) {
-    console.log('data', data)
     addData(data);
     let count = data.length; // total amount of classes in query
-    console.log('data length', count)
     let stats = cumulativeData(originalData, data, params, option); // object that has grade data
     let classes = classList(data);
     let instructors = instructorList(data);
