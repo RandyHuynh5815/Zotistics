@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {CaretDownFill} from 'react-bootstrap-icons'
 import {Accordion, Button, Card, Dropdown, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {calculateData} from "../Search/calculations";
@@ -127,7 +127,7 @@ export default function ClassSideList(props){
                             </Accordion>
                         ))}
                         {idx < courses.length - 1 &&
-                        <p className="p-0 m-0">---</p>
+                        <p className="p-0 m-0">-----</p>
                         }
                         </div>
                     ))}
