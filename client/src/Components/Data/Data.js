@@ -245,9 +245,11 @@ export default function Data(props) {
                     {/* Buttons and GPA */}
                     <Row className="justify-content-center">
                         <Col sm={3}>
+                            {classAmount <= MAX_CLASSES &&
                             <Button variant="outline-secondary" size="sm" onClick={handleModalShow}>
                                 Details
                             </Button>
+                            }
                         </Col>
                         <Col sm={6} className="text-center">
                             <p className="main-text-color">GPA: {data.map(obj =>obj.averageGPA).join(", ")}</p>
