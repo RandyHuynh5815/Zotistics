@@ -92,7 +92,7 @@ export default function InstructorSideList(props) {
                         <div key={idx}>
                             {x.map(j => (
                                 <ToggleButtonGroup key={`${j.name}${idx}`} type="checkbox" className="">
-                                    <ToggleButton className="sidelist-item px-1" value={1} onClick={e => e.target.blur()} onChange={e => modifyInstructor(e, idx, j.name)}>
+                                    <ToggleButton className="sidelist-item px-1 mb-1" value={1} onClick={e => e.target.blur()} onChange={e => modifyInstructor(e, idx, j.name)}>
                                         {j.name} • {j.count}
                                     </ToggleButton>
                                 </ToggleButtonGroup>
