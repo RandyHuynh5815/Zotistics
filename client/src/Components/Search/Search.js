@@ -47,6 +47,7 @@ export default function Search({ nightMode }) {
     // const [resultsPercent, setResultsPercent] = useState([]);
     // const [resultsPopulation, setResultsPopulation] = useState([]);
     const [queryParams, setQueryParams] = useState();
+    const [showFormTabs, setShowFormTabs] = useState(false) // only show after first search
     let query = new URLSearchParams(useLocation().search);
 
     const EMPTY_STATE = {
@@ -161,57 +162,6 @@ export default function Search({ nightMode }) {
         return formStates;
     }
 
-    /*
-      returns array of colors for use in chartjs
-      [
-        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 1(always blue n yellow)
-        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 2
-        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 3
-        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor]   //form 4
-      ]
-    */
-
-    // const getGraphColors = (numGraphs) => {
-    //
-    //     const NUMBARS = 7;
-    //
-    //     //im going straight to hell
-    //     let colors = HSL.map(([h, s, l]) => Array(...Array(NUMBARS)).map(() => `hsla(${h},${s}%,${l}%,${OPACITY})`))
-    //
-    //     if (numGraphs === 1) {
-    //         //change the first one to yellow for pnp
-    //         let [h, s, l] = [43, 100, 67];
-    //         colors[0][5] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
-    //         colors[0][6] = `hsla(${h},${s}%,${l}%,${OPACITY})`;
-    //     }
-    //     return colors;
-    // }
-
-    // /*
-    // Creates an array of objects with the grade data and colors
-    // to put in the graph dataset in Data.js
-    //  */
-    // const dataForGraph = (gradeData, percent) => {
-    //     let dataset = [];
-    //     let colors = getGraphColors(Object.keys(gradeData).length);
-    //
-    //     let count = 0;
-    //     for (let data of gradeData) {
-    //         let dataPopulation = [data.a, data.b, data.c, data.d, data.f, data.p, data.np];
-    //         let sum = dataPopulation.reduce((a, b) => a + b);
-    //         let dataPercentage = dataPopulation.map(d => 100 * d / sum);
-    //
-    //         dataset.push({
-    //             label: `${count}`,
-    //             data: percent ? dataPercentage : dataPopulation,
-    //             backgroundColor: colors[count]
-    //         });
-    //         count++;
-    //     }
-    //
-    //     return dataset;
-    // }
-
     const fetchInstructors = async () => {
         fetch(API_URL, {
             body: JSON.stringify({'query': GRAPHQL_INSTRUCTOR_QUERY}),
@@ -248,6 +198,7 @@ export default function Search({ nightMode }) {
                 let classList = filtered.reverse() // reversed to order it from most recent to oldest
                 let result = calc.calculateData(classList, params, data)
                 setQueryParams(params);
+                setShowFormTabs(true);
 
                 return Object.assign({ color: forms[formID].color }, result);
             });
@@ -303,6 +254,7 @@ export default function Search({ nightMode }) {
                             </Form.Group>
                         </Col>
                     </Row>
+                    {showFormTabs &&
                     <Row className="justify-content-center">
                         <Col sm={2} />
                         <Col sm={8}>
@@ -318,6 +270,7 @@ export default function Search({ nightMode }) {
                         </Col>
                         <Col sm={2} />
                     </Row>
+                    }
                 </Form>
 
                 {results.length !== 0 &&

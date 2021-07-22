@@ -35,6 +35,15 @@ export default function Data(props) {
         // setClassAmount(data.map(x => x.count).reduce((a, b) => a + b))
     }, [data])
 
+    /*
+      returns array of colors for use in chartjs
+      [
+        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 1(always blue n yellow)
+        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 2
+        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor],  //form 3
+        [Acolor, Bcolor, Ccolor, Dcolor, Fcolor, Pcolor, NPcolor]   //form 4
+      ]
+    */
     const getGraphColors = (numGraphs) => {
         const NUMBARS = 7;
         const OPACITY = 0.6
