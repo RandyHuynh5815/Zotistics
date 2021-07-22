@@ -57,7 +57,8 @@ export default function InstructorSideList(props) {
             }
         } else { // adds back the courses with the specified instructor
             for(let course of props.removedClasses){
-                if(course.course_offering.instructors[0].shortened_name === inst) {
+                let name = `${course.course_offering.course.department} ${course.course_offering.course.number}`
+                if(course.course_offering.instructors[0].shortened_name === inst && !props.exludeCourses.has(name)) {
                     cl.push(course)
                     removed.delete(course)
                     exclude.delete(inst)
