@@ -12,7 +12,7 @@ export default function Data(props) {
     const [instructorDisplay, setInstructorDisplay] = useState("none"); //display none or inherit
     const [classDisplay, setClassDisplay] = useState("none"); //display none or inherit
     const [sideInfoHeight, setSideInfoHeight] = useState("0px"); // max height for the side cards that changes on window resize
-    const [chartSwitch, setChartSwitch] = useState(true); //true = percent, false = numbers
+    const [chartSwitch, setChartSwitch] = useState(false); //true = numbers, false = percent
     const labels =  ['A', 'B', 'C', 'D', 'F', 'P', 'NP'];
     const [show, setShow] = useState(false); // Modal display
     const [excludeInstructors, setExcludeInstructors] = useState(new Set()) // instructor name
@@ -27,9 +27,9 @@ export default function Data(props) {
     const handleModalShow = () => setShow(true);
 
     useEffect(() => {
-        let percent = dataForGraph(data, true);
+        let percent = dataForGraph(true);
         setGraphDataPercent(percent);
-        setGraphDataPopulation(dataForGraph(data, false));
+        setGraphDataPopulation(dataForGraph(false));
         setChartData({labels:labels, datasets: percent})
         // setInstructorAmount(data.map(x => Object.keys(x.instructors).length).reduce((a, b) => a + b))
         // setClassAmount(data.map(x => x.count).reduce((a, b) => a + b))
@@ -55,20 +55,19 @@ export default function Data(props) {
         Creates an array of objects with the grade data and colors
         to put in the graph dataset in Data.js
     */
-    const dataForGraph = (gradeData, percent) => {
+    const dataForGraph = (percent) => {
         let dataset = [];
-        let colors = getGraphColors(Object.keys(gradeData).length);
+        let colors = getGraphColors(Object.keys(data).length);
         let count = 0;
 
-        for (let data of gradeData) {
-            let dataPopulation = [data.a, data.b, data.c, data.d, data.f, data.p, data.np];
+        for (let d of data) {
+            let dataPopulation = [d.a, d.b, d.c, d.d, d.f, d.p, d.np];
             let sum = dataPopulation.reduce((a, b) => a + b);
-            let dataPercentage = dataPopulation.map(d => 100 * d / sum);
+            let dataPercentage = dataPopulation.map(num => (100 * num / sum).toFixed(2));
 
             dataset.push({
                 key: `${count}`,
                 data: percent ? dataPercentage : dataPopulation,
-                // data: dataPercentage,
                 backgroundColor: colors[count]
             });
             count++;
@@ -77,8 +76,8 @@ export default function Data(props) {
         return dataset;
     }
 
-    const [graphDataPercent, setGraphDataPercent] = useState(dataForGraph(data, true));
-    const [graphDataPopulation, setGraphDataPopulation] = useState(dataForGraph(data, false));
+    const [graphDataPercent, setGraphDataPercent] = useState(dataForGraph(true));
+    const [graphDataPopulation, setGraphDataPopulation] = useState(dataForGraph(false));
     const [chartData, setChartData] = useState({labels:labels, datasets: graphDataPercent});
 
     let options = {
@@ -96,7 +95,7 @@ export default function Data(props) {
                 },
                 scaleLabel: {
                     display: true,
-                    labelString: chartSwitch?"Percent":"Students"
+                    labelString: chartSwitch?"Students":"Percent"
                 }
             }],
             xAxes: [{
@@ -163,7 +162,7 @@ export default function Data(props) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: chartSwitch?"Percent":"Students"
+                        labelString: chartSwitch?"Students":"Percent"
                     }
                 }],
                 xAxes: [{
@@ -177,7 +176,7 @@ export default function Data(props) {
                 }]
             }
         }
-        setChartData({labels:labels, datasets: chartSwitch?graphDataPercent:graphDataPopulation});
+        setChartData({labels:labels, datasets: chartSwitch?graphDataPopulation:graphDataPercent});
     }
 
     return (
