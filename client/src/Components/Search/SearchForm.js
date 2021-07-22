@@ -88,6 +88,7 @@ export default function SearchForm({ formID, instructors, handleFormValueChange,
           <SelectSearch
             options={departments}
             search
+            filterOptions={fuzzySearch}
             name="department"
             onChange={(val) =>
               handleValueChange({
