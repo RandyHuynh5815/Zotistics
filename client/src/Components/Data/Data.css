@@ -1,0 +1,47 @@
+
+.sidelist-sort-btn {
+    background-color: #47484C!important;
+    border: none!important;
+    opacity: 0.5;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.sidelist-sort-btn:hover {
+    background-color: #47484C!important;
+    opacity: 0.8;
+}
+
+.sidelist-sort-btn:active {
+    background-color: #47484C!important;
+    opacity: 0.9;
+}
+
+.sidelist-item {
+    background-color: Transparent!important;
+    border: none!important;
+    color:var(--main-text-color)
+}
+
+.sidelist-item.active {
+    border: none!important;
+    background-color: rgba(220, 53, 69, 0.1)!important;
+    color:rgba(220, 53, 69, 0.9)!important;
+}
+
+.sidelist-item:hover {
+    background-color: rgba(71, 72, 76, 0.11)!important;
+    color: var(--main-text-color);
+}
+
+.sidelist-button {
+    height: 1.6rem;
+    width: 1.6rem;
+    font-size: 0.8rem!important;
+    padding: 0!important;
+}
+
+.popover {
+    background-color: transparent;
+    border: none;
+}
