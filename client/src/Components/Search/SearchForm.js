@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
-import SelectSearch from "react-select-search";
+import SelectSearch, {fuzzySearch} from "react-select-search";
 
 const dep = require("./departments");
 
@@ -35,8 +35,9 @@ export default function SearchForm({ formID, instructors, handleFormValueChange,
         <Col className="col-12 col-sm-12 col-md-5">
           <SelectSearch
             options={instructors}
-            filterOptions={(q, options) => {
-              return options.slice(0, 4);
+            filterOptions={(options) => {
+                const filter = fuzzySearch(options);
+                return (q) => filter(q).slice(0, 5);
             }}
             search
             name="instructors"
