@@ -53,21 +53,38 @@ export default function ClassSideList(props){
         setCourses(result);
     }
 
-    const removeCourse = (e, idx, dept, num) => {
+    const modifyCourse = (e, idx, dept, num) => {
         e.preventDefault();
+        console.log(idx, dept, num)
         let result = JSON.parse(JSON.stringify(props.data));
         let cl = result[idx].courseList;
+        let removed = new Set(props.removedClasses);
+        let exclude = new Set(props.exludeCourses)
 
-        for(let i = cl.length - 1; i >= 0; i--){
-            if(cl[i].course_offering.course.department === dept && cl[i].course_offering.course.number === num){
-                cl.splice(i, 1);
+        if(e.target.checked){ // removes courses with the specified dept and num
+            for(let i = cl.length - 1; i >= 0; i--){
+                if(cl[i].course_offering.course.department === dept && cl[i].course_offering.course.number === num){
+                    removed.add(cl[i])
+                    exclude.add(`${dept} ${num}`)
+                    cl.splice(i, 1);
+                }
+            }
+        } else { // adds back the courses with the specified dept and num
+            for(let course of props.removedClasses){
+                if(course.course_offering.course.department === dept && course.course_offering.course.number === num) {
+                    cl.push(course)
+                    removed.delete(course)
+                    exclude.delete(`${dept} ${num}`)
+                }
             }
         }
 
-        let final = calculateData(result[idx].courseList, props.queryParams, undefined, false)
+        let final = calculateData(cl, props.queryParams, undefined, false)
         final.color = result[idx].color
         result[idx] = final
-        props.setResults(result);
+        props.setData(result);
+        props.setRemovedClasses(removed)
+        props.setExcludeCourses(exclude)
     }
 
     return (
@@ -84,12 +101,12 @@ export default function ClassSideList(props){
             <Card className="overflow-auto shadow-sm" style={{ maxHeight: props.sideInfoHeight }}>
                 <Card.Body className="px-0">
                     <h5 className="card-title mb-0">Classes</h5>
-                    {courses.map((x, i) => (
-                        <div key={i}>
-                        {x.map((c, idx) => (
-                            <Accordion key={idx} className="mb-1">
+                    {courses.map((x, idx) => (
+                        <div key={idx}>
+                        {x.map(c => (
+                            <Accordion key={`${c.name}${idx}`} className="mb-1">
                                 <ToggleButtonGroup type="checkbox" className="">
-                                    <ToggleButton className="sidelist-item px-1" id="tbg-check-2" value={1} onClick={e => e.target.blur()}>
+                                    <ToggleButton className="sidelist-item px-1" id="tbg-check-2" value={1} onClick={e => e.target.blur()} onChange={e => modifyCourse(e, idx, c.department, c.number)}>
                                         {c.name} • {c.count}
                                     </ToggleButton>
                                 </ToggleButtonGroup>
@@ -109,7 +126,7 @@ export default function ClassSideList(props){
                                 </Accordion.Collapse>
                             </Accordion>
                         ))}
-                        {i < courses.length - 1 &&
+                        {idx < courses.length - 1 &&
                         <p className="p-0 m-0">---</p>
                         }
                         </div>

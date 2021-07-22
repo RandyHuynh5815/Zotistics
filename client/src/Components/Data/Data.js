@@ -66,7 +66,7 @@ export default function Data(props) {
             let dataPercentage = dataPopulation.map(d => 100 * d / sum);
 
             dataset.push({
-                label: `${count}`,
+                key: `${count}`,
                 data: percent ? dataPercentage : dataPopulation,
                 // data: dataPercentage,
                 backgroundColor: colors[count]
@@ -266,6 +266,11 @@ export default function Data(props) {
                             data={data}
                             setData={setData}
                             queryParams={props.queryParams}
+                            removedClasses={removedClasses}
+                            setRemovedClasses={setRemovedClasses}
+                            exludeCourses={excludeCourses}
+                            setExcludeCourses={setExcludeCourses}
+                            exludeInstructors={excludeInstructors}
                         />
                     }
                 </Col>

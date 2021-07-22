@@ -51,6 +51,7 @@ export default function InstructorSideList(props) {
             for(let i = cl.length - 1; i >= 0; i--){
                 if(cl[i].course_offering.instructors[0].shortened_name === inst){
                     removed.add(cl[i])
+                    exclude.add(inst)
                     cl.splice(i, 1);
                 }
             }
@@ -59,12 +60,12 @@ export default function InstructorSideList(props) {
                 if(course.course_offering.instructors[0].shortened_name === inst) {
                     cl.push(course)
                     removed.delete(course)
+                    exclude.delete(inst)
                 }
             }
         }
 
         let final = calculateData(cl, props.queryParams, undefined, false)
-        exclude.add(inst)
         final.color = result[idx].color
         result[idx] = final
         props.setData(result);
