@@ -60,7 +60,7 @@ export default function ClassSideList(props){
         let cl = result[idx].courseList;
         let removed = new Set(props.removedClasses);
         let exclude = new Set(props.exludeCourses)
-
+        console.log(cl)
         if(e.target.checked){ // removes courses with the specified dept and num
             for(let i = cl.length - 1; i >= 0; i--){
                 if(cl[i].course_offering.course.department === dept && cl[i].course_offering.course.number === num){
@@ -71,7 +71,8 @@ export default function ClassSideList(props){
             }
         } else { // adds back the courses with the specified dept and num
             for(let course of props.removedClasses){
-                if(course.course_offering.course.department === dept && course.course_offering.course.number === num) {
+                if(course.course_offering.course.department === dept && course.course_offering.course.number === num &&
+                    !props.exludeInstructors.has(course.course_offering.instructors[0].shortened_name)) { // does not add back course with an instructor still excluded
                     cl.push(course)
                     removed.delete(course)
                     exclude.delete(`${dept} ${num}`)
