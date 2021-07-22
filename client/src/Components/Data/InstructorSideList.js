@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Card, Dropdown, Button, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import React, {useState} from "react";
+import {Card, Dropdown, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
 import {calculateData} from "../Search/calculations";
 import './Data.css'
 
@@ -98,7 +98,7 @@ export default function InstructorSideList(props) {
                             ))}
                             {/* Adds line divider between different query tabs*/}
                             {idx < instructors.length - 1 &&
-                            <p className="p-0 m-0">---</p>
+                            <p className="p-0 m-0">-----</p>
                             }
                         </div>
                     ))}

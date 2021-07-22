@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Row, Col, Container, Collapse } from "react-bootstrap";
+import { Form, Row, Col, Container, Collapse, Button } from "react-bootstrap";
 import SelectSearch, {fuzzySearch} from "react-select-search";
 
 const dep = require("./departments");
@@ -129,7 +129,7 @@ export default function SearchForm({ formID, instructors, handleFormValueChange,
       <Row className="justify-content-center search-form-row">
         <Col className="col-12">
           <div className="advanced-options-wrapper">
-            <a
+            <Button variant="link"
               id="advanced-options-link"
               onClick={() =>
                 handleValueChange({ name: "advancedVisible", value: !state.advancedVisible })
@@ -138,7 +138,7 @@ export default function SearchForm({ formID, instructors, handleFormValueChange,
               aria-expanded={state.advancedVisible}
             >
               Advanced Options ▼
-              </a>
+              </Button>
             <Collapse in={state.advancedVisible}>
               <div className="advanced-options">
 

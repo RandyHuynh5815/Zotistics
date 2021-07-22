@@ -75,9 +75,9 @@ export default function Data(props) {
             let dataPercentage = dataPopulation.map(num => (100 * num / sum).toFixed(2));
 
             dataset.push({
-                key: `${count}`,
                 data: percent ? dataPercentage : dataPopulation,
-                backgroundColor: colors[count]
+                backgroundColor: colors[count],
+                label: `${count}`
             });
             count++;
         }
@@ -94,6 +94,13 @@ export default function Data(props) {
         maintainAspectRatio: true,
         legend: { display: false },
         animation: { duration: 1000 },
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+                }
+            }
+        },
         scales: {
             yAxes: [{
                 ticks: {
