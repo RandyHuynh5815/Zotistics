@@ -4,12 +4,12 @@
   in the side bar of the results page next to the graph
  */
 export function classList(data){
-    let classes = {}; // { className: {count, {year, quarter, code}} }
+    let classes = {}; // { className: {count, {year, quarter, code, instructor}} }
 
     for(let classObject of data){
         let c = classObject.course_offering;
         let className = `${c.course.department} ${c.course.number}`;
-        let course = {year: c.year, quarter: c.quarter, code: c.section.code};
+        let course = {year: c.year, quarter: c.quarter, code: c.section.code, instructor: c.instructors[0].shortened_name};
 
         if(className in classes){
             classes[className].count++;
@@ -112,6 +112,9 @@ export function cumulativeData(original_data, data, params, option = true){
         stats.p = agg.sum_grade_p_count;
         stats.np = agg.sum_grade_np_count;
         stats.gpa = agg.average_gpa.toFixed(2);
+        // let avg_manual = ((stats.a * 4) + (stats.b * 3) + (stats.c * 2) + (stats.d))/(stats.a + stats.b + stats.c + stats.d + stats.f)
+        // console.log('manual:', avg_manual)
+        // console.log('from api:', agg.average_gpa)
 
     } else { // if at least one advanced option is true
         for(let classObject of data){

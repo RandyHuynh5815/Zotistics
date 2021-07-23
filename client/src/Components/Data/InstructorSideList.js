@@ -76,17 +76,17 @@ export default function InstructorSideList(props) {
 
     return (
         <div style={{ display: props.instructorDisplay}}>
-            <Dropdown className="text-right">
-                <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
-                    Sort
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
-                    <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
             <Card className="overflow-auto shadow-sm" style={{ maxHeight: props.sideInfoHeight }}>
-                <Card.Body className="px-0">
+                <Dropdown className="text-right">
+                    <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
+                        Sort
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
+                        <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Card.Body className="px-0 pt-1">
                     <h5 className="card-title mb-1">Instructors</h5>
                     {instructors.map((x, idx) => (
                         <div key={idx}>
