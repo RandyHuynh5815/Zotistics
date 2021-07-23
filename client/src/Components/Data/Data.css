@@ -2,14 +2,14 @@
 .sidelist-sort-btn {
     background-color: #47484C!important;
     border: none!important;
-    opacity: 0.5;
+    opacity: 0.4;
     padding-top: 0;
     padding-bottom: 0;
 }
 
 .sidelist-sort-btn:hover {
     background-color: #47484C!important;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .sidelist-sort-btn:active {

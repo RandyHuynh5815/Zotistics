@@ -55,12 +55,11 @@ export default function ClassSideList(props){
 
     const modifyCourse = (e, idx, dept, num) => {
         e.preventDefault();
-        console.log(idx, dept, num)
         let result = JSON.parse(JSON.stringify(props.data));
         let cl = result[idx].courseList;
         let removed = new Set(props.removedClasses);
         let exclude = new Set(props.exludeCourses)
-        console.log(cl)
+
         if(e.target.checked){ // removes courses with the specified dept and num
             for(let i = cl.length - 1; i >= 0; i--){
                 if(cl[i].course_offering.course.department === dept && cl[i].course_offering.course.number === num){
@@ -90,17 +89,17 @@ export default function ClassSideList(props){
 
     return (
         <div style={{ display: props.classDisplay }}>
-            <Dropdown className="text-left">
-                <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
-                    Sort
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
-                    <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
             <Card className="overflow-auto shadow-sm" style={{ maxHeight: props.sideInfoHeight }}>
-                <Card.Body className="px-0">
+                <Dropdown className="text-right">
+                    <Dropdown.Toggle size="sm" className="sidelist-sort-btn">
+                        Sort
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item value="amount" onClick={handleSortAmount}>Amount</Dropdown.Item>
+                        <Dropdown.Item value="name" onClick={handleSortName}>Name</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Card.Body className="px-0 pt-1">
                     <h5 className="card-title mb-0">Classes</h5>
                     {courses.map((x, idx) => (
                         <div key={idx}>
@@ -120,7 +119,7 @@ export default function ClassSideList(props){
                                 <Accordion.Collapse eventKey="0">
                                     <div>
                                         {c.courses.map((j, idx) => (
-                                                <Card.Text key={idx} style={{fontSize: '0.7rem'}}>{j.year} {j.quarter} - {j.code}</Card.Text>
+                                                <Card.Text key={idx} style={{fontSize: '0.69rem'}}>{j.year} {j.quarter} - {j.instructor}</Card.Text>
                                             )
                                         )}
                                     </div>
