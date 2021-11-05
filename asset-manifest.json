@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/Zotistics/static/css/main.8de4dd7b.chunk.css",
-    "main.js": "/Zotistics/static/js/main.8876fec1.chunk.js",
-    "main.js.map": "/Zotistics/static/js/main.8876fec1.chunk.js.map",
+    "main.js": "/Zotistics/static/js/main.d7da1a8e.chunk.js",
+    "main.js.map": "/Zotistics/static/js/main.d7da1a8e.chunk.js.map",
     "runtime-main.js": "/Zotistics/static/js/runtime-main.e302379a.js",
     "runtime-main.js.map": "/Zotistics/static/js/runtime-main.e302379a.js.map",
     "static/css/2.dc3c9708.chunk.css": "/Zotistics/static/css/2.dc3c9708.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.dc3c9708.chunk.css",
     "static/js/2.13b1c5b8.chunk.js",
     "static/css/main.8de4dd7b.chunk.css",
-    "static/js/main.8876fec1.chunk.js"
+    "static/js/main.d7da1a8e.chunk.js"
   ]
 }
