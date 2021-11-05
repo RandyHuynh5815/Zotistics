@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.e0040da5.chunk.css",
-    "main.js": "/static/js/main.8876fec1.chunk.js",
-    "main.js.map": "/static/js/main.8876fec1.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.120840cb.js",
-    "runtime-main.js.map": "/static/js/runtime-main.120840cb.js.map",
-    "static/css/2.1a02f21c.chunk.css": "/static/css/2.1a02f21c.chunk.css",
-    "static/js/2.0df38974.chunk.js": "/static/js/2.0df38974.chunk.js",
-    "static/js/2.0df38974.chunk.js.map": "/static/js/2.0df38974.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.1a02f21c.chunk.css.map": "/static/css/2.1a02f21c.chunk.css.map",
-    "static/css/main.e0040da5.chunk.css.map": "/static/css/main.e0040da5.chunk.css.map",
-    "static/js/2.0df38974.chunk.js.LICENSE.txt": "/static/js/2.0df38974.chunk.js.LICENSE.txt",
-    "static/media/NavBar.css": "/static/media/Ubuntu-Regular.fbdecfce.ttf",
-    "static/media/doggles.414585ca.png": "/static/media/doggles.414585ca.png"
+    "main.css": "/Zotistics/static/css/main.8de4dd7b.chunk.css",
+    "main.js": "/Zotistics/static/js/main.8876fec1.chunk.js",
+    "main.js.map": "/Zotistics/static/js/main.8876fec1.chunk.js.map",
+    "runtime-main.js": "/Zotistics/static/js/runtime-main.e302379a.js",
+    "runtime-main.js.map": "/Zotistics/static/js/runtime-main.e302379a.js.map",
+    "static/css/2.dc3c9708.chunk.css": "/Zotistics/static/css/2.dc3c9708.chunk.css",
+    "static/js/2.13b1c5b8.chunk.js": "/Zotistics/static/js/2.13b1c5b8.chunk.js",
+    "static/js/2.13b1c5b8.chunk.js.map": "/Zotistics/static/js/2.13b1c5b8.chunk.js.map",
+    "index.html": "/Zotistics/index.html",
+    "static/css/2.dc3c9708.chunk.css.map": "/Zotistics/static/css/2.dc3c9708.chunk.css.map",
+    "static/css/main.8de4dd7b.chunk.css.map": "/Zotistics/static/css/main.8de4dd7b.chunk.css.map",
+    "static/js/2.13b1c5b8.chunk.js.LICENSE.txt": "/Zotistics/static/js/2.13b1c5b8.chunk.js.LICENSE.txt",
+    "static/media/NavBar.css": "/Zotistics/static/media/Ubuntu-Regular.fbdecfce.ttf",
+    "static/media/doggles.414585ca.png": "/Zotistics/static/media/doggles.414585ca.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.120840cb.js",
-    "static/css/2.1a02f21c.chunk.css",
-    "static/js/2.0df38974.chunk.js",
-    "static/css/main.e0040da5.chunk.css",
+    "static/js/runtime-main.e302379a.js",
+    "static/css/2.dc3c9708.chunk.css",
+    "static/js/2.13b1c5b8.chunk.js",
+    "static/css/main.8de4dd7b.chunk.css",
     "static/js/main.8876fec1.chunk.js"
   ]
 }
