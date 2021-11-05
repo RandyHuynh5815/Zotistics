@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Zotistics/static/css/main.8de4dd7b.chunk.css",
+    "main.js": "/Zotistics/static/js/main.0d3fb950.chunk.js",
+    "main.js.map": "/Zotistics/static/js/main.0d3fb950.chunk.js.map",
+    "runtime-main.js": "/Zotistics/static/js/runtime-main.e302379a.js",
+    "runtime-main.js.map": "/Zotistics/static/js/runtime-main.e302379a.js.map",
+    "static/css/2.1a02f21c.chunk.css": "/Zotistics/static/css/2.1a02f21c.chunk.css",
+    "static/js/2.13b1c5b8.chunk.js": "/Zotistics/static/js/2.13b1c5b8.chunk.js",
+    "static/js/2.13b1c5b8.chunk.js.map": "/Zotistics/static/js/2.13b1c5b8.chunk.js.map",
+    "index.html": "/Zotistics/index.html",
+    "static/css/2.1a02f21c.chunk.css.map": "/Zotistics/static/css/2.1a02f21c.chunk.css.map",
+    "static/css/main.8de4dd7b.chunk.css.map": "/Zotistics/static/css/main.8de4dd7b.chunk.css.map",
+    "static/js/2.13b1c5b8.chunk.js.LICENSE.txt": "/Zotistics/static/js/2.13b1c5b8.chunk.js.LICENSE.txt",
+    "static/media/NavBar.css": "/Zotistics/static/media/Ubuntu-Regular.fbdecfce.ttf",
+    "static/media/doggles.414585ca.png": "/Zotistics/static/media/doggles.414585ca.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e302379a.js",
+    "static/css/2.1a02f21c.chunk.css",
+    "static/js/2.13b1c5b8.chunk.js",
+    "static/css/main.8de4dd7b.chunk.css",
+    "static/js/main.0d3fb950.chunk.js"
+  ]
+}
