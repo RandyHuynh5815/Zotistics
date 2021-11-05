@@ -34,7 +34,7 @@ export default function App() {
     return (
         <>
         <NavBar/>
-            <Router>
+            <Router basename="/Zotistics">
                 <Switch>
                     <Route path="/info">
                         <Info updateColors={updateColors}/>
