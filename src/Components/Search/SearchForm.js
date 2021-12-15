@@ -151,7 +151,7 @@ export default function SearchForm({ formID, instructors, handleFormValueChange,
                       }}
                       type="checkbox"
                       id={`exclude-pnp`}
-                      label={`Exclude P/NP`}
+                      label={`Exclude P/NP Only Courses`}
                     />
                   </Col>
                   <Col>
